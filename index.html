@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="glass">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -16,7 +16,7 @@
     --bg-0:#0B1018; --bg-1:#0F1626; --bg-2:#1B2740;
     --surface:#141C2C; --surface-2:#1D2A40; --hairline:#2A3852;
     --text:#EDE6D6; --text-dim:#93A0B4; --text-faint:#6A7A92;
-    --amber:#E8A23D; --amber-dim:rgba(232,162,61,0.28); --amber-glow:rgba(232,162,61,0.55);
+    --amber:#006DBF; --amber-dim:rgba(0,109,191,0.28); --amber-glow:rgba(0,109,191,0.55);
     --teal:#4FA88A; --red:#D9715E; --fs:1;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -54,13 +54,13 @@
   #screen-start.introing .start-title, #screen-start.introing .start-sub, #screen-start.introing .btn-primary, #screen-start.introing .btn-ghost{opacity:0;}
   @keyframes coreBeat{0%,100%{transform:scale(1);} 8%{transform:scale(1.35);} 22%{transform:scale(.95);} 34%{transform:scale(1);}}
   @keyframes ping{0%{transform:scale(1); opacity:.9;} 55%{opacity:0;} 100%{transform:scale(2.3); opacity:0;}}
-  @keyframes wayDot{0%,40%,100%{opacity:.5; transform:scale(.85); box-shadow:0 0 0 0 rgba(232,162,61,0);} 10%{opacity:1; transform:scale(1.9); box-shadow:0 0 10px 3px var(--amber-glow);} 24%{opacity:.8; transform:scale(1);}}
+  @keyframes wayDot{0%,40%,100%{opacity:.5; transform:scale(.85); box-shadow:0 0 0 0 rgba(0,109,191,0);} 10%{opacity:1; transform:scale(1.9); box-shadow:0 0 10px 3px var(--amber-glow);} 24%{opacity:.8; transform:scale(1);}}
   .start-title{font-size:calc(22px * var(--fs)); margin-bottom:8px; line-height:1.15;}
   .start-sub{color:var(--text-dim); font-size:calc(15px * var(--fs)); max-width:300px; line-height:1.5; margin:0 0 26px;}
   .lang-pills{display:flex; gap:6px; padding:4px; background:var(--surface); border:1px solid var(--hairline); border-radius:100px; margin-bottom:22px;}
-  .lang-pill,.size-pill{padding:8px 16px; border-radius:100px; font-family:Arial, Helvetica, sans-serif; font-size:calc(12.5px * var(--fs)); color:var(--text-dim);}
-  .lang-pill.active,.size-pill.active{background:var(--amber); color:#1A1206; font-weight:600;}
-  .btn-primary{width:100%; max-width:300px; padding:16px 20px; background:var(--amber); color:#1A1206; border-radius:100px; font-family:Arial, Helvetica, sans-serif; font-weight:600; font-size:calc(14px * var(--fs)); letter-spacing:.03em; text-transform:uppercase; box-shadow:0 8px 24px -8px var(--amber-glow);}
+  .lang-pill,.size-pill,.btn-pill{padding:8px 16px; border-radius:100px; font-family:Arial, Helvetica, sans-serif; font-size:calc(12.5px * var(--fs)); color:var(--text-dim);}
+  .lang-pill.active,.size-pill.active,.btn-pill.active{background:var(--amber); color:#FFFFFF; font-weight:600;}
+  .btn-primary{width:100%; max-width:300px; padding:16px 20px; background:var(--amber); color:#FFFFFF; border-radius:100px; font-family:Arial, Helvetica, sans-serif; font-weight:600; font-size:calc(14px * var(--fs)); letter-spacing:.03em; text-transform:uppercase; box-shadow:0 8px 24px -8px var(--amber-glow);}
   .btn-primary:active{transform:scale(.97);}
   .btn-ghost{margin-top:14px; padding:12px 20px; color:var(--text-dim); font-family:Arial, Helvetica, sans-serif; font-size:calc(12.5px * var(--fs)); border-bottom:1px solid var(--hairline);}
   .status-box{margin-top:22px; max-width:320px; font-family:Arial, Helvetica, sans-serif; font-size:calc(12px * var(--fs)); line-height:1.6; color:var(--text-faint); min-height:18px; white-space:pre-line;}
@@ -84,7 +84,7 @@
   .set-sec select{width:100%; padding:11px; border-radius:10px; border:1px solid var(--hairline); background:var(--bg-1); color:var(--text); font-size:calc(15px * var(--fs)); font-family:inherit;}
 
   /* ---------- trip ---------- */
-  #screen-trip{padding-bottom:178px;}
+  #screen-trip{padding-bottom:calc(150px + 40px * var(--fs));}
   .hud-bar{display:flex; align-items:center; justify-content:space-between; padding:calc(14px + env(safe-area-inset-top)) 20px 14px; border-bottom:1px solid var(--hairline); font-family:Arial, Helvetica, sans-serif; font-size:calc(12px * var(--fs)); color:var(--text-dim);}
   .live{display:flex; align-items:center; gap:8px;}
   .live .dot{width:7px; height:7px; border-radius:50%; background:var(--teal); box-shadow:0 0 8px var(--teal);}
@@ -122,11 +122,76 @@
   .captions p{margin:0; font-size:calc(13px * var(--fs)); color:var(--text-dim); font-style:italic; line-height:1.5;}
 
   .control-bar{position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:480px; padding:14px 18px calc(14px + env(safe-area-inset-bottom)); background:linear-gradient(180deg, transparent, var(--bg-0) 24%); display:flex; flex-direction:column; gap:8px;}
-  .row{display:flex; gap:8px;}
-  .cbtn{flex:1; padding:14px 8px; background:var(--surface-2); border:1px solid var(--hairline); border-radius:100px; font-family:Arial, Helvetica, sans-serif; font-size:calc(12.5px * var(--fs)); color:var(--text); text-align:center;}
+  .row{display:flex; gap:8px; flex-wrap:wrap;}
+  .cbtn{flex:1 1 auto; padding:14px 8px; background:var(--surface-2); border:1px solid var(--hairline); border-radius:100px; font-family:Arial, Helvetica, sans-serif; font-size:calc(12.5px * var(--fs)); color:var(--text); text-align:center;}
   .cbtn:active{transform:scale(.96);}
-  .row.small .cbtn{padding:9px 6px; font-size:calc(11.5px * var(--fs)); background:transparent; border-color:transparent; color:var(--text-faint);}
-  .row.small .cbtn.on{color:var(--amber);}
+  .cbtn.on{color:var(--amber);}
+  .slide{position:relative; height:50px; border-radius:100px; background:var(--surface); border:1px solid var(--hairline); overflow:hidden; touch-action:none; user-select:none; -webkit-user-select:none;}
+  .slide-fill{position:absolute; left:0; top:0; bottom:0; width:0; background:var(--amber-dim);}
+  .slide-label{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding-left:40px; font-family:Arial, Helvetica, sans-serif; font-size:calc(12px * var(--fs)); letter-spacing:.04em; color:var(--text-dim); pointer-events:none;}
+  .slide-thumb{position:absolute; left:4px; top:4px; width:40px; height:40px; border-radius:50%; background:var(--amber); color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:18px; cursor:grab; touch-action:none; box-shadow:0 2px 10px rgba(0,0,0,.4);}
+  .slide.snap .slide-thumb, .slide.snap .slide-fill{transition:transform .25s ease, width .25s ease;}
+
+
+  /* ---------- card actions (more info / favorite) ---------- */
+  .card-media{position:relative;}
+  .card-actions{position:absolute; right:14px; bottom:-22px; z-index:3; display:flex; gap:10px;}
+  .card:not(.has-img) .card-actions{bottom:auto; top:14px;}
+  .card.has-img .card-body{padding-top:32px;}
+  .card:not(.has-img) .card-body{padding-right:112px;}
+  .abtn{width:44px; height:44px; border-radius:50%; background:rgba(11,16,24,.9); border:1px solid var(--hairline); color:var(--text); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 14px rgba(0,0,0,.45); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);}
+  .abtn svg{width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round;}
+  .abtn:active{transform:scale(.92);}
+  .abtn.on{background:var(--amber); border-color:var(--amber); color:#FFFFFF;}
+  .abtn.busy{animation:busy .8s ease-in-out infinite;}
+  @keyframes busy{0%,100%{opacity:.45;} 50%{opacity:1;}}
+  .card p.more{margin-top:12px; padding-top:12px; border-top:1px solid var(--hairline); color:var(--text);}
+  .toast{position:fixed; left:50%; bottom:calc(200px + env(safe-area-inset-bottom)); transform:translateX(-50%); max-width:88%; text-align:center; background:var(--surface-2); border:1px solid var(--hairline); padding:10px 16px; border-radius:100px; font-family:Arial, Helvetica, sans-serif; font-size:calc(12.5px * var(--fs)); color:var(--text); opacity:0; pointer-events:none; transition:opacity .25s; z-index:50;}
+  .toast.show{opacity:1;}
+  .fav-start{right:auto; left:18px;}
+  .fav-item{display:flex; gap:14px; padding:16px 22px; border-bottom:1px solid var(--hairline);}
+  .fav-thumb{flex:0 0 64px; width:64px; height:64px; border-radius:14px; object-fit:cover; background:var(--surface);}
+  .fav-main{flex:1; min-width:0;}
+  .fav-main h3{font-size:calc(17px * var(--fs)); margin-bottom:4px;}
+  .fav-meta{font-family:Arial, Helvetica, sans-serif; font-size:calc(11px * var(--fs)); color:var(--text-faint); margin-bottom:6px;}
+  .fav-text{margin:0 0 10px; font-size:calc(13.5px * var(--fs)); line-height:1.5; color:var(--text-dim);}
+  .fav-actions{display:flex; gap:8px; flex-wrap:wrap;}
+  .chip{display:inline-block; padding:8px 13px; border:1px solid var(--hairline); border-radius:100px; background:transparent; font-family:Arial, Helvetica, sans-serif; font-size:calc(12px * var(--fs)); color:var(--text-dim); text-decoration:none;}
+  .chip:active{transform:scale(.95);}
+  .chip.danger{color:var(--red); border-color:rgba(217,113,94,.4);}
+  .fav-clear{display:block; margin:20px auto; }
+
+
+  /* ---------- liquid-glass look for buttons (only when <html class="glass">) ---------- */
+  html.glass .abtn, html.glass .cbtn, html.glass .slide, html.glass .chip, html.glass .gear-start{
+    background:linear-gradient(180deg, rgba(255,255,255,.20) 0%, rgba(255,255,255,.07) 55%, rgba(255,255,255,.12) 100%);
+    -webkit-backdrop-filter:blur(18px) saturate(180%); backdrop-filter:blur(18px) saturate(180%);
+    border:1px solid rgba(255,255,255,.22);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.50), inset 0 -1px 0 rgba(255,255,255,.10), inset 0 0 14px rgba(255,255,255,.05), 0 8px 22px rgba(0,0,0,.32);
+  }
+  html.glass .abtn{width:46px; height:46px; color:#FFFFFF;}
+  html.glass .abtn svg{width:24px; height:24px;}
+  html.glass .abtn.on{
+    background:linear-gradient(180deg, rgba(60,160,235,.95) 0%, rgba(0,109,191,.80) 100%);
+    border-color:rgba(160,210,255,.55);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.60), inset 0 -1px 0 rgba(0,40,90,.35), 0 8px 22px rgba(0,109,191,.35);
+    color:#FFFFFF;
+  }
+  html.glass .cbtn.on{background:linear-gradient(180deg, rgba(0,109,191,.35), rgba(0,109,191,.18)); color:#FFFFFF;}
+  html.glass .btn-primary{
+    background:linear-gradient(180deg, rgba(70,170,240,.95) 0%, rgba(0,109,191,.85) 100%);
+    border:1px solid rgba(170,215,255,.55);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.65), inset 0 -1px 0 rgba(0,40,90,.35), 0 12px 28px -8px rgba(0,109,191,.65);
+  }
+  html.glass .slide-thumb{
+    background:linear-gradient(180deg, rgba(70,170,240,.98), rgba(0,109,191,.9));
+    border:1px solid rgba(170,215,255,.6);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.65), 0 4px 14px rgba(0,0,0,.4);
+  }
+  html.glass .lang-pill:not(.active), html.glass .size-pill:not(.active), html.glass .btn-pill:not(.active){background:transparent;}
+  html.glass .lang-pills{background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.05)); -webkit-backdrop-filter:blur(18px) saturate(180%); backdrop-filter:blur(18px) saturate(180%); border:1px solid rgba(255,255,255,.2); box-shadow:inset 0 1px 0 rgba(255,255,255,.4);}
+  html.glass .lang-pill.active, html.glass .size-pill.active, html.glass .btn-pill.active{background:linear-gradient(180deg, rgba(70,170,240,.98), rgba(0,109,191,.9)); box-shadow:inset 0 1px 0 rgba(255,255,255,.6);}
+  html.glass .chip.danger{background:linear-gradient(180deg, rgba(217,113,94,.22), rgba(217,113,94,.08)); border-color:rgba(217,113,94,.5);}
 
   /* ---------- log ---------- */
   #screen-log{padding-bottom:40px;}
@@ -146,6 +211,7 @@
 
   <!-- START -->
   <section class="screen active introing" id="screen-start">
+    <button class="gear-start fav-start" id="btn-favs-start">★ Favorites</button>
     <button class="gear-start" id="btn-settings-start">⚙ Settings</button>
     <div class="logo intro" id="logo" role="img" aria-label="OnTheWay"><span class="lo-wrap"><svg class="lo" viewBox="0 0 33 33" aria-hidden="true"><circle cx="16.5" cy="16.5" r="14.5" fill="none" stroke="#EDE6D6" stroke-width="4"/><circle class="lo-ping" cx="16.5" cy="16.5" r="5.1"/><circle class="lo-ping p2" cx="16.5" cy="16.5" r="5.1"/></svg><span class="lo-core" id="lo-core"></span></span><span class="lt">N</span><span class="ld d1"></span><span class="lt">THE</span><span class="ld d2"></span><span class="lt">WAY</span><span class="ld d3"></span></div>
     <h1 class="start-title" id="start-title">Every way<br>has a voice.</h1>
@@ -159,15 +225,14 @@
   <section class="screen" id="screen-trip">
     <div class="hud-bar">
       <div class="live"><span class="dot" id="live-dot"></span><span id="live-label">LIVE</span></div>
-      <span id="clock">00:00</span>
-      <div class="hud-right"><button id="btn-settings-trip" aria-label="Settings">⚙</button><button id="btn-log">Journey log →</button></div>
+      <div class="hud-right"><button id="btn-favs-trip" aria-label="Favorites">★</button><button id="btn-settings-trip" aria-label="Settings">⚙</button><button id="btn-log">Journey log →</button></div>
     </div>
 
     <div class="next-wrap">
       <div class="ring-wrap" id="ring-wrap">
         <svg viewBox="0 0 200 200">
           <circle cx="100" cy="100" r="86" fill="none" stroke="#2A3852" stroke-width="10"/>
-          <circle cx="100" cy="100" r="86" fill="none" stroke="#E8A23D" stroke-width="10" stroke-linecap="round" id="ring-fill" transform="rotate(-90 100 100)"/>
+          <circle cx="100" cy="100" r="86" fill="none" stroke="#006DBF" stroke-width="10" stroke-linecap="round" id="ring-fill" transform="rotate(-90 100 100)"/>
         </svg>
         <div class="ring-center">
           <div class="ring-dist" id="ring-dist">—</div>
@@ -189,12 +254,20 @@
         <button class="cbtn" id="btn-replay">⟲ Replay</button>
         <button class="cbtn" id="btn-pause">⏸ Pause</button>
         <button class="cbtn" id="btn-skip">⚑ Skip</button>
+        <button class="cbtn on" id="btn-mute">🔊 Audio</button>
       </div>
-      <div class="row small">
-        <button class="cbtn on" id="btn-mute">🔊 Audio on</button>
-        <button class="cbtn" id="btn-end">End journey</button>
+      <div class="slide" id="slide" role="button" tabindex="0" aria-label="Slide to end journey">
+        <div class="slide-fill" id="slide-fill"></div>
+        <span class="slide-label" id="slide-label">Slide to end journey</span>
+        <div class="slide-thumb" id="slide-thumb">→</div>
       </div>
     </div>
+  </section>
+
+  <!-- FAVORITES -->
+  <section class="screen" id="screen-favs">
+    <div class="log-head"><h2 id="favs-title">Favorites</h2><div class="hud-right"><button id="btn-favs-edit">Edit</button><button id="btn-favs-back">← Back</button></div></div>
+    <div id="favs-body"></div>
   </section>
 
   <!-- SETTINGS -->
@@ -205,6 +278,7 @@
       <div class="lang-pills">
         <button class="lang-pill active" data-lang="en">English</button>
         <button class="lang-pill" data-lang="nl">Nederlands</button>
+        <button class="lang-pill" data-lang="fr">Français</button>
       </div>
     </div>
     <div class="set-sec">
@@ -216,10 +290,17 @@
       </div>
     </div>
     <div class="set-sec">
+      <div class="set-h" id="lbl-btnstyle">Button style</div>
+      <div class="lang-pills">
+        <button class="btn-pill active" data-btn="glass" id="btn-glass">Liquid glass</button>
+        <button class="btn-pill" data-btn="flat" id="btn-flat">Flat</button>
+      </div>
+    </div>
+    <div class="set-sec">
       <div class="set-h" id="voice-heading">Voice</div>
       <label for="sel-voice-body" id="lbl-voice-body">Narration voice</label>
       <select id="sel-voice-body"></select>
-      <label for="sel-voice-name" id="lbl-voice-name">Place-name voice (Dutch)</label>
+      <label for="sel-voice-name" id="lbl-voice-name">Place-name voice</label>
       <select id="sel-voice-name"></select>
       <div class="voice-now" id="voice-now"></div>
       <button class="voice-test" id="btn-test-voice">▶ Test voice</button>
@@ -231,6 +312,7 @@
     <div class="log-head"><h2 id="log-title">Your journey</h2><button id="btn-back">← Back</button></div>
     <div id="log-body"></div>
   </section>
+<div class="toast" id="toast" role="status"></div>
 </div>
 
 <script>
@@ -259,12 +341,16 @@
   ========================================================= */
   const STR = {
     en:{
-      tagNext:"Coming up", tagNow:"Now telling", live:"LIVE", offline:"NO SIGNAL",
+      tagNext:"Coming up", tagNow:"Now telling", tagTold:"Just told", live:"LIVE", offline:"NO SIGNAL",
       log:"Journey log →", back:"← Back", logTitle:"Your journey",
       logEmpty:"Nothing narrated yet. Stories you hear will appear here.",
-      audioOn:"🔊 Audio on", audioOff:"🔈 Audio off", end:"End journey",
+      audioOn:"🔊 Audio", audioOff:"🔇 Muted", end:"Slide to end journey",
       pause:"⏸ Pause", resume:"▶ Resume", replay:"⟲ Replay", skip:"⚑ Skip",
+      scan:(n,e,h)=>`${n} nearby · ${e} notable · heading ${h}`,
       looking:"Looking around…", nothingAhead:"Nothing notable ahead yet",
+      favs:"Favorites", favsBtn:"★ Favorites", edit:"Edit", done:"Done", favEmpty:"No favorites yet.\nTap + on a place to save it here.",
+      favSaved:"Saved to favorites", favRemoved:"Removed from favorites", share:"Share", openMaps:"Open in Maps", copyGps:"Copy GPS", copied:"Copied to clipboard", remove:"Remove", removeAll:"Remove all favorites", confirmAll:"Remove all favorites?",
+      savedOn:"Saved", moreInfo:"More about this place", addFav:"Save to favorites", noMore:"No more details available for this place.", moreFail:"Couldn't load more details.",
       flagged:"Marked as skipped / wrong",
       startTitle:"Every way<br>has a voice.",
       startSub:"OnTheWay finds interesting places along your way on its own and tells you about them, aloud.",
@@ -287,18 +373,22 @@
       gpsTimeout:"Finding your position is taking long. Still trying…",
       demoDone:"That was the end of the demo drive.",
       wakeOn:"Screen stays on", wakeOff:"Keep the screen on and the phone plugged in while driving.",
-      settingsBtn:"⚙ Settings", settingsTitle:"Settings", langLabel:"Language", sizeLabel:"Text size", sizeStd:"Standard", voiceHeading:"Voice", voiceNarration:"Narration voice", voicePlace:"Place-name voice (Dutch)",
+      settingsBtn:"⚙ Settings", settingsTitle:"Settings", langLabel:"Language", sizeLabel:"Text size", sizeStd:"Standard", styleLabel:"Button style", styleGlass:"Liquid glass", styleFlat:"Flat", voiceHeading:"Voice", voiceNarration:"Narration voice", voicePlace:"Place-name voice", nameLocal:"Local language (automatic)", nameSame:"Same as narration",
       voiceAuto:"Automatic (best available)", voiceTest:"▶ Test voice", voiceNone:"none found",
       voiceUsing:(n,c)=>`Using: ${n} · ${c} voices found`,
       voiceSample:"In about two kilometers, on your right, you'll pass the Evoluon."
     },
     nl:{
-      tagNext:"Komt eraan", tagNow:"Nu aan het vertellen", live:"LIVE", offline:"GEEN SIGNAAL",
+      tagNext:"Komt eraan", tagNow:"Nu aan het vertellen", tagTold:"Zojuist verteld", live:"LIVE", offline:"GEEN SIGNAAL",
       log:"Reisverslag →", back:"← Terug", logTitle:"Uw reis",
       logEmpty:"Nog niets verteld. Verhalen die u hoort verschijnen hier.",
-      audioOn:"🔊 Geluid aan", audioOff:"🔈 Geluid uit", end:"Rit beëindigen",
+      audioOn:"🔊 Geluid", audioOff:"🔇 Stil", end:"Schuif om de rit te beëindigen",
       pause:"⏸ Pauze", resume:"▶ Verder", replay:"⟲ Herhaal", skip:"⚑ Overslaan",
+      scan:(n,e,h)=>`${n} dichtbij · ${e} opvallend · koers ${h}`,
       looking:"Even rondkijken…", nothingAhead:"Nog niets bijzonders vooruit",
+      favs:"Favorieten", favsBtn:"★ Favorieten", edit:"Wijzig", done:"Klaar", favEmpty:"Nog geen favorieten.\nTik op + bij een plek om hem hier te bewaren.",
+      favSaved:"Opgeslagen in favorieten", favRemoved:"Verwijderd uit favorieten", share:"Delen", openMaps:"Open in Kaarten", copyGps:"Kopieer GPS", copied:"Gekopieerd", remove:"Verwijder", removeAll:"Alle favorieten verwijderen", confirmAll:"Alle favorieten verwijderen?",
+      savedOn:"Bewaard", moreInfo:"Meer over deze plek", addFav:"Bewaar in favorieten", noMore:"Geen verdere details beschikbaar.", moreFail:"Kon geen extra details laden.",
       flagged:"Overgeslagen / onjuist gemarkeerd",
       startTitle:"Elke weg<br>heeft een stem.",
       startSub:"OnTheWay vindt zelf interessante plekken langs uw route en vertelt erover, hardop.",
@@ -321,11 +411,50 @@
       gpsTimeout:"Positie bepalen duurt lang. Nog bezig…",
       demoDone:"Dit was het einde van de proefrit.",
       wakeOn:"Scherm blijft aan", wakeOff:"Houd het scherm aan en de telefoon aan de lader tijdens het rijden.",
-      settingsBtn:"⚙ Instellingen", settingsTitle:"Instellingen", langLabel:"Taal", sizeLabel:"Tekstgrootte", sizeStd:"Standaard", voiceHeading:"Stem", voiceNarration:"Verteller-stem", voicePlace:"Stem voor plaatsnamen (Nederlands)",
+      settingsBtn:"⚙ Instellingen", settingsTitle:"Instellingen", langLabel:"Taal", sizeLabel:"Tekstgrootte", sizeStd:"Standaard", styleLabel:"Knopstijl", styleGlass:"Liquid glass", styleFlat:"Vlak", voiceHeading:"Stem", voiceNarration:"Verteller-stem", voicePlace:"Stem voor plaatsnamen", nameLocal:"Lokale taal (automatisch)", nameSame:"Zelfde als de verteller",
       voiceAuto:"Automatisch (beste beschikbare)", voiceTest:"▶ Test stem", voiceNone:"geen gevonden",
       voiceUsing:(n,c)=>`In gebruik: ${n} · ${c} stemmen gevonden`,
       voiceSample:"Over ongeveer twee kilometer, aan uw rechterkant, ligt het Evoluon."
+    },
+    fr:{
+      tagNext:"À venir", tagNow:"En cours", tagTold:"Vient d'être raconté", live:"EN DIRECT", offline:"PAS DE SIGNAL",
+      log:"Journal du trajet →", back:"← Retour", logTitle:"Votre trajet",
+      logEmpty:"Rien de raconté pour l'instant. Les histoires que vous entendez apparaîtront ici.",
+      audioOn:"🔊 Son", audioOff:"🔇 Muet", end:"Faites glisser pour terminer le trajet",
+      pause:"⏸ Pause", resume:"▶ Reprendre", replay:"⟲ Répéter", skip:"⚑ Passer",
+      scan:(n,e,h)=>`${n} à proximité · ${e} notables · cap ${h}`,
+      looking:"Regard alentour…", nothingAhead:"Rien de remarquable devant pour l'instant",
+      favs:"Favoris", favsBtn:"★ Favoris", edit:"Modifier", done:"OK", favEmpty:"Pas encore de favoris.\nTouchez + sur un lieu pour l'enregistrer ici.",
+      favSaved:"Ajouté aux favoris", favRemoved:"Retiré des favoris", share:"Partager", openMaps:"Ouvrir dans Plans", copyGps:"Copier le GPS", copied:"Copié", remove:"Supprimer", removeAll:"Supprimer tous les favoris", confirmAll:"Supprimer tous les favoris ?",
+      savedOn:"Enregistré le", moreInfo:"En savoir plus sur ce lieu", addFav:"Ajouter aux favoris", noMore:"Pas d'autres détails pour ce lieu.", moreFail:"Impossible de charger plus de détails.",
+      flagged:"Marqué comme passé / erroné",
+      startTitle:"Chaque voie<br>a sa voix.",
+      startSub:"OnTheWay trouve tout seul les lieux intéressants le long de votre route et vous en parle, à voix haute.",
+      startBtn:"Commencer l'écoute", demoBtn:"Essayer un trajet simulé →",
+      source:"Source : Wikipédia",
+      sideRight:"sur votre droite", sideLeft:"sur votre gauche", sideAhead:"droit devant", sideNear:"tout près",
+      sideRightS:"droite", sideLeftS:"gauche", sideAheadS:"devant", sideNearS:"proche",
+      km:(v)=>`${String(v).replace('.',',')} kilomètres`, m:(v)=>`${v} mètres`, kmS:(v)=>`${String(v).replace('.',',')} km`, mS:(v)=>`${v} m`,
+      intros:[
+        (d,s)=>`Dans environ ${d}, ${s}.`,
+        (d,s)=>`À venir ${s}, dans à peu près ${d}.`,
+        (d,s)=>`À environ ${d} d'ici, ${s}, ouvrez l'œil.`,
+        (d,s)=>`Juste devant, ${s}, à peu près à ${d}.`,
+        (d,s)=>`Regardez ${s} dans environ ${d}.`
+      ],
+      gpsAsk:"Demande de votre position…",
+      gpsUnsupported:"Ce navigateur ne peut pas lire votre position. Ouvrez le lien dans Safari.",
+      gpsDenied:"La localisation est bloquée pour cette page.\n\nSur iPhone :\n1. Réglages → Confidentialité et sécurité → Service de localisation → activé\n2. Faites défiler jusqu'à Sites web de Safari → Lorsque l'app est active\n3. Rechargez cette page et touchez de nouveau Commencer.\n\nSi vous avez ouvert ce lien dans une autre app, ouvrez-le plutôt dans Safari.",
+      gpsUnavailable:"Votre téléphone ne trouve pas de position pour le moment. Sortez ou approchez-vous d'une fenêtre et réessayez.",
+      gpsTimeout:"La recherche de votre position prend du temps. Toujours en cours…",
+      demoDone:"C'était la fin du trajet simulé.",
+      wakeOn:"L'écran reste allumé", wakeOff:"Gardez l'écran allumé et le téléphone branché pendant la conduite.",
+      settingsBtn:"⚙ Réglages", settingsTitle:"Réglages", langLabel:"Langue", sizeLabel:"Taille du texte", sizeStd:"Standard", styleLabel:"Style des boutons", styleGlass:"Liquid glass", styleFlat:"Plat", voiceHeading:"Voix", voiceNarration:"Voix du narrateur", voicePlace:"Voix des noms de lieux", nameLocal:"Langue locale (automatique)", nameSame:"Identique au narrateur",
+      voiceAuto:"Automatique (la meilleure disponible)", voiceTest:"▶ Tester la voix", voiceNone:"aucune trouvée",
+      voiceUsing:(n,c)=>`Utilisée : ${n} · ${c} voix trouvées`,
+      voiceSample:"Dans environ deux kilomètres, sur votre droite, se trouve l'Evoluon."
     }
+
   };
   // "side" phrases in Dutch need a slightly different shape inside intros
   function t(key, ...a){ const v = STR[state.lang][key]; return typeof v === 'function' ? v(...a) : v; }
@@ -362,6 +491,7 @@
      STATE
   ========================================================= */
   const state = {
+    deep:{},
     lang:'en', started:false, demo:false, muted:false, paused:false,
     pos:null, prev:null, anchor:null, heading:null, speed:null,
     places:new Map(),        // pageid -> {id,title,lat,lon,detail}
@@ -411,7 +541,7 @@
         extract: cleanExtract(p.extract, 320),
         thumb: (p.thumbnail && p.thumbnail.source) || null,
         avgViews: avg,
-        nameLocal: cleanName(nl || p.title)
+        nameLocal: cleanName(nl || p.title), hasNl: !!nl, nameOwn: cleanName(p.title)
       });
     });
     return out;
@@ -470,7 +600,7 @@
     if(lang !== state.lang) return false;
     const got = parseDetails(json);
     batch.forEach(p=>{
-      p.detail = got.get(p.id) || {extract:'', thumb:null, avgViews:0, nameLocal:cleanName(p.title)};
+      p.detail = got.get(p.id) || {extract:'', thumb:null, avgViews:0, nameLocal:cleanName(p.title), hasNl:false, nameOwn:cleanName(p.title)};
     });
     return todo.length > batch.length;
   }
@@ -524,16 +654,22 @@
     announce(pick);
   }
 
+  // Place names: spoken the Dutch way inside the Netherlands (when a Dutch title exists), otherwise in the chosen language.
+  function inNL(p){ return p.lat>=50.75 && p.lat<=53.6 && p.lon>=3.3 && p.lon<=7.25; }
+  function useNl(p){ return !!(p.detail && p.detail.hasNl && inNL(p) && prefs.nameMode !== 'same'); }
+  function placeName(p){ const d = p.detail || {}; return useNl(p) ? d.nameLocal : (d.nameOwn || cleanName(p.title)); }
+  function nameLangOf(p){ return useNl(p) ? 'nl' : state.lang; }
+
   function announce(pick){
     const p = pick.p, d = p.detail;
     state.told.add(p.id);
     const intros = STR[state.lang].intros;
     const intro = intros[state.introCounter++ % intros.length](distSpeech(pick.d), t(sideKey(pick.rel)));
     const item = {
-      id:p.id, name:d.nameLocal, body:intro+' '+d.extract, extract:d.extract, thumb:d.thumb,
+      id:p.id, name:placeName(p), nameLang:nameLangOf(p), body:intro+' '+d.extract, extract:d.extract, thumb:d.thumb,
       distM:pick.d, sideShort:t(sideKey(pick.rel, true)), lang:state.lang, at:new Date()
     };
-    state.journey.push({id:p.id, name:d.nameLocal, text:d.extract, time:clock(item.at), flagged:false});
+    state.journey.push({id:p.id, name:placeName(p), text:d.extract, time:clock(item.at), flagged:false});
     play(item);
   }
 
@@ -562,13 +698,14 @@
     if(NOVELTY.test(v.name||'')) s -= 5;
     return s;
   }
+  const LOCALE = {en:'en-GB', nl:'nl-NL', fr:'fr-FR'};
   function voicesFor(lang){
-    const re = lang==='nl' ? /^nl/i : /^en/i;
+    const re = lang==='nl' ? /^nl/i : (lang==='fr' ? /^fr/i : /^en/i);
     return voices.filter(v=>re.test(v.lang)).sort((a,b)=>quality(b)-quality(a));
   }
   function voiceFor(lang, role){
     const list = voicesFor(lang);
-    const uri = role==='name' ? prefs.name : prefs.body[lang];
+    const uri = role==='name' ? '' : prefs.body[lang];
     return (uri && list.find(v=>v.voiceURI===uri)) || list[0] || null;
   }
   function primeSpeech(){
@@ -587,7 +724,7 @@
     const finish = ()=>{
       if(state.playing !== item) return;
       clearTimeout(wd);
-      state.playing = null; state.lastEnd = Date.now();
+      state.playing = null; state.lastEnd = Date.now(); state.lastTold = {id:item.id, t:Date.now()};
       hideCaption(); updateUI();
     };
     const arm = (ms)=>{ clearTimeout(wd); wd = setTimeout(function check(){
@@ -599,11 +736,11 @@
     if(!synth || state.muted){ arm(estimateMs(item)*0.7); return; }
     try{
       const uName = new SpeechSynthesisUtterance(item.name);
-      uName.lang = 'nl-NL'; const vn = voiceFor('nl','name'); if(vn){ uName.voice = vn; uName.lang = vn.lang; } uName.rate = RATE.name;
+      const nl_ = (item.nameLang || 'nl') === 'nl'; uName.lang = nl_ ? 'nl-NL' : (LOCALE[item.nameLang] || 'en-GB'); const vn = nl_ ? voiceFor('nl','name') : voiceFor(item.nameLang,'body'); if(vn){ uName.voice = vn; uName.lang = vn.lang; } uName.rate = RATE.name;
       const uBody = new SpeechSynthesisUtterance(item.body);
-      uBody.lang = item.lang==='nl' ? 'nl-NL' : 'en-GB'; const vb = voiceFor(item.lang,'body'); if(vb){ uBody.voice = vb; uBody.lang = vb.lang; } uBody.rate = RATE.body;
+      uBody.lang = LOCALE[item.lang] || 'en-GB'; const vb = voiceFor(item.lang,'body'); if(vb){ uBody.voice = vb; uBody.lang = vb.lang; } uBody.rate = RATE.body;
       uBody.onend = finish; uBody.onerror = finish;
-      synth.speak(uName); synth.speak(uBody);
+      if(!item.skipName) synth.speak(uName); synth.speak(uBody);
       arm(estimateMs(item)*2);          // safety net: iOS sometimes never fires onend
     }catch(e){ arm(estimateMs(item)*0.7); }
   }
@@ -664,35 +801,149 @@
   ========================================================= */
   const $ = id => document.getElementById(id);
   const el = {
-    start:$('screen-start'), trip:$('screen-trip'), log:$('screen-log'), settings:$('screen-settings'),
+    start:$('screen-start'), trip:$('screen-trip'), log:$('screen-log'), settings:$('screen-settings'), favs:$('screen-favs'),
     status:$('start-status'), ringFill:$('ring-fill'), ringDist:$('ring-dist'), ringSide:$('ring-side'),
     scan:$('scan-line'), slot:$('card-slot'), cap:$('captions'), capText:$('captions-text'),
-    pause:$('btn-pause'), mute:$('btn-mute'), liveDot:$('live-dot'), liveLabel:$('live-label'), clock:$('clock')
+    pause:$('btn-pause'), mute:$('btn-mute'), liveDot:$('live-dot'), liveLabel:$('live-label')
   };
   const RING = 2*Math.PI*86;
   const clock = d => String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
   const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  function show(name){ [el.start, el.trip, el.log, el.settings].forEach(s=>s.classList.remove('active')); ({start:el.start, trip:el.trip, log:el.log, settings:el.settings})[name].classList.add('active'); }
+  function show(name){ [el.start, el.trip, el.log, el.settings, el.favs].forEach(s=>s.classList.remove('active')); ({start:el.start, trip:el.trip, log:el.log, settings:el.settings, favs:el.favs})[name].classList.add('active'); }
   let screenBefore = 'start';
   function openSettings(){
     screenBefore = el.trip.classList.contains('active') ? 'trip' : (el.log.classList.contains('active') ? 'log' : 'start');
     renderVoiceOptions(); show('settings');
   }
+  function openFavs(){
+    screenBefore = el.trip.classList.contains('active') ? 'trip' : (el.log.classList.contains('active') ? 'log' : 'start');
+    favEdit = false; renderFavs(); show('favs');
+  }
   function showCaption(text){ el.capText.textContent = text; el.cap.classList.add('show'); }
   function hideCaption(){ el.cap.classList.remove('show'); }
   function updatePauseBtn(){ el.pause.textContent = state.paused ? t('resume') : t('pause'); }
 
-  function renderCard(item, tag, thumb, name, text){
+  const ICON_BULB = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 15.4a6 6 0 1 1 6 0c-.5.4-.8 1-.8 1.7v.9H9.8v-.9c0-.7-.3-1.3-.8-1.7z"/><path d="M10 20.4h4M10.9 22.4h2.2"/><path d="M12 1.4v1.2M4.4 4.4l.9.9M19.6 4.4l-.9.9M1.8 10.6H3M21 10.6h1.2"/></svg>';
+  const ICON_PLUS = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+  const ICON_CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  let cardPlaceId = null, moreBusy = false;
+  function favKey(id, lang){ return lang+':'+id; }
+  function isFav(id){ return favs.some(f=>f.id===id && f.lang===state.lang); }
+  function renderCard(item, tag, thumb, name, text, placeId){
     if(!name){
       el.slot.innerHTML = `<div class="empty-card">${esc(t('nothingAhead'))}</div>`;
       return;
     }
-    el.slot.innerHTML = `<div class="card">
-      <img class="card-img ${thumb?'visible':''}" ${thumb?`src="${esc(thumb)}"`:''} alt="" onerror="this.classList.remove('visible')">
-      <div class="card-body"><div class="tag">${esc(tag)}</div><h3>${esc(name)}</h3><p>${esc(text)}</p><div class="src">${esc(t('source'))}</div></div></div>`;
+    const more = state.deep[favKey(placeId, state.lang)];
+    const fav = isFav(placeId);
+    el.slot.innerHTML = `<div class="card ${thumb?'has-img':''}">
+      <div class="card-media">
+        <img class="card-img ${thumb?'visible':''}" ${thumb?`src="${esc(thumb)}"`:''} alt="" onerror="this.classList.remove('visible');this.closest('.card').classList.remove('has-img')">
+        <div class="card-actions">
+          <button class="abtn ${moreBusy?'busy':''}" data-act="more" aria-label="${esc(t('moreInfo'))}">${ICON_BULB}</button>
+          <button class="abtn ${fav?'on':''}" data-act="fav" aria-label="${esc(t('addFav'))}">${fav?ICON_CHECK:ICON_PLUS}</button>
+        </div>
+      </div>
+      <div class="card-body"><div class="tag">${esc(tag)}</div><h3>${esc(name)}</h3><p>${esc(text)}</p>${more?`<p class="more">${esc(more)}</p>`:''}<div class="src">${esc(t('source'))}</div></div></div>`;
+  }
+
+  let toastTimer = null;
+  function toast(msg){
+    const e = $('toast'); if(!e) return;
+    e.textContent = msg; e.classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(()=>e.classList.remove('show'), 2200);
+  }
+
+  /* ---------- favorites ---------- */
+  const FAV_KEY = 'ot-favs';
+  let favs = [], favEdit = false;
+  try{ const f = JSON.parse(localStorage.getItem(FAV_KEY) || '[]'); if(Array.isArray(f)) favs = f; }catch(e){}
+  function saveFavs(){ try{ localStorage.setItem(FAV_KEY, JSON.stringify(favs)); }catch(e){} }
+  function toggleFav(id){
+    const p = state.places.get(id); if(!p || !p.detail) return;
+    const i = favs.findIndex(f=>f.id===id && f.lang===state.lang);
+    if(i>=0){ favs.splice(i,1); toast(t('favRemoved')); }
+    else {
+      favs.unshift({id, lang:state.lang, name:placeName(p), title:p.title, lat:p.lat, lon:p.lon, thumb:p.detail.thumb, extract:p.detail.extract, more:state.deep[favKey(id,state.lang)]||'', savedAt:Date.now()});
+      toast(t('favSaved'));
+    }
+    saveFavs(); lastCardKey=''; updateUI(); renderFavs();
+  }
+  const mapsUrl = f => `https://www.google.com/maps/search/?api=1&query=${f.lat},${f.lon}`;
+  const appleUrl = f => `https://maps.apple.com/?ll=${f.lat},${f.lon}&q=${encodeURIComponent(f.name)}`;
+  const wikiUrl = f => `https://${f.lang}.wikipedia.org/?curid=${f.id}`;
+  const gpsText = f => `${Number(f.lat).toFixed(5)}, ${Number(f.lon).toFixed(5)}`;
+  function shareText(f){ return `${f.name}\n${gpsText(f)}\n${mapsUrl(f)}\n${wikiUrl(f)}`; }
+  async function copyText(txt){
+    try{ await navigator.clipboard.writeText(txt); return true; }catch(e){}
+    try{ const ta=document.createElement('textarea'); ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); const ok=document.execCommand('copy'); document.body.removeChild(ta); return ok; }catch(e){ return false; }
+  }
+  async function shareFav(f){
+    if(navigator.share){
+      try{ await navigator.share({title:f.name, text:shareText(f)}); return; }catch(e){ if(e && e.name==='AbortError') return; }
+    }
+    if(await copyText(shareText(f))) toast(t('copied'));
+  }
+  function renderFavs(){
+    const body = $('favs-body'); if(!body) return;
+    $('btn-favs-edit').textContent = favEdit ? t('done') : t('edit');
+    $('btn-favs-edit').style.display = favs.length ? '' : 'none';
+    const n = favs.length;
+    const st = $('btn-favs-start'); if(st) st.textContent = t('favsBtn') + (n?' ('+n+')':'');
+    const tr = $('btn-favs-trip'); if(tr) tr.textContent = '★' + (n?' '+n:'');
+    if(!n){ body.innerHTML = `<div class="log-empty">${esc(t('favEmpty'))}</div>`; return; }
+    const loc = LOCALE[state.lang] || 'en-GB';
+    body.innerHTML = favs.map((f,i)=>`<div class="fav-item">
+      ${f.thumb?`<img class="fav-thumb" src="${esc(f.thumb)}" alt="" onerror="this.style.visibility='hidden'">`:'<div class="fav-thumb"></div>'}
+      <div class="fav-main"><h3>${esc(f.name)}</h3>
+        <div class="fav-meta">${esc(t('savedOn'))} ${esc(new Date(f.savedAt).toLocaleDateString(loc,{day:'numeric',month:'short',year:'numeric'}))} · ${esc(gpsText(f))}</div>
+        <p class="fav-text">${esc(f.extract||'')}</p>
+        <div class="fav-actions">
+          <button class="chip" data-fav="share" data-i="${i}">${esc(t('share'))}</button>
+          <a class="chip" href="${esc(appleUrl(f))}" target="_blank" rel="noopener">${esc(t('openMaps'))}</a>
+          <button class="chip" data-fav="gps" data-i="${i}">${esc(t('copyGps'))}</button>
+          ${favEdit?`<button class="chip danger" data-fav="del" data-i="${i}">${esc(t('remove'))}</button>`:''}
+        </div></div></div>`).join('') + (favEdit?`<button class="chip danger fav-clear" data-fav="clear">${esc(t('removeAll'))}</button>`:'');
+  }
+
+  /* ---------- "more about this place" (the lightbulb) ---------- */
+  function moreFromExtract(full, told){
+    let txt = String(full||'').split('\n').filter(l=>!/^\s*=+/.test(l)).join(' ');
+    txt = txt.replace(/\s*\([^)]*\)/g,'').replace(/\s*\[[^\]]*\]/g,'').replace(/\s+/g,' ').trim();
+    const sentences = txt.match(/[^.!?]+[.!?]+(?=\s|$)/g) || [];
+    const fresh = sentences.map(x=>x.trim()).filter(x=>x.length>25 && !String(told||'').includes(x.slice(0,40)));
+    let out='';
+    for(const sen of fresh){ const next = out ? out+' '+sen : sen; if(out && next.length>620) break; out = next; if(out.split(/[.!?]\s/).length>=4) break; }
+    return out;
+  }
+  async function showMore(id){
+    if(moreBusy) return;
+    const p = state.places.get(id); if(!p || !p.detail) return;
+    const key = favKey(id, state.lang);
+    moreBusy = true; lastCardKey=''; updateUI();
+    try{
+      if(!state.deep[key]){
+        const lang = state.lang;
+        const json = await wikiGet(lang, {action:'query', pageids:String(id), prop:'extracts', explaintext:'1', exsentences:'14', exlimit:'1'});
+        const pg = (json.query && json.query.pages && json.query.pages[0]) || {};
+        const more = moreFromExtract(pg.extract, p.detail.extract);
+        if(more) state.deep[key] = more;
+      }
+    }catch(e){ moreBusy=false; lastCardKey=''; updateUI(); toast(t('moreFail')); return; }
+    moreBusy = false;
+    const more = state.deep[key];
+    if(!more){ lastCardKey=''; updateUI(); toast(t('noMore')); return; }
+    // keep any saved favorite in sync with the deeper text
+    favs.forEach(f=>{ if(f.id===id && f.lang===state.lang) f.more = more; }); saveFavs();
+    stopSpeech(); state.paused = false; updatePauseBtn();
+    state.told.add(id);
+    const here = state.pos; const dist = here ? haversineM(here, p) : 0;
+    const item = {id, name:placeName(p), nameLang:nameLangOf(p), body:more, extract:p.detail.extract, thumb:p.detail.thumb, distM:dist, sideShort: here ? t(sideKey(relOf(p), true)) : '', lang:state.lang, at:new Date(), deep:true, skipName:true};
+    lastCardKey=''; play(item);
   }
 
   let lastCardKey = '';
+  setInterval(()=>{ try{ if(state.started && state.lastTold && !state.playing) updateUI(); }catch(e){} }, 5000);
   function updateUI(){
     if(!state.started) return;
     el.liveDot.classList.toggle('off', !state.netOk);
@@ -716,26 +967,30 @@
       el.ringSide.textContent = sideTxt;
       const frac = 1 - clamp(ringM/CFG.searchRadiusM, 0, 1);
       el.ringFill.style.strokeDashoffset = RING*(1-frac);
-      el.ringFill.style.stroke = ringM<500 ? '#4FA88A' : '#E8A23D';
+      el.ringFill.style.stroke = ringM<500 ? '#4FA88A' : '#006DBF';
     }
 
     const eligibleCount = Array.from(state.places.values()).filter(eligible).length;
     const hd = state.heading===null ? '—' : Math.round(state.heading)+'°';
-    el.scan.textContent = state.lastError ? ('⚠ '+state.lastError) : `${state.places.size} nearby · ${eligibleCount} notable · heading ${hd}`;
+    el.scan.textContent = state.lastError ? ('⚠ '+state.lastError) : t('scan', state.places.size, eligibleCount, hd);
 
     // card: what's being told now, or what is next
     let key, view;
-    if(state.playing){ key = 'p'+state.playing.id; view = [t('tagNow'), state.playing.thumb, state.playing.name, state.playing.extract]; }
-    else if(next){ key = 'n'+next.p.id; view = [t('tagNext'), next.p.detail.thumb, next.p.detail.nameLocal, next.p.detail.extract]; }
-    else { key = 'none'; view = [null,null,null,null]; }
-    if(key !== lastCardKey){ lastCardKey = key; renderCard(null, view[0], view[1], view[2], view[3]); }
+    if(state.playing){ cardPlaceId = state.playing.id; key = 'p'+state.playing.id; view = [t('tagNow'), state.playing.thumb, state.playing.name, state.playing.extract]; }
+    else if(state.lastTold && Date.now()-state.lastTold.t < 45000 && state.places.get(state.lastTold.id) && state.places.get(state.lastTold.id).detail && !state.flagged.has(state.lastTold.id)){
+      const lp = state.places.get(state.lastTold.id);
+      cardPlaceId = lp.id; key = 'l'+lp.id; view = [t('tagTold'), lp.detail.thumb, placeName(lp), lp.detail.extract];
+    }
+    else if(next){ cardPlaceId = next.p.id; key = 'n'+next.p.id; view = [t('tagNext'), next.p.detail.thumb, placeName(next.p), next.p.detail.extract]; }
+    else { cardPlaceId = null; key = 'none'; view = [null,null,null,null]; }
+    if(key !== lastCardKey){ lastCardKey = key; renderCard(null, view[0], view[1], view[2], view[3], cardPlaceId); }
   }
 
   function renderLog(){
     $('log-title').textContent = t('logTitle');
     const body = $('log-body');
     if(!state.journey.length){ body.innerHTML = `<div class="log-empty">${esc(t('logEmpty'))}</div>`; return; }
-    body.innerHTML = state.journey.map(j=>`<div class="log-entry"><div class="t">${esc(j.time)}</div><h3>${esc(j.name)}</h3><p>${esc(j.text)}</p>${j.flagged?`<span class="flag">⚑ ${esc(t('flagged'))}</span>`:''}</div>`).join('');
+    body.innerHTML = state.journey.map(j=>`<div class="log-entry"><div class="t">${esc(j.time)}</div><h3>${esc(j.name)}</h3><p>${esc(j.text)}</p>${j.flagged?`<span class="flag">⚑ ${esc(t('flagged'))}</span>`:''}<div class="fav-actions" style="margin-top:10px"><button class="chip" data-log="${j.id}">${isFav(j.id)?'★ '+esc(t('favSaved')):'+ '+esc(t('addFav'))}</button></div></div>`).join('');
   }
 
   function fillSelect(sel, list, current){
@@ -746,7 +1001,9 @@
   }
   function renderVoiceOptions(){
     fillSelect($('sel-voice-body'), voicesFor(state.lang), prefs.body[state.lang]);
-    fillSelect($('sel-voice-name'), voicesFor('nl'), prefs.name);
+    const ns = $('sel-voice-name'); ns.innerHTML = '';
+    [['local', t('nameLocal')], ['same', t('nameSame')]].forEach(([v,label])=>{ const o = document.createElement('option'); o.value = v; o.textContent = label; ns.appendChild(o); });
+    ns.value = prefs.nameMode === 'same' ? 'same' : 'local';
     const b = voiceFor(state.lang,'body');
     $('voice-now').textContent = t('voiceUsing', b ? b.name : t('voiceNone'), voices.length);
   }
@@ -754,9 +1011,10 @@
     if(!synth) return;
     try{
       synth.cancel();
-      const un = new SpeechSynthesisUtterance('Evoluon'); un.lang = 'nl-NL';
-      const vn = voiceFor('nl','name'); if(vn){ un.voice = vn; un.lang = vn.lang; } un.rate = RATE.name;
-      const ub = new SpeechSynthesisUtterance(t('voiceSample')); ub.lang = state.lang==='nl' ? 'nl-NL' : 'en-GB';
+      const local = prefs.nameMode !== 'same';
+      const un = new SpeechSynthesisUtterance('Evoluon'); un.lang = local ? 'nl-NL' : (LOCALE[state.lang] || 'en-GB');
+      const vn = local ? voiceFor('nl','name') : voiceFor(state.lang,'body'); if(vn){ un.voice = vn; un.lang = vn.lang; } un.rate = RATE.name;
+      const ub = new SpeechSynthesisUtterance(t('voiceSample')); ub.lang = LOCALE[state.lang] || 'en-GB';
       const vb = voiceFor(state.lang,'body'); if(vb){ ub.voice = vb; ub.lang = vb.lang; } ub.rate = RATE.body;
       synth.speak(un); synth.speak(ub);
     }catch(e){}
@@ -768,8 +1026,8 @@
     $('btn-start').textContent = t('startBtn'); $('btn-demo').textContent = t('demoBtn');
     $('btn-log').textContent = t('log'); $('btn-back').textContent = t('back');
     $('btn-replay').textContent = t('replay'); $('btn-skip').textContent = t('skip');
-    $('btn-end').textContent = t('end'); el.mute.textContent = state.muted ? t('audioOff') : t('audioOn');
-    $('settings-title').textContent = t('settingsTitle'); $('lbl-language').textContent = t('langLabel'); $('lbl-size').textContent = t('sizeLabel'); $('size-std').textContent = t('sizeStd'); $('voice-heading').textContent = t('voiceHeading'); $('btn-settings-start').textContent = t('settingsBtn'); $('btn-settings-back').textContent = t('back'); $('lbl-voice-body').textContent = t('voiceNarration');
+    $('slide-label').textContent = t('end'); $('slide').setAttribute('aria-label', t('end')); el.mute.textContent = state.muted ? t('audioOff') : t('audioOn');
+    $('settings-title').textContent = t('settingsTitle'); $('lbl-language').textContent = t('langLabel'); $('lbl-size').textContent = t('sizeLabel'); $('favs-title').textContent = t('favs'); $('btn-favs-start').textContent = t('favsBtn'); renderFavs(); lastCardKey='';  $('size-std').textContent = t('sizeStd'); $('lbl-btnstyle').textContent = t('styleLabel'); $('btn-glass').textContent = t('styleGlass'); $('btn-flat').textContent = t('styleFlat'); $('voice-heading').textContent = t('voiceHeading'); $('btn-settings-start').textContent = t('settingsBtn'); $('btn-settings-back').textContent = t('back'); $('lbl-voice-body').textContent = t('voiceNarration');
     $('lbl-voice-name').textContent = t('voicePlace'); $('btn-test-voice').textContent = t('voiceTest');
     updatePauseBtn(); renderLog(); renderVoiceOptions();
   }
@@ -795,8 +1053,6 @@
     state.started = true; state.tripStart = Date.now(); lastCardKey = '';
     show('trip'); applyLanguage(); requestWake(); updateUI();
     state.clockTimer = setInterval(()=>{
-      const s = Math.floor((Date.now()-state.tripStart)/1000);
-      el.clock.textContent = String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
       maybeAnnounce();
     }, 1000);
   }
@@ -861,7 +1117,19 @@
   $('btn-demo').addEventListener('click', startDemo);
   $('btn-log').addEventListener('click', ()=>{ renderLog(); show('log'); });
   $('btn-back').addEventListener('click', ()=>show(state.started ? 'trip' : 'start'));
-  $('btn-end').addEventListener('click', endTrip);
+  (function(){
+    const slide=$('slide'), thumb=$('slide-thumb'), fill=$('slide-fill'), label=$('slide-label');
+    let x=0, startX=0, startPos=0, dragging=false;
+    const maxX=()=> Math.max(1, slide.clientWidth - 2 - 40 - 8);
+    function setX(v){ x=Math.max(0, Math.min(maxX(), v)); thumb.style.transform='translateX('+x+'px)'; fill.style.width=(x+44)+'px'; fill.style.opacity = x>2 ? 1 : 0; label.style.opacity = String(Math.max(0, 1 - x/maxX()*1.6)); }
+    function reset(snap){ slide.classList.toggle('snap', !!snap); setX(0); }
+    thumb.addEventListener('pointerdown', e=>{ dragging=true; startX=e.clientX; startPos=x; slide.classList.remove('snap'); try{ thumb.setPointerCapture(e.pointerId); }catch(_){} e.preventDefault(); });
+    thumb.addEventListener('pointermove', e=>{ if(dragging) setX(startPos + e.clientX - startX); });
+    function release(){ if(!dragging) return; dragging=false; if(x >= maxX()*0.88){ endTrip(); setTimeout(()=>reset(false), 400); } else reset(true); }
+    thumb.addEventListener('pointerup', release); thumb.addEventListener('pointercancel', release);
+    slide.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); endTrip(); } });
+    reset(false);
+  })();
   $('btn-replay').addEventListener('click', replay);
   $('btn-pause').addEventListener('click', togglePause);
   $('btn-skip').addEventListener('click', skipCurrent);
@@ -878,10 +1146,28 @@
   }));
 
   $('sel-voice-body').addEventListener('change', e=>{ prefs.body[state.lang] = e.target.value; savePrefs(); renderVoiceOptions(); });
-  $('sel-voice-name').addEventListener('change', e=>{ prefs.name = e.target.value; savePrefs(); renderVoiceOptions(); });
+  $('sel-voice-name').addEventListener('change', e=>{ prefs.nameMode = e.target.value; savePrefs(); lastCardKey=''; updateUI(); });
   $('btn-test-voice').addEventListener('click', ()=>{ primeSpeech(); testVoice(); });
 
   $('btn-settings-start').addEventListener('click', openSettings);
+  $('btn-favs-start').addEventListener('click', openFavs);
+  $('btn-favs-trip').addEventListener('click', openFavs);
+  $('btn-favs-back').addEventListener('click', ()=>show(screenBefore));
+  $('btn-favs-edit').addEventListener('click', ()=>{ favEdit = !favEdit; renderFavs(); });
+  el.slot.addEventListener('click', e=>{
+    const b = e.target.closest('[data-act]'); if(!b || cardPlaceId===null) return;
+    if(b.getAttribute('data-act')==='fav') toggleFav(cardPlaceId); else showMore(cardPlaceId);
+  });
+  $('favs-body').addEventListener('click', async e=>{
+    const b = e.target.closest('[data-fav]'); if(!b) return;
+    const act = b.getAttribute('data-fav'), f = favs[+b.getAttribute('data-i')];
+    if(act==='share' && f) shareFav(f);
+    else if(act==='gps' && f){ if(await copyText(gpsText(f))) toast(t('copied')); }
+    else if(act==='del' && f){ favs.splice(+b.getAttribute('data-i'),1); saveFavs(); lastCardKey=''; renderFavs(); updateUI(); if(!favs.length) favEdit=false; renderFavs(); }
+    else if(act==='clear'){ if(confirm(t('confirmAll'))){ favs = []; saveFavs(); favEdit=false; lastCardKey=''; renderFavs(); updateUI(); } }
+  });
+  $('log-body').addEventListener('click', e=>{ const b=e.target.closest('[data-log]'); if(!b) return; toggleFav(+b.getAttribute('data-log')); renderLog(); });
+  renderFavs();
   $('btn-settings-trip').addEventListener('click', openSettings);
   $('btn-settings-back').addEventListener('click', ()=>show(screenBefore));
   // English is the default; a language chosen earlier in Settings is remembered
@@ -893,6 +1179,13 @@
   }
   document.querySelectorAll('.size-pill').forEach(b=>b.addEventListener('click', ()=>{ prefs.fs = b.getAttribute('data-size'); savePrefs(); applySize(); }));
   applySize();
+  function applyBtnStyle(){
+    const k = prefs.btn === 'flat' ? 'flat' : 'glass';
+    document.documentElement.classList.toggle('glass', k==='glass');
+    document.querySelectorAll('.btn-pill').forEach(x=>x.classList.toggle('active', x.getAttribute('data-btn')===k));
+  }
+  document.querySelectorAll('.btn-pill').forEach(b=>b.addEventListener('click', ()=>{ prefs.btn = b.getAttribute('data-btn'); savePrefs(); applyBtnStyle(); }));
+  applyBtnStyle();
   /* ---------- intro: four dots extend into the wordmark ---------- */
   function playIntro(){
     const logo = document.getElementById('logo'), scr = document.getElementById('screen-start');
@@ -951,7 +1244,7 @@
   setTimeout(()=>{ loadVoices(); renderVoiceOptions(); }, 1800);
 
   // exposed for automated testing only
-  window.__OT = {demoPath, voiceFor, voicesFor, prefs, state, CFG, onPosition, parseDetails, cleanExtract, haversineM, bearing, relAngle, eligible, candidates, announceRange, refreshNearby, beginTrip};
+  window.__OT = {placeName, nameLangOf, demoPath, voiceFor, voicesFor, prefs, state, CFG, onPosition, parseDetails, cleanExtract, haversineM, bearing, relAngle, eligible, candidates, announceRange, refreshNearby, beginTrip};
 })();
 </script>
 </body>
