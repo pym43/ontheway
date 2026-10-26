@@ -112,21 +112,24 @@
   .src{margin-top:10px; font-family:Arial, Helvetica, sans-serif; font-size:calc(10.5px * var(--fs)); color:var(--text-faint);}
   .empty-card{margin:18px 22px 0; padding:22px; text-align:center; color:var(--text-faint); font-family:Arial, Helvetica, sans-serif; font-size:calc(12.5px * var(--fs)); line-height:1.7; border:1px dashed var(--hairline); border-radius:22px;}
 
-  .captions{margin:16px 22px 0; padding:12px 16px; border-left:2px solid var(--amber-dim); display:none; align-items:center; gap:12px;}
-  .captions.show{display:flex;}
+  .tag .eq{display:inline-flex; margin-left:10px; vertical-align:middle; height:12px;}
+  .tag .eq span{width:2px;}
   .eq{flex:0 0 auto; display:flex; align-items:center; gap:2px; height:18px;}
   .eq span{width:3px; background:var(--amber); border-radius:2px; animation:eq .9s ease-in-out infinite;}
   .eq span:nth-child(1){height:6px;} .eq span:nth-child(2){height:14px; animation-delay:.15s;} .eq span:nth-child(3){height:9px; animation-delay:.3s;}
   .eq.paused span{animation-play-state:paused;}
   @keyframes eq{0%,100%{transform:scaleY(.5);} 50%{transform:scaleY(1.3);}}
-  .captions p{margin:0; font-size:calc(13px * var(--fs)); color:var(--text-dim); font-style:italic; line-height:1.5;}
 
   .control-bar{position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:480px; padding:14px 18px calc(14px + env(safe-area-inset-bottom)); background:linear-gradient(180deg, transparent, var(--bg-0) 24%); display:flex; flex-direction:column; gap:8px;}
   .control-bar{display:none;}
   #app.on-trip .control-bar{display:flex;}
   .row{display:flex; gap:8px; flex-wrap:wrap;}
-  .cbtn{flex:1 1 auto; padding:14px 8px; background:var(--surface-2); border:1px solid var(--hairline); border-radius:100px; font-family:Arial, Helvetica, sans-serif; font-size:calc(12.5px * var(--fs)); color:var(--text); text-align:center;}
+  .cbtn{flex:1 1 0; min-width:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; height:64px; padding:0 4px; border-radius:22px; background:var(--surface-2); border:1px solid var(--hairline);  font-family:Arial, Helvetica, sans-serif; font-size:calc(12.5px * var(--fs)); color:var(--text); text-align:center;}
   .cbtn:active{transform:scale(.96);}
+  .cbtn svg, .slide-thumb svg{fill:none; stroke:currentColor; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; flex:0 0 auto;}
+  .cbtn svg{width:24px; height:24px;}
+  .slide-thumb svg{width:22px; height:22px;}
+  .cbtn span{font-size:calc(11px * var(--fs)); letter-spacing:.02em; line-height:1.1; white-space:nowrap;}
   .cbtn.on{color:var(--amber);}
   .slide{position:relative; height:50px; border-radius:100px; background:var(--surface); border:1px solid var(--hairline); overflow:hidden; touch-action:none; user-select:none; -webkit-user-select:none;}
   .slide-fill{position:absolute; left:0; top:0; bottom:0; width:0; background:var(--amber-dim);}
@@ -246,10 +249,6 @@
 
     <div id="card-slot"></div>
 
-    <div class="captions" id="captions">
-      <div class="eq" id="eq"><span></span><span></span><span></span></div>
-      <p id="captions-text">—</p>
-    </div>
 
   </section>
 
@@ -303,15 +302,15 @@
   </section>
   <div class="control-bar" id="control-bar">
       <div class="row">
-        <button class="cbtn" id="btn-replay">⟲ Replay</button>
-        <button class="cbtn" id="btn-pause">⏸ Pause</button>
-        <button class="cbtn" id="btn-skip">⚑ Skip</button>
-        <button class="cbtn on" id="btn-mute">🔊 Audio</button>
+        <button class="cbtn" id="btn-replay"></button>
+        <button class="cbtn" id="btn-pause"></button>
+        <button class="cbtn" id="btn-skip"></button>
+        <button class="cbtn on" id="btn-mute"></button>
       </div>
       <div class="slide" id="slide" role="button" tabindex="0" aria-label="Slide to end journey">
         <div class="slide-fill" id="slide-fill"></div>
         <span class="slide-label" id="slide-label">Slide to end journey</span>
-        <div class="slide-thumb" id="slide-thumb">→</div>
+        <div class="slide-thumb" id="slide-thumb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 6l6 6-6 6M13 6l6 6-6 6"/></svg></div>
       </div>
     </div>
 <div class="toast" id="toast" role="status"></div>
@@ -346,8 +345,8 @@
       tagNext:"Coming up", tagNow:"Now telling", tagTold:"Just told", live:"LIVE", offline:"NO SIGNAL",
       log:"Journey log →", back:"← Back", logTitle:"Your journey",
       logEmpty:"Nothing narrated yet. Stories you hear will appear here.",
-      audioOn:"🔊 Audio", audioOff:"🔇 Muted", end:"Slide to end journey",
-      pause:"⏸ Pause", resume:"▶ Resume", replay:"⟲ Replay", skip:"⚑ Skip",
+      audioOn:"Audio", audioOff:"Muted", end:"Slide to end journey",
+      pause:"Pause", resume:"Resume", replay:"Replay", skip:"Skip",
       scan:(n,e,h)=>`${n} nearby · ${e} notable · heading ${h}`,
       looking:"Looking around…", nothingAhead:"Nothing notable ahead yet",
       favs:"Favorites", favsBtn:"★ Favorites", edit:"Edit", done:"Done", favEmpty:"No favorites yet.\nTap + on a place to save it here.",
@@ -384,8 +383,8 @@
       tagNext:"Komt eraan", tagNow:"Nu aan het vertellen", tagTold:"Zojuist verteld", live:"LIVE", offline:"GEEN SIGNAAL",
       log:"Reisverslag →", back:"← Terug", logTitle:"Uw reis",
       logEmpty:"Nog niets verteld. Verhalen die u hoort verschijnen hier.",
-      audioOn:"🔊 Geluid", audioOff:"🔇 Stil", end:"Schuif om de rit te beëindigen",
-      pause:"⏸ Pauze", resume:"▶ Verder", replay:"⟲ Herhaal", skip:"⚑ Overslaan",
+      audioOn:"Geluid", audioOff:"Stil", end:"Schuif om de rit te beëindigen",
+      pause:"Pauze", resume:"Verder", replay:"Herhaal", skip:"Overslaan",
       scan:(n,e,h)=>`${n} dichtbij · ${e} opvallend · koers ${h}`,
       looking:"Even rondkijken…", nothingAhead:"Nog niets bijzonders vooruit",
       favs:"Favorieten", favsBtn:"★ Favorieten", edit:"Wijzig", done:"Klaar", favEmpty:"Nog geen favorieten.\nTik op + bij een plek om hem hier te bewaren.",
@@ -422,8 +421,8 @@
       tagNext:"À venir", tagNow:"En cours", tagTold:"Vient d'être raconté", live:"EN DIRECT", offline:"PAS DE SIGNAL",
       log:"Journal du trajet →", back:"← Retour", logTitle:"Votre trajet",
       logEmpty:"Rien de raconté pour l'instant. Les histoires que vous entendez apparaîtront ici.",
-      audioOn:"🔊 Son", audioOff:"🔇 Muet", end:"Faites glisser pour terminer le trajet",
-      pause:"⏸ Pause", resume:"▶ Reprendre", replay:"⟲ Répéter", skip:"⚑ Passer",
+      audioOn:"Son", audioOff:"Muet", end:"Faites glisser pour terminer le trajet",
+      pause:"Pause", resume:"Reprendre", replay:"Répéter", skip:"Passer",
       scan:(n,e,h)=>`${n} à proximité · ${e} notables · cap ${h}`,
       looking:"Regard alentour…", nothingAhead:"Rien de remarquable devant pour l'instant",
       favs:"Favoris", favsBtn:"★ Favoris", edit:"Modifier", done:"OK", favEmpty:"Pas encore de favoris.\nTouchez + sur un lieu pour l'enregistrer ici.",
@@ -720,14 +719,13 @@
 
   function play(item){
     state.playing = item; state.lastItem = item;
-    showCaption(item.name+' — '+item.body, true);
     updateUI();
     let wd = null;
     const finish = ()=>{
       if(state.playing !== item) return;
       clearTimeout(wd);
       state.playing = null; state.lastEnd = Date.now(); state.lastTold = {id:item.id, t:Date.now()};
-      hideCaption(); updateUI();
+      updateUI();
     };
     const arm = (ms)=>{ clearTimeout(wd); wd = setTimeout(function check(){
       if(state.playing !== item) return;
@@ -750,7 +748,6 @@
   function stopSpeech(){
     state.playing = null;
     try{ if(synth) synth.cancel(); }catch(e){}
-    hideCaption();
   }
   function replay(){
     const item = state.lastItem; if(!item) return;
@@ -760,7 +757,7 @@
   function togglePause(){
     state.paused = !state.paused;
     try{ if(synth){ state.paused ? synth.pause() : synth.resume(); } }catch(e){}
-    updatePauseBtn(); document.getElementById('eq').classList.toggle('paused', state.paused);
+    updatePauseBtn(); { const q = document.querySelector('.card .eq'); if(q) q.classList.toggle('paused', state.paused); }
   }
   function skipCurrent(){
     // Mark whatever is playing (or was last told) as skipped/wrong, so it's never repeated and shows up in the log.
@@ -805,7 +802,7 @@
   const el = {
     start:$('screen-start'), trip:$('screen-trip'), log:$('screen-log'), settings:$('screen-settings'), favs:$('screen-favs'),
     status:$('start-status'), ringFill:$('ring-fill'), ringDist:$('ring-dist'), ringSide:$('ring-side'),
-    scan:$('scan-line'), slot:$('card-slot'), cap:$('captions'), capText:$('captions-text'),
+    scan:$('scan-line'), slot:$('card-slot'),
     pause:$('btn-pause'), mute:$('btn-mute'), liveDot:$('live-dot'), liveLabel:$('live-label')
   };
   const RING = 2*Math.PI*86;
@@ -821,9 +818,17 @@
     screenBefore = el.trip.classList.contains('active') ? 'trip' : (el.log.classList.contains('active') ? 'log' : 'start');
     favEdit = false; renderFavs(); show('favs');
   }
-  function showCaption(text){ el.capText.textContent = text; el.cap.classList.add('show'); }
-  function hideCaption(){ el.cap.classList.remove('show'); }
-  function updatePauseBtn(){ el.pause.textContent = state.paused ? t('resume') : t('pause'); }
+  const CI = {
+    replay:'<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
+    pause:'<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>',
+    play:'<path d="M7 4.5v15l12-7.5z"/>',
+    skip:'<path d="M5 5l10 7-10 7z"/><path d="M19 5v14"/>',
+    sound:'<path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>',
+    mute:'<path d="M11 5 6 9H2v6h4l5 4z"/><path d="M22 9l-6 6M16 9l6 6"/>'
+  };
+  function setBtn(btn, icon, label){ btn.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${CI[icon]}</svg><span>${esc(label)}</span>`; }
+  function updateMuteBtn(){ setBtn(el.mute, state.muted ? 'mute' : 'sound', state.muted ? t('audioOff') : t('audioOn')); }
+  function updatePauseBtn(){ setBtn(el.pause, state.paused ? 'play' : 'pause', state.paused ? t('resume') : t('pause')); }
 
   const ICON_BULB = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 15.4a6 6 0 1 1 6 0c-.5.4-.8 1-.8 1.7v.9H9.8v-.9c0-.7-.3-1.3-.8-1.7z"/><path d="M10 20.4h4M10.9 22.4h2.2"/><path d="M12 1.4v1.2M4.4 4.4l.9.9M19.6 4.4l-.9.9M1.8 10.6H3M21 10.6h1.2"/></svg>';
   const ICON_PLUS = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
@@ -846,7 +851,7 @@
           <button class="abtn ${fav?'on':''}" data-act="fav" aria-label="${esc(t('addFav'))}">${fav?ICON_CHECK:ICON_PLUS}</button>
         </div>
       </div>
-      <div class="card-body"><div class="tag">${esc(tag)}</div><h3>${esc(name)}</h3><p>${esc(text)}</p>${more?`<p class="more">${esc(more)}</p>`:''}<div class="src">${esc(t('source'))}</div></div></div>`;
+      <div class="card-body"><div class="tag">${esc(tag)}${(state.playing && state.playing.id===placeId) ? `<span class="eq ${state.paused?'paused':''}"><span></span><span></span><span></span></span>` : ''}</div><h3>${esc(name)}</h3><p>${esc(text)}</p>${more?`<p class="more">${esc(more)}</p>`:''}<div class="src">${esc(t('source'))}</div></div></div>`;
   }
 
   let toastTimer = null;
@@ -1027,8 +1032,8 @@
     $('start-title').innerHTML = t('startTitle'); $('start-sub').textContent = t('startSub');
     $('btn-start').textContent = t('startBtn'); $('btn-demo').textContent = t('demoBtn');
     $('btn-log').textContent = t('log'); $('btn-back').textContent = t('back');
-    $('btn-replay').textContent = t('replay'); $('btn-skip').textContent = t('skip');
-    $('slide-label').textContent = t('end'); $('slide').setAttribute('aria-label', t('end')); el.mute.textContent = state.muted ? t('audioOff') : t('audioOn');
+    setBtn($('btn-replay'), 'replay', t('replay')); setBtn($('btn-skip'), 'skip', t('skip'));
+    $('slide-label').textContent = t('end'); $('slide').setAttribute('aria-label', t('end')); updateMuteBtn();
     $('settings-title').textContent = t('settingsTitle'); $('lbl-language').textContent = t('langLabel'); $('lbl-size').textContent = t('sizeLabel'); $('favs-title').textContent = t('favs'); $('btn-favs-start').textContent = t('favsBtn'); renderFavs(); lastCardKey='';  $('size-std').textContent = t('sizeStd'); $('lbl-btnstyle').textContent = t('styleLabel'); $('btn-glass').textContent = t('styleGlass'); $('btn-flat').textContent = t('styleFlat'); $('voice-heading').textContent = t('voiceHeading'); $('btn-settings-start').textContent = t('settingsBtn'); $('btn-settings-back').textContent = t('back'); $('lbl-voice-body').textContent = t('voiceNarration');
     $('lbl-voice-name').textContent = t('voicePlace'); $('btn-test-voice').textContent = t('voiceTest');
     updatePauseBtn(); renderLog(); renderVoiceOptions();
@@ -1096,7 +1101,7 @@
     const path = demoPath(); let i = 0;
     state.demoTimer = setInterval(()=>{
       if(state.paused) return;
-      if(i >= path.length){ clearInterval(state.demoTimer); showCaption(t('demoDone')); return; }
+      if(i >= path.length){ clearInterval(state.demoTimer); toast(t('demoDone')); return; }
       onPosition(path[i][0], path[i][1]); i++;
     }, 750);
   }
@@ -1137,7 +1142,7 @@
   $('btn-skip').addEventListener('click', skipCurrent);
   el.mute.addEventListener('click', ()=>{
     state.muted = !state.muted; el.mute.classList.toggle('on', !state.muted);
-    el.mute.textContent = state.muted ? t('audioOff') : t('audioOn');
+    updateMuteBtn();
     if(state.muted) stopSpeech();
   });
   document.querySelectorAll('.lang-pill').forEach(b=>b.addEventListener('click', ()=>{
