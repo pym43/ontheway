@@ -47,11 +47,11 @@
   .logo .lo-core{fill:var(--amber); transform-box:fill-box; transform-origin:center; animation:coreBeat 3.6s ease-in-out infinite; filter:drop-shadow(0 0 3px var(--amber-glow));}
   .logo .lo-ping{fill:none; stroke:var(--amber); stroke-width:1.1; transform-box:fill-box; transform-origin:center; opacity:0; animation:ping 3.6s ease-out infinite;}
   .logo .lo-ping.p2{animation-delay:.45s;}
-  .logo .ld{display:inline-block; border-radius:50%; background:var(--amber); width:.15em; height:.15em; width:.2cap; height:.2cap; vertical-align:.3em; vertical-align:.4cap; margin:0 .2em 0 .1em; animation:wayDot 3.6s ease-in-out infinite;}
-  .logo .ld.d1{animation-delay:.9s;} .logo .ld.d2{animation-delay:1.4s;}
+  .logo .ld{display:inline-block; border-radius:50%; background:var(--amber); width:.092em; height:.092em; vertical-align:.314em; vertical-align:calc(.5cap - .046em); margin:0 .2em 0 .1em; animation:wayDot 3.6s ease-in-out infinite;}
+  .logo .ld.d1{animation-delay:.9s;} .logo .ld.d2{animation-delay:1.4s;} .logo .ld.d3{animation-delay:1.9s; margin:0 0 0 .2em;}
   @keyframes coreBeat{0%,100%{transform:scale(1);} 8%{transform:scale(1.35);} 22%{transform:scale(.95);} 34%{transform:scale(1);}}
   @keyframes ping{0%{transform:scale(1); opacity:.9;} 55%{opacity:0;} 100%{transform:scale(2.3); opacity:0;}}
-  @keyframes wayDot{0%,40%,100%{opacity:.5; transform:scale(.85); box-shadow:0 0 0 0 rgba(232,162,61,0);} 10%{opacity:1; transform:scale(1.35); box-shadow:0 0 10px 2px var(--amber-glow);} 24%{opacity:.8; transform:scale(1);}}
+  @keyframes wayDot{0%,40%,100%{opacity:.5; transform:scale(.85); box-shadow:0 0 0 0 rgba(232,162,61,0);} 10%{opacity:1; transform:scale(1.9); box-shadow:0 0 10px 3px var(--amber-glow);} 24%{opacity:.8; transform:scale(1);}}
   .start-title{font-size:32px; margin-bottom:8px; line-height:1.15;}
   .start-sub{color:var(--text-dim); font-size:15px; max-width:300px; line-height:1.5; margin:0 0 26px;}
   .lang-pills{display:flex; gap:6px; padding:4px; background:var(--surface); border:1px solid var(--hairline); border-radius:100px; margin-bottom:22px;}
@@ -144,8 +144,8 @@
   <!-- START -->
   <section class="screen active" id="screen-start">
     <button class="gear-start" id="btn-settings-start">⚙ Settings</button>
-    <div class="logo" role="img" aria-label="OnTheWay"><svg class="lo" viewBox="0 0 33 33" aria-hidden="true"><circle cx="16.5" cy="16.5" r="14.5" fill="none" stroke="#EDE6D6" stroke-width="4"/><circle class="lo-ping" cx="16.5" cy="16.5" r="5.1"/><circle class="lo-ping p2" cx="16.5" cy="16.5" r="5.1"/><circle class="lo-core" cx="16.5" cy="16.5" r="5.1"/></svg>N<span class="ld d1"></span>THE<span class="ld d2"></span>WAY</div>
-    <h1 class="start-title" id="start-title">Every road<br>has a voice.</h1>
+    <div class="logo" role="img" aria-label="OnTheWay"><svg class="lo" viewBox="0 0 33 33" aria-hidden="true"><circle cx="16.5" cy="16.5" r="14.5" fill="none" stroke="#EDE6D6" stroke-width="4"/><circle class="lo-ping" cx="16.5" cy="16.5" r="5.1"/><circle class="lo-ping p2" cx="16.5" cy="16.5" r="5.1"/><circle class="lo-core" cx="16.5" cy="16.5" r="5.1"/></svg>N<span class="ld d1"></span>THE<span class="ld d2"></span>WAY<span class="ld d3"></span></div>
+    <h1 class="start-title" id="start-title">Every way<br>has a voice.</h1>
     <p class="start-sub" id="start-sub">OnTheWay finds interesting places along your way on its own and tells you about them, aloud.</p>
     <button class="btn-primary" id="btn-start">Start listening</button>
     <button class="btn-ghost" id="btn-demo">Try a simulated drive →</button>
@@ -255,7 +255,7 @@
       pause:"⏸ Pause", resume:"▶ Resume", replay:"⟲ Replay", skip:"⚑ Skip",
       looking:"Looking around…", nothingAhead:"Nothing notable ahead yet",
       flagged:"Marked as skipped / wrong",
-      startTitle:"Every road<br>has a voice.",
+      startTitle:"Every way<br>has a voice.",
       startSub:"OnTheWay finds interesting places along your way on its own and tells you about them, aloud.",
       startBtn:"Start listening", demoBtn:"Try a simulated drive →",
       source:"Source: Wikipedia",
