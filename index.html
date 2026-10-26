@@ -42,7 +42,7 @@
   #screen-start{justify-content:center; align-items:center; text-align:center; padding:32px 28px 48px;}
   .eyebrow{font-family:Arial, Helvetica, sans-serif; text-transform:uppercase; letter-spacing:.16em; font-size:calc(11px * var(--fs)); color:var(--text-faint);}
   /* ---------- logo (wordmark with animated O) ---------- */
-  .logo{font-family:'Michroma', 'Source Serif 4', sans-serif; font-weight:400; font-size:clamp(22px, 8vw, 34px); letter-spacing:.1em; line-height:1; color:var(--text); white-space:nowrap; margin:0 0 40px;}
+  .logo{font-family:'Michroma', 'Source Serif 4', sans-serif; font-weight:400; font-size:clamp(22px, 8vw, 34px); letter-spacing:.1em; line-height:1; color:var(--text); white-space:nowrap; margin:0 0 40px; height:1.5em;}
   .logo .lo-wrap{display:inline-block; position:relative; width:.76em; height:.76em; width:calc(1.03cap); height:calc(1.03cap); vertical-align:-.015cap; margin-right:.1em;}
   .logo .lo{display:block; width:100%; height:100%; overflow:visible;}
   .logo .lo-core{position:absolute; inset:0; margin:auto; width:.24em; height:.24em; width:.32cap; height:.32cap; border-radius:50%; background:var(--amber); box-shadow:0 0 5px 1px var(--amber-glow); animation:coreBeat 3.6s ease-in-out infinite;}
@@ -939,7 +939,8 @@
   }
   try{
     const go = ()=>playIntro();
-    if(document.fonts && document.fonts.ready){ Promise.race([document.fonts.ready, new Promise(r=>setTimeout(r,1500))]).then(go, go); } else go();
+    // wait until Michroma is really loaded, so the logo does not change size mid-animation
+    if(document.fonts && document.fonts.load){ Promise.race([document.fonts.load('34px Michroma'), new Promise(r=>setTimeout(r,2500))]).then(go, go); } else go();
   }catch(e){ try{ document.getElementById('logo').classList.remove('intro'); document.getElementById('screen-start').classList.remove('introing'); }catch(_){} }
   if(prefs.lang && STR[prefs.lang]) state.lang = prefs.lang;
   document.querySelectorAll('.lang-pill').forEach(x=>x.classList.toggle('active', x.getAttribute('data-lang')===state.lang));
