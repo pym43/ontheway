@@ -57,6 +57,14 @@
   .status-box{margin-top:22px; max-width:320px; font-family:'JetBrains Mono', monospace; font-size:12px; line-height:1.6; color:var(--text-faint); min-height:18px; white-space:pre-line;}
   .status-box.error{color:var(--red);}
 
+  .voice-box{width:100%; max-width:300px; margin:-8px 0 18px; text-align:left; border:1px solid var(--hairline); border-radius:14px; background:var(--surface); padding:2px 14px;}
+  .voice-box summary{cursor:pointer; padding:11px 0; font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--text-dim); list-style:none;}
+  .voice-box summary::-webkit-details-marker{display:none;}
+  .voice-box label{display:block; margin:6px 0 4px; font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-faint);}
+  .voice-box select{width:100%; padding:10px; border-radius:10px; border:1px solid var(--hairline); background:var(--bg-1); color:var(--text); font-size:14px; font-family:inherit;}
+  .voice-now{margin:10px 0 4px; font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--teal); line-height:1.5;}
+  .voice-test{margin:6px 0 12px; padding:9px 14px; border:1px solid var(--amber-dim); border-radius:100px; font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--amber);}
+
   /* ---------- trip ---------- */
   #screen-trip{padding-bottom:178px;}
   .hud-bar{display:flex; align-items:center; justify-content:space-between; padding:calc(14px + env(safe-area-inset-top)) 20px 14px; border-bottom:1px solid var(--hairline); font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--text-dim);}
@@ -128,6 +136,15 @@
       <button class="lang-pill active" data-lang="en">English</button>
       <button class="lang-pill" data-lang="nl">Nederlands</button>
     </div>
+    <details class="voice-box">
+      <summary id="voice-summary">Voice settings</summary>
+      <label for="sel-voice-body" id="lbl-voice-body">Narration voice</label>
+      <select id="sel-voice-body"></select>
+      <label for="sel-voice-name" id="lbl-voice-name">Place-name voice (Dutch)</label>
+      <select id="sel-voice-name"></select>
+      <div class="voice-now" id="voice-now"></div>
+      <button class="voice-test" id="btn-test-voice">▶ Test voice</button>
+    </details>
     <button class="btn-primary" id="btn-start">Start listening</button>
     <button class="btn-ghost" id="btn-demo">Try a simulated drive →</button>
     <div class="status-box" id="start-status"></div>
@@ -235,7 +252,11 @@
       gpsUnavailable:"Your phone can't find a position right now. Go outside or near a window and try again.",
       gpsTimeout:"Finding your position is taking long. Still trying…",
       demoDone:"That was the end of the demo drive.",
-      wakeOn:"Screen stays on", wakeOff:"Keep the screen on and the phone plugged in while driving."
+      wakeOn:"Screen stays on", wakeOff:"Keep the screen on and the phone plugged in while driving.",
+      voiceSettings:"Voice settings", voiceNarration:"Narration voice", voicePlace:"Place-name voice (Dutch)",
+      voiceAuto:"Automatic (best available)", voiceTest:"▶ Test voice", voiceNone:"none found",
+      voiceUsing:(n,c)=>`Using: ${n} · ${c} voices found`,
+      voiceSample:"In about two kilometers, on your right, there's something worth a look."
     },
     nl:{
       tagNext:"Komt eraan", tagNow:"Nu aan het vertellen", live:"LIVE", offline:"GEEN SIGNAAL",
@@ -265,7 +286,11 @@
       gpsUnavailable:"Uw telefoon kan nu geen positie vinden. Ga naar buiten of bij een raam en probeer opnieuw.",
       gpsTimeout:"Positie bepalen duurt lang. Nog bezig…",
       demoDone:"Dit was het einde van de proefrit.",
-      wakeOn:"Scherm blijft aan", wakeOff:"Houd het scherm aan en de telefoon aan de lader tijdens het rijden."
+      wakeOn:"Scherm blijft aan", wakeOff:"Houd het scherm aan en de telefoon aan de lader tijdens het rijden.",
+      voiceSettings:"Steminstellingen", voiceNarration:"Verteller-stem", voicePlace:"Stem voor plaatsnamen (Nederlands)",
+      voiceAuto:"Automatisch (beste beschikbare)", voiceTest:"▶ Test stem", voiceNone:"geen gevonden",
+      voiceUsing:(n,c)=>`In gebruik: ${n} · ${c} stemmen gevonden`,
+      voiceSample:"Over ongeveer twee kilometer ligt er rechts iets de moeite waard."
     }
   };
   // "side" phrases in Dutch need a slightly different shape inside intros
@@ -485,10 +510,32 @@
   const synth = window.speechSynthesis;
   let voices = [];
   function loadVoices(){ try{ voices = synth ? synth.getVoices() : []; }catch(e){ voices = []; } }
-  if(synth){ loadVoices(); synth.onvoiceschanged = loadVoices; }
-  function voiceFor(lang){
-    const re = lang==='nl' ? /^nl/i : /^en[-_](GB|US)/i;
-    return voices.find(v=>re.test(v.lang)) || voices.find(v=>new RegExp('^'+lang,'i').test(v.lang)) || null;
+  if(synth){
+    loadVoices();
+    synth.onvoiceschanged = ()=>{ loadVoices(); try{ renderVoiceOptions(); }catch(e){} };
+  }
+
+  // The page, not Safari, chooses the voice: the best installed one unless the person picked another.
+  const PREF_KEY = 'ot-voice-prefs';
+  let prefs = {body:{}, name:''};
+  try{ const s = JSON.parse(localStorage.getItem(PREF_KEY) || 'null'); if(s && s.body) prefs = s; }catch(e){}
+  function savePrefs(){ try{ localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); }catch(e){} }
+  const NOVELTY = /^(bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|albert|fred|junior|kathy|ralph)/i;
+  function quality(v){
+    const n = (v.name||'').toLowerCase(); let s = 0;
+    if(/premium/.test(n)) s += 3; else if(/enhanced|improved|verbeterd|uitgebreid/.test(n)) s += 2;
+    if(v.localService) s += 0.5;
+    if(NOVELTY.test(v.name||'')) s -= 5;
+    return s;
+  }
+  function voicesFor(lang){
+    const re = lang==='nl' ? /^nl/i : /^en/i;
+    return voices.filter(v=>re.test(v.lang)).sort((a,b)=>quality(b)-quality(a));
+  }
+  function voiceFor(lang, role){
+    const list = voicesFor(lang);
+    const uri = role==='name' ? prefs.name : prefs.body[lang];
+    return (uri && list.find(v=>v.voiceURI===uri)) || list[0] || null;
   }
   function primeSpeech(){
     if(!synth) return;
@@ -518,9 +565,9 @@
     if(!synth || state.muted){ arm(estimateMs(item)*0.7); return; }
     try{
       const uName = new SpeechSynthesisUtterance(item.name);
-      uName.lang = 'nl-NL'; const vn = voiceFor('nl'); if(vn) uName.voice = vn; uName.rate = RATE.name;
+      uName.lang = 'nl-NL'; const vn = voiceFor('nl','name'); if(vn){ uName.voice = vn; uName.lang = vn.lang; } uName.rate = RATE.name;
       const uBody = new SpeechSynthesisUtterance(item.body);
-      uBody.lang = item.lang==='nl' ? 'nl-NL' : 'en-GB'; const vb = voiceFor(item.lang); if(vb) uBody.voice = vb; uBody.rate = RATE.body;
+      uBody.lang = item.lang==='nl' ? 'nl-NL' : 'en-GB'; const vb = voiceFor(item.lang,'body'); if(vb){ uBody.voice = vb; uBody.lang = vb.lang; } uBody.rate = RATE.body;
       uBody.onend = finish; uBody.onerror = finish;
       synth.speak(uName); synth.speak(uBody);
       arm(estimateMs(item)*2);          // safety net: iOS sometimes never fires onend
@@ -652,6 +699,30 @@
     body.innerHTML = state.journey.map(j=>`<div class="log-entry"><div class="t">${esc(j.time)}</div><h3>${esc(j.name)}</h3><p>${esc(j.text)}</p>${j.flagged?`<span class="flag">⚑ ${esc(t('flagged'))}</span>`:''}</div>`).join('');
   }
 
+  function fillSelect(sel, list, current){
+    sel.innerHTML = '';
+    const auto = document.createElement('option'); auto.value = ''; auto.textContent = t('voiceAuto'); sel.appendChild(auto);
+    list.forEach(v=>{ const o = document.createElement('option'); o.value = v.voiceURI; o.textContent = v.name+' · '+v.lang; sel.appendChild(o); });
+    sel.value = (current && list.some(v=>v.voiceURI===current)) ? current : '';
+  }
+  function renderVoiceOptions(){
+    fillSelect($('sel-voice-body'), voicesFor(state.lang), prefs.body[state.lang]);
+    fillSelect($('sel-voice-name'), voicesFor('nl'), prefs.name);
+    const b = voiceFor(state.lang,'body');
+    $('voice-now').textContent = t('voiceUsing', b ? b.name : t('voiceNone'), voices.length);
+  }
+  function testVoice(){
+    if(!synth) return;
+    try{
+      synth.cancel();
+      const un = new SpeechSynthesisUtterance('Evoluon'); un.lang = 'nl-NL';
+      const vn = voiceFor('nl','name'); if(vn){ un.voice = vn; un.lang = vn.lang; } un.rate = RATE.name;
+      const ub = new SpeechSynthesisUtterance(t('voiceSample')); ub.lang = state.lang==='nl' ? 'nl-NL' : 'en-GB';
+      const vb = voiceFor(state.lang,'body'); if(vb){ ub.voice = vb; ub.lang = vb.lang; } ub.rate = RATE.body;
+      synth.speak(un); synth.speak(ub);
+    }catch(e){}
+  }
+
   function applyLanguage(){
     document.documentElement.lang = state.lang;
     $('start-title').innerHTML = t('startTitle'); $('start-sub').textContent = t('startSub');
@@ -659,7 +730,9 @@
     $('btn-log').textContent = t('log'); $('btn-back').textContent = t('back');
     $('btn-replay').textContent = t('replay'); $('btn-skip').textContent = t('skip');
     $('btn-end').textContent = t('end'); el.mute.textContent = state.muted ? t('audioOff') : t('audioOn');
-    updatePauseBtn(); renderLog();
+    $('voice-summary').textContent = t('voiceSettings'); $('lbl-voice-body').textContent = t('voiceNarration');
+    $('lbl-voice-name').textContent = t('voicePlace'); $('btn-test-voice').textContent = t('voiceTest');
+    updatePauseBtn(); renderLog(); renderVoiceOptions();
   }
 
   /* =========================================================
@@ -707,15 +780,19 @@
   }
   function stopWatch(){ if(state.watchId!==null){ navigator.geolocation.clearWatch(state.watchId); state.watchId=null; } }
 
+  // Real Eindhoven coordinates: starts ~800 m before the Evoluon, then passes the Philips Stadion and ends near the station.
   const DEMO_WAYPOINTS = [
-    [52.4020,5.4600],[52.4180,5.4720],[52.4300,5.4770],[52.4380,5.4790],[52.4400,5.4720],
-    [52.4416,5.4677],[52.4435,5.4630],[52.4453,5.4599],[52.4475,5.4615],[52.4490,5.4644],[52.4560,5.4610]
+    [51.4434,5.4350],[51.4436,5.4469],[51.4425,5.4560],[51.4419,5.4674],[51.4433,5.4812]
   ];
+  // Evenly spaced points (~11 m apart, one every 0.75 s = about 53 km/h) so the app sees a steady, realistic speed.
   function demoPath(){
-    const pts=[]; for(let i=0;i<DEMO_WAYPOINTS.length-1;i++){
-      const a=DEMO_WAYPOINTS[i], b=DEMO_WAYPOINTS[i+1];
-      for(let s=0;s<40;s++){ const f=s/40; pts.push([a[0]+(b[0]-a[0])*f, a[1]+(b[1]-a[1])*f]); }
-    } pts.push(DEMO_WAYPOINTS[DEMO_WAYPOINTS.length-1]); return pts;
+    const pts = [DEMO_WAYPOINTS[0].slice()], STEP = 11;
+    for(let i=0;i<DEMO_WAYPOINTS.length-1;i++){
+      const a = {lat:DEMO_WAYPOINTS[i][0], lon:DEMO_WAYPOINTS[i][1]}, b = {lat:DEMO_WAYPOINTS[i+1][0], lon:DEMO_WAYPOINTS[i+1][1]};
+      const n = Math.max(1, Math.round(haversineM(a,b)/STEP));
+      for(let s=1;s<=n;s++){ const f=s/n; pts.push([a.lat+(b.lat-a.lat)*f, a.lon+(b.lon-a.lon)*f]); }
+    }
+    return pts;
   }
   function startDemo(){
     primeSpeech(); state.demo = true; beginTrip();
@@ -761,10 +838,17 @@
     applyLanguage(); if(state.started){ refreshNearby(); updateUI(); }
   }));
 
+  $('sel-voice-body').addEventListener('change', e=>{ prefs.body[state.lang] = e.target.value; savePrefs(); renderVoiceOptions(); });
+  $('sel-voice-name').addEventListener('change', e=>{ prefs.name = e.target.value; savePrefs(); renderVoiceOptions(); });
+  $('btn-test-voice').addEventListener('click', ()=>{ primeSpeech(); testVoice(); });
+
   applyLanguage();
+  // iPhone Safari often reports its voice list a moment late
+  setTimeout(()=>{ loadVoices(); renderVoiceOptions(); }, 600);
+  setTimeout(()=>{ loadVoices(); renderVoiceOptions(); }, 1800);
 
   // exposed for automated testing only
-  window.__OT = {state, CFG, onPosition, parseDetails, cleanExtract, haversineM, bearing, relAngle, eligible, candidates, announceRange, refreshNearby, beginTrip};
+  window.__OT = {demoPath, voiceFor, voicesFor, prefs, state, CFG, onPosition, parseDetails, cleanExtract, haversineM, bearing, relAngle, eligible, candidates, announceRange, refreshNearby, beginTrip};
 })();
 </script>
 </body>
