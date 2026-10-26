@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="OnTheWay">
+<meta name="theme-color" content="#0B1018">
+<title>OnTheWay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Serif+4:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#0B1018; --bg-1:#0F1626; --bg-2:#1B2740;
+    --surface:#141C2C; --surface-2:#1D2A40; --hairline:#2A3852;
+    --text:#EDE6D6; --text-dim:#93A0B4; --text-faint:#6A7A92;
+    --amber:#E8A23D; --amber-dim:rgba(232,162,61,0.28); --amber-glow:rgba(232,162,61,0.55);
+    --teal:#4FA88A; --red:#D9715E;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    margin:0; min-height:100vh; color:var(--text);
+    background:radial-gradient(ellipse 120% 80% at 50% -10%, var(--bg-2) 0%, var(--bg-1) 45%, var(--bg-0) 100%);
+    font-family:'Source Serif 4', Georgia, serif;
+    display:flex; justify-content:center; overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;} }
+  #app{width:100%; max-width:480px; min-height:100vh; display:flex; flex-direction:column;}
+  h1,h2,h3{font-family:'Fraunces', serif; margin:0; font-weight:600;}
+  .mono{font-family:'JetBrains Mono', monospace;}
+  button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit;}
+  button:focus-visible{outline:2px solid var(--amber); outline-offset:3px; border-radius:6px;}
+
+  .screen{display:none; flex-direction:column; min-height:100vh; width:100%; animation:fadeIn .5s ease both;}
+  .screen.active{display:flex;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+
+  /* ---------- start ---------- */
+  #screen-start{justify-content:center; align-items:center; text-align:center; padding:32px 28px 48px;}
+  .eyebrow{font-family:'JetBrains Mono', monospace; text-transform:uppercase; letter-spacing:.16em; font-size:11px; color:var(--text-faint);}
+  .pulse-wrap{position:relative; width:180px; height:180px; display:flex; align-items:center; justify-content:center; margin:18px 0 30px;}
+  .pulse-ring{position:absolute; border-radius:50%; border:1px solid var(--amber-dim); animation:breathe 3.6s ease-in-out infinite;}
+  .pulse-ring.r1{width:100%; height:100%;} .pulse-ring.r2{width:72%; height:72%; animation-delay:.6s;} .pulse-ring.r3{width:46%; height:46%; animation-delay:1.2s;}
+  @keyframes breathe{0%,100%{transform:scale(1); opacity:.35;} 50%{transform:scale(1.06); opacity:.9;}}
+  .pulse-core{width:30%; height:30%; border-radius:50%; background:radial-gradient(circle at 35% 30%, var(--amber-glow), var(--amber) 70%); box-shadow:0 0 40px 6px var(--amber-dim);}
+  .start-title{font-size:32px; margin-bottom:8px; line-height:1.15;}
+  .start-sub{color:var(--text-dim); font-size:15px; max-width:300px; line-height:1.5; margin:0 0 26px;}
+  .lang-pills{display:flex; gap:6px; padding:4px; background:var(--surface); border:1px solid var(--hairline); border-radius:100px; margin-bottom:22px;}
+  .lang-pill{padding:8px 16px; border-radius:100px; font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--text-dim);}
+  .lang-pill.active{background:var(--amber); color:#1A1206; font-weight:600;}
+  .btn-primary{width:100%; max-width:300px; padding:16px 20px; background:var(--amber); color:#1A1206; border-radius:100px; font-family:'JetBrains Mono', monospace; font-weight:600; font-size:14px; letter-spacing:.03em; text-transform:uppercase; box-shadow:0 8px 24px -8px var(--amber-glow);}
+  .btn-primary:active{transform:scale(.97);}
+  .btn-ghost{margin-top:14px; padding:12px 20px; color:var(--text-dim); font-family:'JetBrains Mono', monospace; font-size:12.5px; border-bottom:1px solid var(--hairline);}
+  .status-box{margin-top:22px; max-width:320px; font-family:'JetBrains Mono', monospace; font-size:12px; line-height:1.6; color:var(--text-faint); min-height:18px; white-space:pre-line;}
+  .status-box.error{color:var(--red);}
+
+  /* ---------- trip ---------- */
+  #screen-trip{padding-bottom:178px;}
+  .hud-bar{display:flex; align-items:center; justify-content:space-between; padding:calc(14px + env(safe-area-inset-top)) 20px 14px; border-bottom:1px solid var(--hairline); font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--text-dim);}
+  .live{display:flex; align-items:center; gap:8px;}
+  .live .dot{width:7px; height:7px; border-radius:50%; background:var(--teal); box-shadow:0 0 8px var(--teal);}
+  .live .dot.off{background:var(--red); box-shadow:0 0 8px var(--red);}
+  .hud-bar button{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--text-dim);}
+
+  .next-wrap{padding:26px 22px 4px; display:flex; flex-direction:column; align-items:center;}
+  .ring-wrap{position:relative; width:190px; height:190px;}
+  .ring-wrap svg{width:100%; height:100%; display:block;}
+  #ring-fill{stroke-dasharray:540.35; stroke-dashoffset:540.35; transition:stroke-dashoffset .9s cubic-bezier(.4,0,.2,1), stroke .4s;}
+  .ring-center{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;}
+  .ring-dist{font-family:'JetBrains Mono', monospace; font-size:30px; font-weight:600; color:var(--amber); line-height:1;}
+  .ring-dist.close{color:var(--teal);}
+  .ring-side{margin-top:8px; font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-dim); padding:0 18px;}
+  .scan-line{margin-top:14px; font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text-faint); text-align:center; min-height:16px;}
+
+  .card{margin:18px 22px 0; background:linear-gradient(180deg, var(--surface-2), var(--surface)); border:1px solid var(--hairline); border-radius:22px; overflow:hidden; position:relative;}
+  .card::before{content:""; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg, transparent, var(--amber), transparent); opacity:.6; z-index:2;}
+  .card-img{display:none; width:100%; height:150px; object-fit:cover; background:var(--surface);}
+  .card-img.visible{display:block;}
+  .card-body{padding:18px 20px 20px;}
+  .tag{font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--amber); margin-bottom:8px;}
+  .card h3{font-size:22px; margin-bottom:8px;}
+  .card p{margin:0; font-size:15px; line-height:1.6; color:var(--text-dim);}
+  .src{margin-top:10px; font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--text-faint);}
+  .empty-card{margin:18px 22px 0; padding:22px; text-align:center; color:var(--text-faint); font-family:'JetBrains Mono', monospace; font-size:12.5px; line-height:1.7; border:1px dashed var(--hairline); border-radius:22px;}
+
+  .captions{margin:16px 22px 0; padding:12px 16px; border-left:2px solid var(--amber-dim); display:none; align-items:center; gap:12px;}
+  .captions.show{display:flex;}
+  .eq{flex:0 0 auto; display:flex; align-items:center; gap:2px; height:18px;}
+  .eq span{width:3px; background:var(--amber); border-radius:2px; animation:eq .9s ease-in-out infinite;}
+  .eq span:nth-child(1){height:6px;} .eq span:nth-child(2){height:14px; animation-delay:.15s;} .eq span:nth-child(3){height:9px; animation-delay:.3s;}
+  .eq.paused span{animation-play-state:paused;}
+  @keyframes eq{0%,100%{transform:scaleY(.5);} 50%{transform:scaleY(1.3);}}
+  .captions p{margin:0; font-size:13px; color:var(--text-dim); font-style:italic; line-height:1.5;}
+
+  .control-bar{position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:480px; padding:14px 18px calc(14px + env(safe-area-inset-bottom)); background:linear-gradient(180deg, transparent, var(--bg-0) 24%); display:flex; flex-direction:column; gap:8px;}
+  .row{display:flex; gap:8px;}
+  .cbtn{flex:1; padding:14px 8px; background:var(--surface-2); border:1px solid var(--hairline); border-radius:100px; font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--text); text-align:center;}
+  .cbtn:active{transform:scale(.96);}
+  .row.small .cbtn{padding:9px 6px; font-size:11.5px; background:transparent; border-color:transparent; color:var(--text-faint);}
+  .row.small .cbtn.on{color:var(--amber);}
+
+  /* ---------- log ---------- */
+  #screen-log{padding-bottom:40px;}
+  .log-head{display:flex; align-items:center; justify-content:space-between; padding:calc(22px + env(safe-area-inset-top)) 22px 16px; border-bottom:1px solid var(--hairline);}
+  .log-head h2{font-size:26px;}
+  .log-head button{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--text-dim);}
+  .log-empty{padding:56px 30px; text-align:center; color:var(--text-faint); font-family:'JetBrains Mono', monospace; font-size:13px; line-height:1.7;}
+  .log-entry{padding:18px 22px; border-bottom:1px solid var(--hairline);}
+  .log-entry .t{font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text-faint); margin-bottom:6px;}
+  .log-entry h3{font-size:18px; margin-bottom:6px;}
+  .log-entry p{margin:0; font-size:14.5px; line-height:1.6; color:var(--text-dim);}
+  .log-entry .flag{display:inline-block; margin-top:8px; font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--red);}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- START -->
+  <section class="screen active" id="screen-start">
+    <div class="eyebrow">OnTheWay</div>
+    <div class="pulse-wrap"><div class="pulse-ring r1"></div><div class="pulse-ring r2"></div><div class="pulse-ring r3"></div><div class="pulse-core"></div></div>
+    <h1 class="start-title" id="start-title">Every road<br>has a voice.</h1>
+    <p class="start-sub" id="start-sub">OnTheWay finds interesting places along your way on its own and tells you about them, aloud.</p>
+    <div class="lang-pills">
+      <button class="lang-pill active" data-lang="en">English</button>
+      <button class="lang-pill" data-lang="nl">Nederlands</button>
+    </div>
+    <button class="btn-primary" id="btn-start">Start listening</button>
+    <button class="btn-ghost" id="btn-demo">Try a simulated drive →</button>
+    <div class="status-box" id="start-status"></div>
+  </section>
+
+  <!-- TRIP -->
+  <section class="screen" id="screen-trip">
+    <div class="hud-bar">
+      <div class="live"><span class="dot" id="live-dot"></span><span id="live-label">LIVE</span></div>
+      <span id="clock">00:00</span>
+      <button id="btn-log">Journey log →</button>
+    </div>
+
+    <div class="next-wrap">
+      <div class="ring-wrap" id="ring-wrap">
+        <svg viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="86" fill="none" stroke="#2A3852" stroke-width="10"/>
+          <circle cx="100" cy="100" r="86" fill="none" stroke="#E8A23D" stroke-width="10" stroke-linecap="round" id="ring-fill" transform="rotate(-90 100 100)"/>
+        </svg>
+        <div class="ring-center">
+          <div class="ring-dist" id="ring-dist">—</div>
+          <div class="ring-side" id="ring-side">Looking around…</div>
+        </div>
+      </div>
+      <div class="scan-line" id="scan-line"></div>
+    </div>
+
+    <div id="card-slot"></div>
+
+    <div class="captions" id="captions">
+      <div class="eq" id="eq"><span></span><span></span><span></span></div>
+      <p id="captions-text">—</p>
+    </div>
+
+    <div class="control-bar">
+      <div class="row">
+        <button class="cbtn" id="btn-replay">⟲ Replay</button>
+        <button class="cbtn" id="btn-pause">⏸ Pause</button>
+        <button class="cbtn" id="btn-skip">⚑ Skip</button>
+      </div>
+      <div class="row small">
+        <button class="cbtn on" id="btn-mute">🔊 Audio on</button>
+        <button class="cbtn" id="btn-end">End journey</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOG -->
+  <section class="screen" id="screen-log">
+    <div class="log-head"><h2 id="log-title">Your journey</h2><button id="btn-back">← Back</button></div>
+    <div id="log-body"></div>
+  </section>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* =========================================================
+     SETTINGS — the numbers worth tuning after real drives
+  ========================================================= */
+  const CFG = {
+    searchRadiusM: 6000,      // how far around you Wikipedia is asked to look
+    minAvgViews: 8,           // popularity filter: avg daily page views (last 30 days)
+    coneDeg: 100,             // a place counts as "ahead" if within this angle of travel direction
+    minRangeM: 700,           // never announce from closer-in than this window...
+    maxRangeM: 3500,          // ...or further out than this
+    lookAheadSec: 70,         // announce roughly this many seconds before reaching a place
+    standingRangeM: 600,      // when heading is unknown (standing / walking slowly)
+    cooldownMs: 12000,        // quiet gap between two announcements
+    refetchMovedM: 400,       // ask Wikipedia again after moving this far...
+    refetchMs: 30000,         // ...or after this much time
+    detailBatch: 20           // pages fetched per detail request (API maximum for extracts)
+  };
+
+  /* =========================================================
+     TEXT (two languages). Place names stay local (Dutch).
+  ========================================================= */
+  const STR = {
+    en:{
+      tagNext:"Coming up", tagNow:"Now telling", live:"LIVE", offline:"NO SIGNAL",
+      log:"Journey log →", back:"← Back", logTitle:"Your journey",
+      logEmpty:"Nothing narrated yet. Stories you hear will appear here.",
+      audioOn:"🔊 Audio on", audioOff:"🔈 Audio off", end:"End journey",
+      pause:"⏸ Pause", resume:"▶ Resume", replay:"⟲ Replay", skip:"⚑ Skip",
+      looking:"Looking around…", nothingAhead:"Nothing notable ahead yet",
+      flagged:"Marked as skipped / wrong",
+      startTitle:"Every road<br>has a voice.",
+      startSub:"OnTheWay finds interesting places along your way on its own and tells you about them, aloud.",
+      startBtn:"Start listening", demoBtn:"Try a simulated drive →",
+      source:"Source: Wikipedia",
+      sideRight:"on your right", sideLeft:"on your left", sideAhead:"straight ahead", sideNear:"close by",
+      sideRightS:"right", sideLeftS:"left", sideAheadS:"ahead", sideNearS:"nearby",
+      km:(v)=>`${v} kilometers`, m:(v)=>`${v} meters`, kmS:(v)=>`${v} km`, mS:(v)=>`${v} m`,
+      intros:[
+        (d,s)=>`In about ${d}, ${s}, there's something worth a look.`,
+        (d,s)=>`Coming up ${s}, in around ${d}.`,
+        (d,s)=>`About ${d} from here, ${s}, keep an eye out.`,
+        (d,s)=>`Just ahead, ${s}, roughly ${d} away.`,
+        (d,s)=>`You'll want to look ${s} in about ${d}.`
+      ],
+      gpsAsk:"Asking for your location…",
+      gpsUnsupported:"This browser can't read your location. Open the link in Safari.",
+      gpsDenied:"Location is blocked for this page.\n\nOn iPhone:\n1. Settings → Privacy & Security → Location Services → on\n2. Scroll to Safari Websites → While Using the App\n3. Reload this page and tap Start again.\n\nIf you opened this inside another app, open the link in Safari instead.",
+      gpsUnavailable:"Your phone can't find a position right now. Go outside or near a window and try again.",
+      gpsTimeout:"Finding your position is taking long. Still trying…",
+      demoDone:"That was the end of the demo drive.",
+      wakeOn:"Screen stays on", wakeOff:"Keep the screen on and the phone plugged in while driving."
+    },
+    nl:{
+      tagNext:"Komt eraan", tagNow:"Nu aan het vertellen", live:"LIVE", offline:"GEEN SIGNAAL",
+      log:"Reisverslag →", back:"← Terug", logTitle:"Uw reis",
+      logEmpty:"Nog niets verteld. Verhalen die u hoort verschijnen hier.",
+      audioOn:"🔊 Geluid aan", audioOff:"🔈 Geluid uit", end:"Rit beëindigen",
+      pause:"⏸ Pauze", resume:"▶ Verder", replay:"⟲ Herhaal", skip:"⚑ Overslaan",
+      looking:"Even rondkijken…", nothingAhead:"Nog niets bijzonders vooruit",
+      flagged:"Overgeslagen / onjuist gemarkeerd",
+      startTitle:"Elke weg<br>heeft een stem.",
+      startSub:"OnTheWay vindt zelf interessante plekken langs uw route en vertelt erover, hardop.",
+      startBtn:"Start met luisteren", demoBtn:"Probeer een proefrit →",
+      source:"Bron: Wikipedia",
+      sideRight:"aan uw rechterkant", sideLeft:"aan uw linkerkant", sideAhead:"recht vooruit", sideNear:"vlakbij",
+      sideRightS:"rechts", sideLeftS:"links", sideAheadS:"vooruit", sideNearS:"vlakbij",
+      km:(v)=>`${v} kilometer`, m:(v)=>`${v} meter`, kmS:(v)=>`${v} km`, mS:(v)=>`${v} m`,
+      intros:[
+        (d,s)=>`Over ongeveer ${d} ligt er ${s} iets de moeite waard.`,
+        (d,s)=>`Zo dadelijk, over zo'n ${d}, ${s}.`,
+        (d,s)=>`Nog even, over ${d}, ${s}.`,
+        (d,s)=>`Kijk maar uit, ${s}, over ${d}.`,
+        (d,s)=>`Over zo'n ${d} is er iets ${s}.`
+      ],
+      gpsAsk:"Locatie opvragen…",
+      gpsUnsupported:"Deze browser kan uw locatie niet lezen. Open de link in Safari.",
+      gpsDenied:"Locatie is geblokkeerd voor deze pagina.\n\nOp iPhone:\n1. Instellingen → Privacy en beveiliging → Locatievoorzieningen → aan\n2. Scroll naar Safari-websites → Tijdens gebruik van de app\n3. Laad deze pagina opnieuw en tik weer op Start.\n\nOpende u dit in een andere app? Open de link dan in Safari.",
+      gpsUnavailable:"Uw telefoon kan nu geen positie vinden. Ga naar buiten of bij een raam en probeer opnieuw.",
+      gpsTimeout:"Positie bepalen duurt lang. Nog bezig…",
+      demoDone:"Dit was het einde van de proefrit.",
+      wakeOn:"Scherm blijft aan", wakeOff:"Houd het scherm aan en de telefoon aan de lader tijdens het rijden."
+    }
+  };
+  // "side" phrases in Dutch need a slightly different shape inside intros
+  function t(key, ...a){ const v = STR[state.lang][key]; return typeof v === 'function' ? v(...a) : v; }
+
+  /* =========================================================
+     GEO MATH
+  ========================================================= */
+  const toRad = d => d*Math.PI/180, toDeg = r => r*180/Math.PI;
+  function haversineM(a, b){
+    const R=6371000, dLat=toRad(b.lat-a.lat), dLon=toRad(b.lon-a.lon);
+    const x=Math.sin(dLat/2)**2 + Math.cos(toRad(a.lat))*Math.cos(toRad(b.lat))*Math.sin(dLon/2)**2;
+    return R*2*Math.atan2(Math.sqrt(x), Math.sqrt(1-x));
+  }
+  function bearing(a, b){
+    const y=Math.sin(toRad(b.lon-a.lon))*Math.cos(toRad(b.lat));
+    const x=Math.cos(toRad(a.lat))*Math.sin(toRad(b.lat)) - Math.sin(toRad(a.lat))*Math.cos(toRad(b.lat))*Math.cos(toRad(b.lon-a.lon));
+    return (toDeg(Math.atan2(y,x))+360)%360;
+  }
+  const relAngle = (brg, heading) => ((brg-heading)%360+360)%360;       // 0=ahead, 90=right, 270=left
+  function sideKey(rel, short){
+    const s = short ? 'S' : '';
+    if(rel===null) return 'sideNear'+s;
+    if(rel<=20 || rel>=340) return 'sideAhead'+s;
+    return rel<180 ? 'sideRight'+s : 'sideLeft'+s;
+  }
+  function distSpeech(m){
+    if(m<1000){ const r=Math.max(50, Math.round(m/50)*50); return t('m', r); }
+    return t('km', (m/1000).toFixed(1));
+  }
+  function distShort(m){ return m<1000 ? t('mS', Math.round(m/10)*10) : t('kmS', (m/1000).toFixed(1)); }
+  const clamp = (v,lo,hi) => Math.max(lo, Math.min(hi, v));
+
+  /* =========================================================
+     STATE
+  ========================================================= */
+  const state = {
+    lang:'en', started:false, demo:false, muted:false, paused:false,
+    pos:null, prev:null, anchor:null, heading:null, speed:null,
+    places:new Map(),        // pageid -> {id,title,lat,lon,detail}
+    told:new Set(), flagged:new Set(),
+    lastFetch:null, fetching:false, netOk:true, fetchCount:0, lastError:'',
+    playing:null, lastItem:null, lastEnd:0, journey:[],
+    watchId:null, demoTimer:null, clockTimer:null, wakeLock:null, tripStart:0, introCounter:0
+  };
+
+  /* =========================================================
+     WIKIPEDIA (free, no key). Dutch pages give Dutch names.
+  ========================================================= */
+  async function wikiGet(lang, params){
+    const qs = new URLSearchParams(Object.assign({format:'json', formatversion:'2', origin:'*'}, params));
+    const res = await fetch(`https://${lang}.wikipedia.org/w/api.php?${qs}`);
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    return res.json();
+  }
+
+  function cleanName(s){ return String(s||'').replace(/\s*\([^)]*\)\s*$/,'').trim(); }
+
+  function cleanExtract(text, maxChars){
+    let s = String(text||'').replace(/\s*\([^)]*\)/g,'').replace(/\s*\[[^\]]*\]/g,'').replace(/\s+/g,' ').trim();
+    if(!s) return '';
+    const sentences = s.match(/[^.!?]+[.!?]+(?=\s|$)/g) || [s];
+    let out='', n=0;
+    for(const sen of sentences){
+      const next = (out ? out+' ' : '') + sen.trim();
+      if(out && next.length>maxChars) break;
+      out = next; n++;
+      if(n>=2) break;
+    }
+    return out;
+  }
+
+  function parseDetails(json){
+    const out = new Map();
+    const pages = (json && json.query && json.query.pages) || [];
+    pages.forEach(p=>{
+      if(!p || p.missing) return;
+      let nl = null;
+      (p.langlinks||[]).forEach(l=>{ if(l.lang==='nl') nl = l.title || l['*']; });
+      const pv = p.pageviews || {};
+      const vals = Object.keys(pv).map(k=>pv[k]).filter(v=>typeof v==='number');
+      const avg = vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : 0;
+      out.set(p.pageid, {
+        extract: cleanExtract(p.extract, 320),
+        thumb: (p.thumbnail && p.thumbnail.source) || null,
+        avgViews: avg,
+        nameLocal: cleanName(nl || p.title)
+      });
+    });
+    return out;
+  }
+
+  async function refreshNearby(){
+    if(state.fetching || !state.pos) return;
+    const now = Date.now();
+    if(state.lastFetch){
+      const moved = haversineM(state.lastFetch.pos, state.pos);
+      if(moved < CFG.refetchMovedM && now-state.lastFetch.t < CFG.refetchMs) return;
+    }
+    state.fetching = true;
+    state.lastFetch = {pos:Object.assign({}, state.pos), t:now};
+    const lang = state.lang;
+    try{
+      const g = await wikiGet(lang, {action:'query', list:'geosearch', gscoord:`${state.pos.lat}|${state.pos.lon}`, gsradius:String(CFG.searchRadiusM), gslimit:'100'});
+      if(lang !== state.lang) return;
+      ((g.query && g.query.geosearch) || []).forEach(p=>{
+        if(!state.places.has(p.pageid)) state.places.set(p.pageid, {id:p.pageid, title:p.title, lat:p.lat, lon:p.lon, detail:null});
+      });
+      for(let i=0;i<3;i++){ const more = await loadDetails(lang); if(!more) break; }
+      state.netOk = true; state.lastError = '';
+    }catch(e){
+      state.netOk = false; state.lastError = String(e && e.message || e);
+    }finally{
+      state.fetching = false; state.fetchCount++;
+      updateUI();
+    }
+  }
+
+  // Fetch popularity + short text for the nearest places we haven't looked at, preferring ones ahead of us.
+  async function loadDetails(lang){
+    const here = state.pos;
+    const todo = [];
+    state.places.forEach(p=>{
+      if(p.detail) return;
+      const d = haversineM(here, p);
+      if(d > CFG.searchRadiusM) return;
+      if(state.heading!==null){
+        const rel = relAngle(bearing(here,p), state.heading);
+        if(rel > CFG.coneDeg+30 && rel < 360-CFG.coneDeg-30 && d > 500) return;   // clearly behind
+      }
+      todo.push({p,d});
+    });
+    todo.sort((a,b)=>a.d-b.d);
+    const batch = todo.slice(0, CFG.detailBatch).map(x=>x.p);
+    if(!batch.length) return false;
+    const json = await wikiGet(lang, {
+      action:'query', pageids: batch.map(p=>p.id).join('|'),
+      prop:'extracts|pageimages|pageviews|langlinks',
+      exintro:'1', explaintext:'1', exsentences:'4', exlimit:'max',
+      piprop:'thumbnail', pithumbsize:'520', pilimit:'max',
+      pvipdays:'30', lllang:'nl', lllimit:'max'
+    });
+    if(lang !== state.lang) return false;
+    const got = parseDetails(json);
+    batch.forEach(p=>{
+      p.detail = got.get(p.id) || {extract:'', thumb:null, avgViews:0, nameLocal:cleanName(p.title)};
+    });
+    return todo.length > batch.length;
+  }
+
+  /* =========================================================
+     CHOOSING WHAT TO TELL
+  ========================================================= */
+  function eligible(p){
+    const d = p.detail;
+    return !!d && !state.told.has(p.id) && d.extract.length >= 60 && d.avgViews >= CFG.minAvgViews;
+  }
+  function announceRange(){
+    if(state.heading===null) return CFG.standingRangeM;
+    return clamp((state.speed||0)*CFG.lookAheadSec, CFG.minRangeM, CFG.maxRangeM);
+  }
+  function relOf(p){
+    if(state.heading===null || !state.pos) return null;
+    return relAngle(bearing(state.pos, p), state.heading);
+  }
+  function isAhead(rel){ return rel===null || rel<=CFG.coneDeg || rel>=360-CFG.coneDeg; }
+
+  function candidates(maxM){
+    const out = [];
+    if(!state.pos) return out;
+    state.places.forEach(p=>{
+      if(!eligible(p)) return;
+      const d = haversineM(state.pos, p);
+      const rel = relOf(p);
+      if(d <= maxM && isAhead(rel)) out.push({p, d, rel});
+    });
+    return out;
+  }
+  function pickToAnnounce(){
+    const c = candidates(announceRange());
+    if(!c.length) return null;
+    c.sort((a,b)=> b.p.detail.avgViews - a.p.detail.avgViews);   // most popular first
+    return c[0];
+  }
+  function nextToShow(){
+    const c = candidates(CFG.searchRadiusM);
+    if(!c.length) return null;
+    c.sort((a,b)=>a.d-b.d);
+    return c[0];
+  }
+
+  function maybeAnnounce(){
+    if(state.paused || state.playing || !state.started) return;
+    if(Date.now()-state.lastEnd < CFG.cooldownMs) return;
+    const pick = pickToAnnounce();
+    if(!pick) return;
+    announce(pick);
+  }
+
+  function announce(pick){
+    const p = pick.p, d = p.detail;
+    state.told.add(p.id);
+    const intros = STR[state.lang].intros;
+    const intro = intros[state.introCounter++ % intros.length](distSpeech(pick.d), t(sideKey(pick.rel)));
+    const item = {
+      id:p.id, name:d.nameLocal, body:intro+' '+d.extract, extract:d.extract, thumb:d.thumb,
+      distM:pick.d, sideShort:t(sideKey(pick.rel, true)), lang:state.lang, at:new Date()
+    };
+    state.journey.push({id:p.id, name:d.nameLocal, text:d.extract, time:clock(item.at), flagged:false});
+    play(item);
+  }
+
+  /* =========================================================
+     SPEECH — one item at a time, nothing is cut off mid-sentence.
+     iPhone note: the first speak() must happen inside a tap (see primeSpeech).
+  ========================================================= */
+  const synth = window.speechSynthesis;
+  let voices = [];
+  function loadVoices(){ try{ voices = synth ? synth.getVoices() : []; }catch(e){ voices = []; } }
+  if(synth){ loadVoices(); synth.onvoiceschanged = loadVoices; }
+  function voiceFor(lang){
+    const re = lang==='nl' ? /^nl/i : /^en[-_](GB|US)/i;
+    return voices.find(v=>re.test(v.lang)) || voices.find(v=>new RegExp('^'+lang,'i').test(v.lang)) || null;
+  }
+  function primeSpeech(){
+    if(!synth) return;
+    try{ const u = new SpeechSynthesisUtterance(' '); u.volume = 0; synth.speak(u); }catch(e){}
+  }
+
+  const RATE = {name:0.86, body:0.88};   // ~10% slower than the platform default
+  function estimateMs(item){ return Math.max(4000, (item.name.length+item.body.length)*95); }
+
+  function play(item){
+    state.playing = item; state.lastItem = item;
+    showCaption(item.name+' — '+item.body, true);
+    updateUI();
+    let wd = null;
+    const finish = ()=>{
+      if(state.playing !== item) return;
+      clearTimeout(wd);
+      state.playing = null; state.lastEnd = Date.now();
+      hideCaption(); updateUI();
+    };
+    const arm = (ms)=>{ clearTimeout(wd); wd = setTimeout(function check(){
+      if(state.playing !== item) return;
+      if(state.paused){ wd = setTimeout(check, 2000); return; }
+      finish();
+    }, ms); };
+
+    if(!synth || state.muted){ arm(estimateMs(item)*0.7); return; }
+    try{
+      const uName = new SpeechSynthesisUtterance(item.name);
+      uName.lang = 'nl-NL'; const vn = voiceFor('nl'); if(vn) uName.voice = vn; uName.rate = RATE.name;
+      const uBody = new SpeechSynthesisUtterance(item.body);
+      uBody.lang = item.lang==='nl' ? 'nl-NL' : 'en-GB'; const vb = voiceFor(item.lang); if(vb) uBody.voice = vb; uBody.rate = RATE.body;
+      uBody.onend = finish; uBody.onerror = finish;
+      synth.speak(uName); synth.speak(uBody);
+      arm(estimateMs(item)*2);          // safety net: iOS sometimes never fires onend
+    }catch(e){ arm(estimateMs(item)*0.7); }
+  }
+
+  function stopSpeech(){
+    state.playing = null;
+    try{ if(synth) synth.cancel(); }catch(e){}
+    hideCaption();
+  }
+  function replay(){
+    const item = state.lastItem; if(!item) return;
+    stopSpeech(); state.paused = false; updatePauseBtn();
+    setTimeout(()=>play(item), 150);
+  }
+  function togglePause(){
+    state.paused = !state.paused;
+    try{ if(synth){ state.paused ? synth.pause() : synth.resume(); } }catch(e){}
+    updatePauseBtn(); document.getElementById('eq').classList.toggle('paused', state.paused);
+  }
+  function skipCurrent(){
+    // Mark whatever is playing (or was last told) as skipped/wrong, so it's never repeated and shows up in the log.
+    const item = state.playing || state.lastItem; if(!item) return;
+    const j = state.journey.find(x=>x.id===item.id); if(j) j.flagged = true;
+    state.flagged.add(item.id);
+    if(state.playing){ stopSpeech(); state.lastEnd = Date.now(); }
+    updateUI();
+  }
+
+  /* =========================================================
+     MOTION
+  ========================================================= */
+  function onPosition(lat, lon, gpsSpeed, gpsHeading){
+    const now = Date.now();
+    const pos = {lat, lon, t:now};
+    if(state.prev){
+      const dt = (now - state.prev.t)/1000;
+      if(dt>0.5){
+        const sp = haversineM(state.prev, pos)/dt;
+        state.speed = state.speed===null ? sp : 0.6*state.speed + 0.4*sp;
+        state.prev = pos;
+      }
+    } else state.prev = pos;
+    if(typeof gpsSpeed==='number' && isFinite(gpsSpeed) && gpsSpeed>=0) state.speed = gpsSpeed;
+
+    if(!state.anchor) state.anchor = pos;
+    else if(haversineM(state.anchor, pos) >= 25){ state.heading = bearing(state.anchor, pos); state.anchor = pos; }
+    if(typeof gpsHeading==='number' && isFinite(gpsHeading) && (state.speed||0) > 2) state.heading = gpsHeading;
+    if(state.speed!==null && state.speed < 0.7 && !state.demo && haversineM(state.anchor,pos) < 10) { /* standing still: keep last heading */ }
+
+    state.pos = pos;
+    refreshNearby();
+    maybeAnnounce();
+    updateUI();
+  }
+
+  /* =========================================================
+     UI
+  ========================================================= */
+  const $ = id => document.getElementById(id);
+  const el = {
+    start:$('screen-start'), trip:$('screen-trip'), log:$('screen-log'),
+    status:$('start-status'), ringFill:$('ring-fill'), ringDist:$('ring-dist'), ringSide:$('ring-side'),
+    scan:$('scan-line'), slot:$('card-slot'), cap:$('captions'), capText:$('captions-text'),
+    pause:$('btn-pause'), mute:$('btn-mute'), liveDot:$('live-dot'), liveLabel:$('live-label'), clock:$('clock')
+  };
+  const RING = 2*Math.PI*86;
+  const clock = d => String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+  const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  function show(name){ [el.start, el.trip, el.log].forEach(s=>s.classList.remove('active')); ({start:el.start, trip:el.trip, log:el.log})[name].classList.add('active'); }
+  function showCaption(text){ el.capText.textContent = text; el.cap.classList.add('show'); }
+  function hideCaption(){ el.cap.classList.remove('show'); }
+  function updatePauseBtn(){ el.pause.textContent = state.paused ? t('resume') : t('pause'); }
+
+  function renderCard(item, tag, thumb, name, text){
+    if(!name){
+      el.slot.innerHTML = `<div class="empty-card">${esc(t('nothingAhead'))}</div>`;
+      return;
+    }
+    el.slot.innerHTML = `<div class="card">
+      <img class="card-img ${thumb?'visible':''}" ${thumb?`src="${esc(thumb)}"`:''} alt="" onerror="this.classList.remove('visible')">
+      <div class="card-body"><div class="tag">${esc(tag)}</div><h3>${esc(name)}</h3><p>${esc(text)}</p><div class="src">${esc(t('source'))}</div></div></div>`;
+  }
+
+  let lastCardKey = '';
+  function updateUI(){
+    if(!state.started) return;
+    el.liveDot.classList.toggle('off', !state.netOk);
+    el.liveLabel.textContent = state.netOk ? t('live') : t('offline');
+
+    const next = nextToShow();
+    let ringM = null, sideTxt = t('looking');
+    if(state.playing){
+      ringM = state.playing.distM; sideTxt = state.playing.sideShort;
+      if(state.pos){
+        const pl = state.places.get(state.playing.id);
+        if(pl){ ringM = haversineM(state.pos, pl); sideTxt = t(sideKey(relOf(pl), true)); }
+      }
+    } else if(next){ ringM = next.d; sideTxt = t(sideKey(next.rel, true)); }
+
+    if(ringM===null){
+      el.ringDist.textContent = '—'; el.ringDist.classList.remove('close');
+      el.ringSide.textContent = sideTxt; el.ringFill.style.strokeDashoffset = RING;
+    } else {
+      el.ringDist.textContent = distShort(ringM); el.ringDist.classList.toggle('close', ringM<500);
+      el.ringSide.textContent = sideTxt;
+      const frac = 1 - clamp(ringM/CFG.searchRadiusM, 0, 1);
+      el.ringFill.style.strokeDashoffset = RING*(1-frac);
+      el.ringFill.style.stroke = ringM<500 ? '#4FA88A' : '#E8A23D';
+    }
+
+    const eligibleCount = Array.from(state.places.values()).filter(eligible).length;
+    const hd = state.heading===null ? '—' : Math.round(state.heading)+'°';
+    el.scan.textContent = state.lastError ? ('⚠ '+state.lastError) : `${state.places.size} nearby · ${eligibleCount} notable · heading ${hd}`;
+
+    // card: what's being told now, or what is next
+    let key, view;
+    if(state.playing){ key = 'p'+state.playing.id; view = [t('tagNow'), state.playing.thumb, state.playing.name, state.playing.extract]; }
+    else if(next){ key = 'n'+next.p.id; view = [t('tagNext'), next.p.detail.thumb, next.p.detail.nameLocal, next.p.detail.extract]; }
+    else { key = 'none'; view = [null,null,null,null]; }
+    if(key !== lastCardKey){ lastCardKey = key; renderCard(null, view[0], view[1], view[2], view[3]); }
+  }
+
+  function renderLog(){
+    $('log-title').textContent = t('logTitle');
+    const body = $('log-body');
+    if(!state.journey.length){ body.innerHTML = `<div class="log-empty">${esc(t('logEmpty'))}</div>`; return; }
+    body.innerHTML = state.journey.map(j=>`<div class="log-entry"><div class="t">${esc(j.time)}</div><h3>${esc(j.name)}</h3><p>${esc(j.text)}</p>${j.flagged?`<span class="flag">⚑ ${esc(t('flagged'))}</span>`:''}</div>`).join('');
+  }
+
+  function applyLanguage(){
+    document.documentElement.lang = state.lang;
+    $('start-title').innerHTML = t('startTitle'); $('start-sub').textContent = t('startSub');
+    $('btn-start').textContent = t('startBtn'); $('btn-demo').textContent = t('demoBtn');
+    $('btn-log').textContent = t('log'); $('btn-back').textContent = t('back');
+    $('btn-replay').textContent = t('replay'); $('btn-skip').textContent = t('skip');
+    $('btn-end').textContent = t('end'); el.mute.textContent = state.muted ? t('audioOff') : t('audioOn');
+    updatePauseBtn(); renderLog();
+  }
+
+  /* =========================================================
+     SCREEN WAKE LOCK (iPhone: JS and GPS stop when the screen locks)
+  ========================================================= */
+  async function requestWake(){
+    try{
+      if('wakeLock' in navigator){
+        state.wakeLock = await navigator.wakeLock.request('screen');
+        state.wakeLock.addEventListener('release', ()=>{ state.wakeLock = null; });
+      }
+    }catch(e){ state.wakeLock = null; }
+  }
+  document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='visible' && state.started) requestWake(); });
+
+  /* =========================================================
+     TRIP LIFECYCLE
+  ========================================================= */
+  function beginTrip(){
+    if(state.started) return;
+    state.started = true; state.tripStart = Date.now(); lastCardKey = '';
+    show('trip'); applyLanguage(); requestWake(); updateUI();
+    state.clockTimer = setInterval(()=>{
+      const s = Math.floor((Date.now()-state.tripStart)/1000);
+      el.clock.textContent = String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+      maybeAnnounce();
+    }, 1000);
+  }
+
+  function startReal(){
+    primeSpeech();
+    if(!navigator.geolocation){ setStatus(t('gpsUnsupported'), true); return; }
+    state.demo = false; setStatus(t('gpsAsk'));
+    let began = false;
+    state.watchId = navigator.geolocation.watchPosition(
+      pos=>{ if(!began){ began = true; setStatus(''); beginTrip(); }
+             const c = pos.coords; onPosition(c.latitude, c.longitude, c.speed, c.heading); },
+      err=>{
+        if(err.code===1){ setStatus(t('gpsDenied'), true); stopWatch(); }
+        else if(err.code===2){ setStatus(t('gpsUnavailable'), true); }
+        else { setStatus(t('gpsTimeout')); }
+      },
+      {enableHighAccuracy:true, maximumAge:2000, timeout:20000}
+    );
+  }
+  function stopWatch(){ if(state.watchId!==null){ navigator.geolocation.clearWatch(state.watchId); state.watchId=null; } }
+
+  const DEMO_WAYPOINTS = [
+    [52.4020,5.4600],[52.4180,5.4720],[52.4300,5.4770],[52.4380,5.4790],[52.4400,5.4720],
+    [52.4416,5.4677],[52.4435,5.4630],[52.4453,5.4599],[52.4475,5.4615],[52.4490,5.4644],[52.4560,5.4610]
+  ];
+  function demoPath(){
+    const pts=[]; for(let i=0;i<DEMO_WAYPOINTS.length-1;i++){
+      const a=DEMO_WAYPOINTS[i], b=DEMO_WAYPOINTS[i+1];
+      for(let s=0;s<40;s++){ const f=s/40; pts.push([a[0]+(b[0]-a[0])*f, a[1]+(b[1]-a[1])*f]); }
+    } pts.push(DEMO_WAYPOINTS[DEMO_WAYPOINTS.length-1]); return pts;
+  }
+  function startDemo(){
+    primeSpeech(); state.demo = true; beginTrip();
+    const path = demoPath(); let i = 0;
+    state.demoTimer = setInterval(()=>{
+      if(state.paused) return;
+      if(i >= path.length){ clearInterval(state.demoTimer); showCaption(t('demoDone')); return; }
+      onPosition(path[i][0], path[i][1]); i++;
+    }, 750);
+  }
+
+  function endTrip(){
+    stopWatch();
+    [state.demoTimer, state.clockTimer].forEach(x=>{ if(x) clearInterval(x); });
+    state.demoTimer = state.clockTimer = null;
+    stopSpeech();
+    try{ if(state.wakeLock) state.wakeLock.release(); }catch(e){}
+    state.started = false; renderLog(); show('log');
+  }
+
+  function setStatus(msg, isError){ el.status.textContent = msg; el.status.classList.toggle('error', !!isError); }
+
+  /* =========================================================
+     WIRING
+  ========================================================= */
+  $('btn-start').addEventListener('click', startReal);
+  $('btn-demo').addEventListener('click', startDemo);
+  $('btn-log').addEventListener('click', ()=>{ renderLog(); show('log'); });
+  $('btn-back').addEventListener('click', ()=>show(state.started ? 'trip' : 'start'));
+  $('btn-end').addEventListener('click', endTrip);
+  $('btn-replay').addEventListener('click', replay);
+  $('btn-pause').addEventListener('click', togglePause);
+  $('btn-skip').addEventListener('click', skipCurrent);
+  el.mute.addEventListener('click', ()=>{
+    state.muted = !state.muted; el.mute.classList.toggle('on', !state.muted);
+    el.mute.textContent = state.muted ? t('audioOff') : t('audioOn');
+    if(state.muted) stopSpeech();
+  });
+  document.querySelectorAll('.lang-pill').forEach(b=>b.addEventListener('click', ()=>{
+    state.lang = b.getAttribute('data-lang');
+    document.querySelectorAll('.lang-pill').forEach(x=>x.classList.toggle('active', x===b));
+    state.places.clear(); state.lastFetch = null; lastCardKey = '';   // places are fetched per language
+    applyLanguage(); if(state.started){ refreshNearby(); updateUI(); }
+  }));
+
+  applyLanguage();
+
+  // exposed for automated testing only
+  window.__OT = {state, CFG, onPosition, parseDetails, cleanExtract, haversineM, bearing, relAngle, eligible, candidates, announceRange, refreshNearby, beginTrip};
+})();
+</script>
+</body>
+</html>
