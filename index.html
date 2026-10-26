@@ -10,20 +10,22 @@
 <meta name="theme-color" content="#0B1018">
 <title>OnTheWay</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Michroma&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Michroma&family=Bruno+Ace&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg-0:#0B1018; --bg-1:#0F1626; --bg-2:#1B2740;
     --surface:#141C2C; --surface-2:#1D2A40; --hairline:#2A3852;
     --text:#EDE6D6; --text-dim:#93A0B4; --text-faint:#6A7A92;
-    --amber:#006DBF; --amber-dim:rgba(0,109,191,0.28); --amber-glow:rgba(0,109,191,0.55);
+    --acc:#006DBF; --acc-rgb:0,109,191; --acc-hi-rgb:70,170,240; --acc-pale-rgb:170,215,255; --acc-lo-rgb:0,40,90; --acc-light:#4DA3E8;
+    --amber:var(--acc); --amber-dim:rgba(var(--acc-rgb),0.28); --amber-glow:rgba(var(--acc-rgb),0.55);
     --teal:#4FA88A; --red:#D9715E; --fs:1;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{height:100%;}
+  html{background:var(--bg-0);}
   body{
     margin:0; min-height:100vh; color:var(--text);
-    background:radial-gradient(ellipse 120% 80% at 50% -10%, var(--bg-2) 0%, var(--bg-1) 45%, var(--bg-0) 100%);
+    background:radial-gradient(ellipse 120% 80% at 50% -10%, var(--bg-2) 0%, var(--bg-1) 45%, var(--bg-0) 100%) fixed no-repeat;
     font-family:Arial, Helvetica, sans-serif;
     display:flex; justify-content:center; overflow-x:hidden;
   }
@@ -54,12 +56,12 @@
   #screen-start.introing .start-title, #screen-start.introing .start-sub, #screen-start.introing .btn-primary, #screen-start.introing .btn-ghost{opacity:0;}
   @keyframes coreBeat{0%,100%{transform:scale(1);} 8%{transform:scale(1.35);} 22%{transform:scale(.95);} 34%{transform:scale(1);}}
   @keyframes ping{0%{transform:scale(1); opacity:.9;} 55%{opacity:0;} 100%{transform:scale(2.3); opacity:0;}}
-  @keyframes wayDot{0%,40%,100%{opacity:.5; transform:scale(.85); box-shadow:0 0 0 0 rgba(0,109,191,0);} 10%{opacity:1; transform:scale(1.9); box-shadow:0 0 10px 3px var(--amber-glow);} 24%{opacity:.8; transform:scale(1);}}
+  @keyframes wayDot{0%,40%,100%{opacity:.5; transform:scale(.85); box-shadow:0 0 0 0 rgba(var(--acc-rgb),0);} 10%{opacity:1; transform:scale(1.9); box-shadow:0 0 10px 3px var(--amber-glow);} 24%{opacity:.8; transform:scale(1);}}
   .start-title{font-size:calc(22px * var(--fs)); margin-bottom:8px; line-height:1.15;}
   .start-sub{color:var(--text-dim); font-size:calc(15px * var(--fs)); max-width:300px; line-height:1.5; margin:0 0 26px;}
   .lang-pills{display:flex; gap:6px; padding:4px; background:var(--surface); border:1px solid var(--hairline); border-radius:100px; margin-bottom:22px;}
-  .lang-pill,.size-pill,.btn-pill{padding:8px 16px; border-radius:100px; font-family:Arial, Helvetica, sans-serif; font-size:calc(12.5px * var(--fs)); color:var(--text-dim);}
-  .lang-pill.active,.size-pill.active,.btn-pill.active{background:var(--amber); color:#FFFFFF; font-weight:600;}
+  .lang-pill,.size-pill,.btn-pill, .sty-pill{padding:8px 16px; border-radius:100px; font-family:Arial, Helvetica, sans-serif; font-size:calc(12.5px * var(--fs)); color:var(--text-dim);}
+  .lang-pill.active,.size-pill.active,.btn-pill.active, .sty-pill.active{background:var(--amber); color:#FFFFFF; font-weight:600;}
   .btn-primary{width:100%; max-width:300px; padding:16px 20px; background:var(--amber); color:#FFFFFF; border-radius:100px; font-family:Arial, Helvetica, sans-serif; font-weight:600; font-size:calc(14px * var(--fs)); letter-spacing:.03em; text-transform:uppercase; box-shadow:0 8px 24px -8px var(--amber-glow);}
   .btn-primary:active{transform:scale(.97);}
   .btn-ghost{margin-top:14px; padding:12px 20px; color:var(--text-dim); font-family:Arial, Helvetica, sans-serif; font-size:calc(12.5px * var(--fs)); border-bottom:1px solid var(--hairline);}
@@ -177,31 +179,36 @@
   html.glass .abtn{width:46px; height:46px; color:#FFFFFF;}
   html.glass .abtn svg{width:24px; height:24px;}
   html.glass .abtn.on{
-    background:linear-gradient(180deg, rgba(60,160,235,.95) 0%, rgba(0,109,191,.80) 100%);
-    border-color:rgba(160,210,255,.55);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.60), inset 0 -1px 0 rgba(0,40,90,.35), 0 8px 22px rgba(0,109,191,.35);
+    background:linear-gradient(180deg, rgba(var(--acc-hi-rgb),.95) 0%, rgba(var(--acc-rgb),.80) 100%);
+    border-color:rgba(var(--acc-pale-rgb),.55);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.60), inset 0 -1px 0 rgba(var(--acc-lo-rgb),.35), 0 8px 22px rgba(var(--acc-rgb),.35);
     color:#FFFFFF;
   }
-  html.glass .cbtn.on{background:linear-gradient(180deg, rgba(0,109,191,.35), rgba(0,109,191,.18)); color:#FFFFFF;}
+  html.glass .cbtn.on{background:linear-gradient(180deg, rgba(var(--acc-rgb),.35), rgba(var(--acc-rgb),.18)); color:#FFFFFF;}
   html.glass .btn-primary{
-    background:linear-gradient(180deg, rgba(70,170,240,.95) 0%, rgba(0,109,191,.85) 100%);
-    border:1px solid rgba(170,215,255,.55);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.65), inset 0 -1px 0 rgba(0,40,90,.35), 0 12px 28px -8px rgba(0,109,191,.65);
+    background:linear-gradient(180deg, rgba(var(--acc-hi-rgb),.95) 0%, rgba(var(--acc-rgb),.85) 100%);
+    border:1px solid rgba(var(--acc-pale-rgb),.55);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.65), inset 0 -1px 0 rgba(var(--acc-lo-rgb),.35), 0 12px 28px -8px rgba(var(--acc-rgb),.65);
   }
   html.glass .slide-thumb{
-    background:linear-gradient(180deg, rgba(70,170,240,.98), rgba(0,109,191,.9));
-    border:1px solid rgba(170,215,255,.6);
+    background:linear-gradient(180deg, rgba(var(--acc-hi-rgb),.98), rgba(var(--acc-rgb),.9));
+    border:1px solid rgba(var(--acc-pale-rgb),.6);
     box-shadow:inset 0 1px 0 rgba(255,255,255,.65), 0 4px 14px rgba(0,0,0,.4);
   }
-  html.glass .lang-pill:not(.active), html.glass .size-pill:not(.active), html.glass .btn-pill:not(.active){background:transparent;}
+  html.glass .lang-pill:not(.active), html.glass .size-pill:not(.active), html.glass .btn-pill:not(.active), html.glass .sty-pill:not(.active){background:transparent;}
   html.glass .lang-pills{background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.05)); -webkit-backdrop-filter:blur(18px) saturate(180%); backdrop-filter:blur(18px) saturate(180%); border:1px solid rgba(255,255,255,.2); box-shadow:inset 0 1px 0 rgba(255,255,255,.4);}
-  html.glass .lang-pill.active, html.glass .size-pill.active, html.glass .btn-pill.active{background:linear-gradient(180deg, rgba(70,170,240,.98), rgba(0,109,191,.9)); box-shadow:inset 0 1px 0 rgba(255,255,255,.6);}
+  html.glass .lang-pill.active, html.glass .size-pill.active, html.glass .btn-pill.active, html.glass .sty-pill.active{background:linear-gradient(180deg, rgba(var(--acc-hi-rgb),.98), rgba(var(--acc-rgb),.9)); box-shadow:inset 0 1px 0 rgba(255,255,255,.6);}
   html.glass .chip.danger{background:linear-gradient(180deg, rgba(217,113,94,.22), rgba(217,113,94,.08)); border-color:rgba(217,113,94,.5);}
 
   /* ---------- log ---------- */
   #screen-log{padding-bottom:40px;}
   .log-head{display:flex; align-items:center; justify-content:space-between; padding:calc(22px + env(safe-area-inset-top)) 22px 16px; border-bottom:1px solid var(--hairline);}
   .log-head h2{font-size:calc(26px * var(--fs));}
+
+  .log-head .ibtn{background:none; border:0; box-shadow:none; height:36px; padding:0 2px 0 0; gap:2px; min-width:0; color:var(--text); -webkit-backdrop-filter:none; backdrop-filter:none;}
+  .log-head .ibtn span{font-size:calc(15px * var(--fs));}
+  .log-head .ibtn.back svg{width:20px; height:20px; stroke-width:2.2;}
+  html.glass .log-head .ibtn{background:none; border:0; box-shadow:none; -webkit-backdrop-filter:none; backdrop-filter:none;}
   .log-head button{font-family:Arial, Helvetica, sans-serif; font-size:calc(12px * var(--fs)); color:var(--text-dim);}
   .log-empty{padding:56px 30px; text-align:center; color:var(--text-faint); font-family:Arial, Helvetica, sans-serif; font-size:calc(13px * var(--fs)); line-height:1.7;}
   .log-entry{padding:18px 22px; border-bottom:1px solid var(--hairline);}
@@ -209,6 +216,81 @@
   .log-entry h3{font-size:calc(18px * var(--fs)); margin-bottom:6px;}
   .log-entry p{margin:0; font-size:calc(14.5px * var(--fs)); line-height:1.6; color:var(--text-dim);}
   .log-entry .flag{display:inline-block; margin-top:8px; font-family:Arial, Helvetica, sans-serif; font-size:calc(11px * var(--fs)); color:var(--red);}
+
+  /* ---------- icon buttons (settings, journey log, favorites) ---------- */
+  .ibtn{display:inline-flex; align-items:center; justify-content:center; gap:5px; min-width:34px; height:34px; padding:0 9px; border-radius:100px; color:var(--text-dim);}
+  .ibtn svg{width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;}
+  .ibtn span{font-family:Arial, Helvetica, sans-serif; font-size:calc(12px * var(--fs));}
+  .hud-bar .ibtn{background:var(--surface); border:1px solid var(--hairline);}
+  .gear-start.ibtn{height:38px; min-width:38px; padding:0 11px;}
+  .gear-start.ibtn svg{width:18px; height:18px;}
+  html.glass .hud-bar .ibtn{background:linear-gradient(180deg, rgba(255,255,255,.20), rgba(255,255,255,.07) 55%, rgba(255,255,255,.12)); -webkit-backdrop-filter:blur(18px) saturate(180%); backdrop-filter:blur(18px) saturate(180%); border:1px solid rgba(255,255,255,.22); box-shadow:inset 0 1px 0 rgba(255,255,255,.5), 0 6px 16px rgba(0,0,0,.28); color:#EDE6D6;}
+  .hud-right{gap:10px;}
+
+  /* ---------- style picker ---------- */
+  #screen-style{justify-content:center; align-items:center; text-align:center; padding:32px 24px 36px; position:relative;}
+  .logo.pk{font-size:22px; margin:0 0 22px;}
+  .pk-title{font-size:calc(26px * var(--fs)); line-height:1.25; margin:0 0 6px;}
+  .pk-sub{color:var(--text-dim); font-size:calc(14px * var(--fs)); line-height:1.5; max-width:290px; margin:0 0 20px;}
+  .pk-list{display:flex; flex-direction:column; gap:10px; width:100%; max-width:340px; margin-bottom:18px;}
+  .pk-card{display:block; width:100%; text-align:left; padding:12px 16px; border-radius:20px; background:var(--surface); border:1px solid var(--hairline); color:var(--text); position:relative;}
+  .pk-card.sel{border:2px solid var(--acc); background:rgba(var(--acc-rgb),.16); padding:11px 15px;}
+  .pk-name{font-family:Arial, Helvetica, sans-serif; font-weight:700; font-size:calc(13px * var(--fs)); letter-spacing:.14em; text-transform:uppercase;}
+  .pk-desc{display:block; font-family:Arial, Helvetica, sans-serif; font-size:calc(12.5px * var(--fs)); line-height:1.4; color:var(--text-dim); margin-top:4px;}
+  .pk-sample{display:block; font-family:Arial, Helvetica, sans-serif; font-size:calc(12px * var(--fs)); font-style:italic; color:var(--acc-light); margin-top:6px;}
+  .pk-dot{position:absolute; right:14px; top:13px; width:18px; height:18px; border-radius:50%; border:1.5px solid var(--hairline);}
+  .pk-card.sel .pk-dot{background:var(--acc); border-color:var(--acc);}
+  .sty-pill{padding:8px 12px;}
+  .sty-desc{margin-top:12px; font-family:Arial, Helvetica, sans-serif; font-size:calc(13px * var(--fs)); line-height:1.45; color:var(--text-dim); max-width:340px;}
+
+  /* ---------- the three styles ---------- */
+  html.st-min .cbtn{flex:none; width:58px; height:58px; padding:0; border-radius:50%; position:relative;}
+  html.st-min .cbtn svg{width:26px; height:26px;}
+  html.st-min .cbtn span{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+  html.st-min .control-bar .row{justify-content:space-between; flex-wrap:nowrap;}
+  html.st-cas .cbtn{border-radius:30px;}
+  html.st-cas .card{border-radius:28px;}
+  html.st-cas .logo{font-family:'Bruno Ace','Michroma',sans-serif;}
+  html.st-cas .logo .ld{width:.15em; height:.15em; width:.2cap; height:.2cap; vertical-align:.3em; vertical-align:.4cap;}
+  html.st-cas .logo .ld.d2{width:.09em; height:.09em; width:.12cap; height:.12cap; vertical-align:.33em; vertical-align:.44cap;}
+  html.st-cas .logo .ld.d3{width:.06em; height:.06em; width:.08cap; height:.08cap; vertical-align:.35em; vertical-align:.46cap;}
+
+  /* ---------- Casual colour scheme ---------- */
+  .swatches{display:none; flex-wrap:wrap; justify-content:center; gap:7px; max-width:340px; margin:0 0 18px;}
+  html.st-cas .set-sec .swatches{display:flex; justify-content:flex-start; margin:14px 0 0;}
+  .swatches.pk-sw{margin:-4px 0 16px;} .swatches.pk-sw.show{display:flex;}
+  .sw-lbl{display:none; width:100%; font-family:Arial, Helvetica, sans-serif; font-size:calc(11px * var(--fs)); letter-spacing:.1em; text-transform:uppercase; color:var(--text-faint); margin-bottom:2px; text-align:center;}
+  .swatches.pk-sw.show .sw-lbl{display:block;} html.st-cas .set-sec .sw-lbl{display:block; text-align:left;}
+  .sw{width:27px; height:27px; border-radius:50%; border:2px solid rgba(255,255,255,.25); padding:0; box-shadow:inset 0 1px 0 rgba(255,255,255,.45), 0 3px 8px rgba(0,0,0,.3);}
+  .sw.sel{border-color:#fff; box-shadow:0 0 0 2px rgba(255,255,255,.35), inset 0 1px 0 rgba(255,255,255,.45);}
+
+  /* ---------- UX polish: small phones, tap targets ---------- */
+  .ibtn:not(.gear-start), .sw{position:relative;}
+  .ibtn::after{content:''; position:absolute; inset:-5px;}
+  .sw::after{content:''; position:absolute; inset:-5px; border-radius:50%;}
+  .log-head .ibtn::after{inset:-6px -8px;}
+  .btn-ghost{padding:14px 20px;}
+  #screen-style{padding-top:calc(64px + env(safe-area-inset-top));}
+  @media (max-height:760px){
+    .next-wrap{padding-top:14px;}
+    .ring-wrap{width:130px; height:130px;}
+    .ring-dist{font-size:calc(24px * var(--fs));}
+    .scan-line{margin-top:8px;}
+    .card{margin-top:12px;}
+    .card-img{height:96px;}
+    #screen-style{justify-content:flex-start; padding-bottom:24px;}
+    .logo.pk{margin-bottom:14px;}
+    .pk-sub{margin-bottom:14px;}
+    .pk-list{gap:8px; margin-bottom:12px;}
+  }
+  @media (max-height:600px){
+    .ring-wrap{width:104px; height:104px;}
+    .card-img{height:72px;}
+  }
+
+  /* ---------- top bars stay put while the content scrolls ---------- */
+  .screen{flex-shrink:0;}
+  .hud-bar, .log-head{position:sticky; top:0; z-index:20; background:transparent; -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);}
 </style>
 </head>
 <body>
@@ -216,28 +298,43 @@
 
   <!-- START -->
   <section class="screen active introing" id="screen-start">
-    <button class="gear-start fav-start" id="btn-favs-start">★ Favorites</button>
-    <button class="gear-start" id="btn-settings-start">⚙ Settings</button>
-    <div class="logo intro" id="logo" role="img" aria-label="OnTheWay"><span class="lo-wrap"><svg class="lo" viewBox="0 0 33 33" aria-hidden="true"><circle cx="16.5" cy="16.5" r="14.5" fill="none" stroke="#EDE6D6" stroke-width="4"/><circle class="lo-ping" cx="16.5" cy="16.5" r="5.1"/><circle class="lo-ping p2" cx="16.5" cy="16.5" r="5.1"/></svg><span class="lo-core" id="lo-core"></span></span><span class="lt">N</span><span class="ld d1"></span><span class="lt">THE</span><span class="ld d2"></span><span class="lt">WAY</span><span class="ld d3"></span></div>
+    <button class="gear-start fav-start ibtn" id="btn-favs-start" aria-label="Favorites"></button>
+    <button class="gear-start ibtn" id="btn-settings-start" aria-label="Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></button>
+    <div class="logo intro" id="logo" role="img" aria-label="OnTheWay"><span class="lo-wrap"><svg class="lo" viewBox="0 0 33 33" aria-hidden="true"><circle id="lo-ring" cx="16.5" cy="16.5" r="14.5" fill="none" stroke="#EDE6D6" stroke-width="4"/><circle class="lo-ping" cx="16.5" cy="16.5" r="5.1"/><circle class="lo-ping p2" cx="16.5" cy="16.5" r="5.1"/></svg><span class="lo-core" id="lo-core"></span></span><span class="lt">N</span><span class="ld d1"></span><span class="lt">THE</span><span class="ld d2"></span><span class="lt">WAY</span><span class="ld d3"></span></div>
     <h1 class="start-title" id="start-title">Every way<br>has a voice.</h1>
     <p class="start-sub" id="start-sub">Hear the stories of what’s coming up your way.</p>
     <button class="btn-primary" id="btn-start">Start listening</button>
-    <button class="btn-ghost" id="btn-demo">Try a simulated drive →</button>
+    <button class="btn-ghost" id="btn-demo">Demo mode</button>
     <div class="status-box" id="start-status"></div>
+  </section>
+
+  <!-- STYLE PICKER (first launch) -->
+  <section class="screen" id="screen-style">
+    <button class="gear-start ibtn" id="btn-settings-style" aria-label="Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></button>
+    <div class="logo pk" role="img" aria-label="OnTheWay"><span class="lo-wrap"><svg class="lo" viewBox="0 0 33 33" aria-hidden="true"><circle cx="16.5" cy="16.5" r="14.5" fill="none" stroke="#EDE6D6" stroke-width="4"/></svg><span class="lo-core"></span></span><span class="lt">N</span><span class="ld d1"></span><span class="lt">THE</span><span class="ld d2"></span><span class="lt">WAY</span><span class="ld d3"></span></div>
+    <h1 class="pk-title" id="pk-title">How do you like it?</h1>
+    <p class="pk-sub" id="pk-sub"></p>
+    <div class="pk-list">
+      <button class="pk-card" data-style="min"><span class="pk-name" id="pk-n-min"></span><span class="pk-dot"></span><span class="pk-desc" id="pk-d-min"></span><span class="pk-sample" id="pk-s-min"></span></button>
+      <button class="pk-card sel" data-style="std"><span class="pk-name" id="pk-n-std"></span><span class="pk-dot"></span><span class="pk-desc" id="pk-d-std"></span><span class="pk-sample" id="pk-s-std"></span></button>
+      <button class="pk-card" data-style="cas"><span class="pk-name" id="pk-n-cas"></span><span class="pk-dot"></span><span class="pk-desc" id="pk-d-cas"></span><span class="pk-sample" id="pk-s-cas"></span></button>
+    </div>
+    <div class="swatches pk-sw" id="sw-pick"></div>
+    <button class="btn-primary" id="btn-pick"></button>
   </section>
 
   <!-- TRIP -->
   <section class="screen" id="screen-trip">
     <div class="hud-bar">
       <div class="live"><span class="dot" id="live-dot"></span><span id="live-label">LIVE</span></div>
-      <div class="hud-right"><button id="btn-favs-trip" aria-label="Favorites">★</button><button id="btn-settings-trip" aria-label="Settings">⚙</button><button id="btn-log">Journey log →</button></div>
+      <div class="hud-right"><button class="ibtn" id="btn-favs-trip" aria-label="Favorites"></button><button class="ibtn" id="btn-log" aria-label="Journey log"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg></button><button class="ibtn" id="btn-settings-trip" aria-label="Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
     </div>
 
     <div class="next-wrap">
       <div class="ring-wrap" id="ring-wrap">
         <svg viewBox="0 0 200 200">
           <circle cx="100" cy="100" r="86" fill="none" stroke="#2A3852" stroke-width="10"/>
-          <circle cx="100" cy="100" r="86" fill="none" stroke="#006DBF" stroke-width="10" stroke-linecap="round" id="ring-fill" transform="rotate(-90 100 100)"/>
+          <circle cx="100" cy="100" r="86" fill="none" stroke="#006DBF" style="stroke:var(--acc)" stroke-width="10" stroke-linecap="round" id="ring-fill" transform="rotate(-90 100 100)"/>
         </svg>
         <div class="ring-center">
           <div class="ring-dist" id="ring-dist">—</div>
@@ -254,13 +351,13 @@
 
   <!-- FAVORITES -->
   <section class="screen" id="screen-favs">
-    <div class="log-head"><h2 id="favs-title">Favorites</h2><div class="hud-right"><button id="btn-favs-edit">Edit</button><button id="btn-favs-back">← Back</button></div></div>
+    <div class="log-head"><h2 id="favs-title">Favorites</h2><div class="hud-right"><button class="ibtn" id="btn-favs-edit">Edit</button><button class="ibtn back" id="btn-favs-back"></button></div></div>
     <div id="favs-body"></div>
   </section>
 
   <!-- SETTINGS -->
   <section class="screen" id="screen-settings">
-    <div class="log-head"><h2 id="settings-title">Settings</h2><button id="btn-settings-back">← Back</button></div>
+    <div class="log-head"><h2 id="settings-title">Settings</h2><button class="ibtn back" id="btn-settings-back"></button></div>
     <div class="set-sec">
       <div class="set-h" id="lbl-language">Language</div>
       <div class="lang-pills">
@@ -268,6 +365,16 @@
         <button class="lang-pill" data-lang="nl">Nederlands</button>
         <button class="lang-pill" data-lang="fr">Français</button>
       </div>
+    </div>
+    <div class="set-sec">
+      <div class="set-h" id="lbl-feel">Style</div>
+      <div class="lang-pills">
+        <button class="sty-pill" data-style="min" id="sty-min">Minimal</button>
+        <button class="sty-pill active" data-style="std" id="sty-std">Standard</button>
+        <button class="sty-pill" data-style="cas" id="sty-cas">Casual</button>
+      </div>
+      <div class="sty-desc" id="sty-desc"></div>
+      <div class="swatches" id="sw-set"></div>
     </div>
     <div class="set-sec">
       <div class="set-h" id="lbl-size">Text size</div>
@@ -297,7 +404,7 @@
 
   <!-- LOG -->
   <section class="screen" id="screen-log">
-    <div class="log-head"><h2 id="log-title">Your journey</h2><button id="btn-back">← Back</button></div>
+    <div class="log-head"><h2 id="log-title">Your journey</h2><button class="ibtn back" id="btn-back"></button></div>
     <div id="log-body"></div>
   </section>
   <div class="control-bar" id="control-bar">
@@ -342,8 +449,10 @@
   ========================================================= */
   const STR = {
     en:{
+      feelLabel:"Style", pickTitle:"How do you like it?", pickSub:"Pick a style. You can change it any time in Settings.", stMin:"Minimal", stStd:"Standard", stCas:"Casual", stMinD:"Quiet and quick. Icons only, short stories.", stStdD:"Clear and complete. Labelled buttons, full stories.", stCasD:"Friendly screens and icons, the same plain narration.", stMinS:"“850 meters, on your right.”", stStdS:"“In about 850 meters, on your right.”", stCasS:"“In about 850 meters, on your right.”", pickBtn:"Continue",
+      accLabel:"Color",
       tagNext:"Coming up", tagNow:"Now telling", tagTold:"Just told", live:"LIVE", offline:"NO SIGNAL",
-      log:"Journey log →", back:"← Back", logTitle:"Your journey",
+      log:"Journey log →", back:"Back", logTitle:"Your journey",
       logEmpty:"Nothing narrated yet. Stories you hear will appear here.",
       audioOn:"Audio", audioOff:"Muted", end:"Slide to end journey",
       pause:"Pause", resume:"Resume", replay:"Replay", skip:"Skip",
@@ -355,7 +464,7 @@
       flagged:"Marked as skipped / wrong",
       startTitle:"Every way<br>has a voice.",
       startSub:"Hear the stories of what’s coming up your way.",
-      startBtn:"Start listening", demoBtn:"Try a simulated drive →",
+      startBtn:"Start listening", demoBtn:"Demo mode",
       source:"Source: Wikipedia",
       sideRight:"on your right", sideLeft:"on your left", sideAhead:"straight ahead", sideNear:"close by",
       sideRightS:"right", sideLeftS:"left", sideAheadS:"ahead", sideNearS:"nearby",
@@ -380,8 +489,10 @@
       voiceSample:"In about two kilometers, on your right, you'll pass the Evoluon."
     },
     nl:{
+      feelLabel:"Stijl", pickTitle:"Hoe wilt u het hebben?", pickSub:"Kies een stijl. U kunt dit altijd wijzigen bij Instellingen.", stMin:"Minimaal", stStd:"Standaard", stCas:"Casual", stMinD:"Rustig en snel. Alleen pictogrammen, korte verhalen.", stStdD:"Helder en volledig. Knoppen met tekst, hele verhalen.", stCasD:"Vriendelijke schermen en pictogrammen, dezelfde nuchtere vertelling.", stMinS:"“850 meter, aan uw rechterkant.”", stStdS:"“Over ongeveer 850 meter, aan uw rechterkant.”", stCasS:"“Over ongeveer 850 meter, aan uw rechterkant.”", pickBtn:"Doorgaan",
+      accLabel:"Kleur",
       tagNext:"Komt eraan", tagNow:"Nu aan het vertellen", tagTold:"Zojuist verteld", live:"LIVE", offline:"GEEN SIGNAAL",
-      log:"Reisverslag →", back:"← Terug", logTitle:"Uw reis",
+      log:"Reisverslag →", back:"Terug", logTitle:"Uw reis",
       logEmpty:"Nog niets verteld. Verhalen die u hoort verschijnen hier.",
       audioOn:"Geluid", audioOff:"Stil", end:"Schuif om de rit te beëindigen",
       pause:"Pauze", resume:"Verder", replay:"Herhaal", skip:"Overslaan",
@@ -393,7 +504,7 @@
       flagged:"Overgeslagen / onjuist gemarkeerd",
       startTitle:"Elke weg<br>heeft een stem.",
       startSub:"Hoor de verhalen over wat er op uw weg komt.",
-      startBtn:"Start met luisteren", demoBtn:"Probeer een proefrit →",
+      startBtn:"Start met luisteren", demoBtn:"Demomodus",
       source:"Bron: Wikipedia",
       sideRight:"aan uw rechterkant", sideLeft:"aan uw linkerkant", sideAhead:"recht vooruit", sideNear:"vlakbij",
       sideRightS:"rechts", sideLeftS:"links", sideAheadS:"vooruit", sideNearS:"vlakbij",
@@ -418,8 +529,10 @@
       voiceSample:"Over ongeveer twee kilometer, aan uw rechterkant, ligt het Evoluon."
     },
     fr:{
+      feelLabel:"Style", pickTitle:"Comment le voulez-vous ?", pickSub:"Choisissez un style. Vous pourrez le changer à tout moment dans Réglages.", stMin:"Minimal", stStd:"Standard", stCas:"Décontracté", stMinD:"Sobre et rapide. Icônes seules, histoires courtes.", stStdD:"Clair et complet. Boutons avec texte, histoires complètes.", stCasD:"Écrans et icônes conviviaux, même narration sobre.", stMinS:"« 850 mètres, sur votre droite. »", stStdS:"« Dans environ 850 mètres, sur votre droite. »", stCasS:"« Dans environ 850 mètres, sur votre droite. »", pickBtn:"Continuer",
+      accLabel:"Couleur",
       tagNext:"À venir", tagNow:"En cours", tagTold:"Vient d'être raconté", live:"EN DIRECT", offline:"PAS DE SIGNAL",
-      log:"Journal du trajet →", back:"← Retour", logTitle:"Votre trajet",
+      log:"Journal du trajet →", back:"Retour", logTitle:"Votre trajet",
       logEmpty:"Rien de raconté pour l'instant. Les histoires que vous entendez apparaîtront ici.",
       audioOn:"Son", audioOff:"Muet", end:"Faites glisser pour terminer le trajet",
       pause:"Pause", resume:"Reprendre", replay:"Répéter", skip:"Passer",
@@ -431,7 +544,7 @@
       flagged:"Marqué comme passé / erroné",
       startTitle:"Chaque voie<br>a sa voix.",
       startSub:"Écoutez les histoires de ce qui vous attend sur votre route.",
-      startBtn:"Commencer l'écoute", demoBtn:"Essayer un trajet simulé →",
+      startBtn:"Commencer l'écoute", demoBtn:"Mode démo",
       source:"Source : Wikipédia",
       sideRight:"sur votre droite", sideLeft:"sur votre gauche", sideAhead:"droit devant", sideNear:"tout près",
       sideRightS:"droite", sideLeftS:"gauche", sideAheadS:"devant", sideNearS:"proche",
@@ -458,7 +571,29 @@
 
   };
   // "side" phrases in Dutch need a slightly different shape inside intros
-  function t(key, ...a){ const v = STR[state.lang][key]; return typeof v === 'function' ? v(...a) : v; }
+
+  /* style overrides: Minimal and Casual replace only some wording (everything else falls back to Standard) */
+  const STYLE_STR = {
+    min:{
+      en:{startSub:"", startBtn:"Start", end:"Slide to end", tagNext:"Ahead", tagNow:"Telling", tagTold:"Told", intros:[(d,s)=>`${d}, ${s}.`]},
+      nl:{startSub:"", startBtn:"Start", end:"Schuif om te stoppen", tagNext:"Voor u", tagNow:"Nu", tagTold:"Verteld", intros:[(d,s)=>`${d}, ${s}.`]},
+      fr:{startSub:"", startBtn:"Démarrer", end:"Glisser pour finir", tagNext:"Devant", tagNow:"En cours", tagTold:"Raconté", intros:[(d,s)=>`${d}, ${s}.`]}
+    },
+    cas:{
+      en:{startTitle:"Hey! Where<br>are we headed?", startSub:"I’ll point out the cool stuff coming up on your way.", startBtn:"Let’s go!", demoBtn:"Demo mode",
+          replay:"Again", pause:"Hold on", resume:"Go on", skip:"Next", audioOn:"Sound on", audioOff:"Sound off", end:"Slide to stop the ride", tagNext:"👀 Coming up", live:"On the road"},
+      nl:{startTitle:"Hé! Waar gaan<br>we naartoe?", startSub:"Ik wijs je de leuke dingen aan die op je weg komen.", startBtn:"Daar gaan we!", demoBtn:"Demomodus",
+          replay:"Opnieuw", pause:"Even stil", resume:"Verder", skip:"Volgende", audioOn:"Geluid aan", audioOff:"Geluid uit", end:"Schuif om de rit te stoppen", tagNext:"👀 Komt eraan", live:"Onderweg"},
+      fr:{startTitle:"Salut ! On va<br>où ?", startSub:"Je te montre les endroits sympas qui t’attendent sur la route.", startBtn:"C’est parti !", demoBtn:"Mode démo",
+          replay:"Encore", pause:"Pause", resume:"Reprendre", skip:"Suivant", audioOn:"Avec son", audioOff:"Muet", end:"Glisser pour arrêter le trajet", tagNext:"👀 À venir", live:"En route"}
+    }
+  };
+  let curStyle = 'std';
+  function styleOv(key){ const o = STYLE_STR[curStyle]; return o && o[state.lang] && Object.prototype.hasOwnProperty.call(o[state.lang], key) ? o[state.lang] : null; }
+  function t(key, ...a){ const ov = styleOv(key); const v = (ov || STR[state.lang])[key]; return typeof v === 'function' ? v(...a) : v; }
+  function introsFor(){ const ov = styleOv('intros'); return (ov || STR[state.lang]).intros; }
+  // Minimal keeps only the first sentence of a story
+  function story(x){ if(curStyle!=='min' || !x) return x; const m = x.match(/^.{25,}?[.!?](?=\s|$)/); return m ? m[0] : x; }
 
   /* =========================================================
      GEO MATH
@@ -664,13 +799,13 @@
   function announce(pick){
     const p = pick.p, d = p.detail;
     state.told.add(p.id);
-    const intros = STR[state.lang].intros;
+    const intros = introsFor(); const ex = story(d.extract);
     const intro = intros[state.introCounter++ % intros.length](distSpeech(pick.d), t(sideKey(pick.rel)));
     const item = {
-      id:p.id, name:placeName(p), nameLang:nameLangOf(p), body:intro+' '+d.extract, extract:d.extract, thumb:d.thumb,
+      id:p.id, name:placeName(p), nameLang:nameLangOf(p), body:intro+' '+ex, extract:ex, thumb:d.thumb,
       distM:pick.d, sideShort:t(sideKey(pick.rel, true)), lang:state.lang, at:new Date()
     };
-    state.journey.push({id:p.id, name:placeName(p), text:d.extract, time:clock(item.at), flagged:false});
+    state.journey.push({id:p.id, name:placeName(p), text:ex, time:clock(item.at), flagged:false});
     play(item);
   }
 
@@ -800,7 +935,7 @@
   ========================================================= */
   const $ = id => document.getElementById(id);
   const el = {
-    start:$('screen-start'), trip:$('screen-trip'), log:$('screen-log'), settings:$('screen-settings'), favs:$('screen-favs'),
+    start:$('screen-start'), style:$('screen-style'), trip:$('screen-trip'), log:$('screen-log'), settings:$('screen-settings'), favs:$('screen-favs'),
     status:$('start-status'), ringFill:$('ring-fill'), ringDist:$('ring-dist'), ringSide:$('ring-side'),
     scan:$('scan-line'), slot:$('card-slot'),
     pause:$('btn-pause'), mute:$('btn-mute'), liveDot:$('live-dot'), liveLabel:$('live-label')
@@ -808,14 +943,17 @@
   const RING = 2*Math.PI*86;
   const clock = d => String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
   const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  function show(name){ $('app').classList.toggle('on-trip', name==='trip');  [el.start, el.trip, el.log, el.settings, el.favs].forEach(s=>s.classList.remove('active')); ({start:el.start, trip:el.trip, log:el.log, settings:el.settings, favs:el.favs})[name].classList.add('active'); }
+  const BACK_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
+  function setBack(id){ const b = $(id); if(b) b.innerHTML = BACK_SVG + '<span>' + esc(t('back')) + '</span>'; }
+  const starHTML = n => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>' + (n ? '<span>'+n+'</span>' : '');
+  function show(name){ $('app').classList.toggle('on-trip', name==='trip');  [el.start, el.style, el.trip, el.log, el.settings, el.favs].forEach(s=>s.classList.remove('active')); ({start:el.start, style:el.style, trip:el.trip, log:el.log, settings:el.settings, favs:el.favs})[name].classList.add('active'); }
   let screenBefore = 'start';
   function openSettings(){
-    screenBefore = el.trip.classList.contains('active') ? 'trip' : (el.log.classList.contains('active') ? 'log' : 'start');
+    screenBefore = el.trip.classList.contains('active') ? 'trip' : (el.log.classList.contains('active') ? 'log' : (el.style.classList.contains('active') ? 'style' : 'start'));
     renderVoiceOptions(); show('settings');
   }
   function openFavs(){
-    screenBefore = el.trip.classList.contains('active') ? 'trip' : (el.log.classList.contains('active') ? 'log' : 'start');
+    screenBefore = el.trip.classList.contains('active') ? 'trip' : (el.log.classList.contains('active') ? 'log' : (el.style.classList.contains('active') ? 'style' : 'start'));
     favEdit = false; renderFavs(); show('favs');
   }
   const CI = {
@@ -896,8 +1034,8 @@
     $('btn-favs-edit').textContent = favEdit ? t('done') : t('edit');
     $('btn-favs-edit').style.display = favs.length ? '' : 'none';
     const n = favs.length;
-    const st = $('btn-favs-start'); if(st) st.textContent = t('favsBtn') + (n?' ('+n+')':'');
-    const tr = $('btn-favs-trip'); if(tr) tr.textContent = '★' + (n?' '+n:'');
+    const st = $('btn-favs-start'); if(st) st.innerHTML = starHTML(n);
+    const tr = $('btn-favs-trip'); if(tr) tr.innerHTML = starHTML(n);
     if(!n){ body.innerHTML = `<div class="log-empty">${esc(t('favEmpty'))}</div>`; return; }
     const loc = LOCALE[state.lang] || 'en-GB';
     body.innerHTML = favs.map((f,i)=>`<div class="fav-item">
@@ -974,7 +1112,7 @@
       el.ringSide.textContent = sideTxt;
       const frac = 1 - clamp(ringM/CFG.searchRadiusM, 0, 1);
       el.ringFill.style.strokeDashoffset = RING*(1-frac);
-      el.ringFill.style.stroke = ringM<500 ? '#4FA88A' : '#006DBF';
+      el.ringFill.style.stroke = ringM<500 ? '#4FA88A' : 'var(--acc)';
     }
 
     const eligibleCount = Array.from(state.places.values()).filter(eligible).length;
@@ -986,9 +1124,9 @@
     if(state.playing){ cardPlaceId = state.playing.id; key = 'p'+state.playing.id; view = [t('tagNow'), state.playing.thumb, state.playing.name, state.playing.extract]; }
     else if(state.lastTold && Date.now()-state.lastTold.t < 45000 && state.places.get(state.lastTold.id) && state.places.get(state.lastTold.id).detail && !state.flagged.has(state.lastTold.id)){
       const lp = state.places.get(state.lastTold.id);
-      cardPlaceId = lp.id; key = 'l'+lp.id; view = [t('tagTold'), lp.detail.thumb, placeName(lp), lp.detail.extract];
+      cardPlaceId = lp.id; key = 'l'+lp.id; view = [t('tagTold'), lp.detail.thumb, placeName(lp), story(lp.detail.extract)];
     }
-    else if(next){ cardPlaceId = next.p.id; key = 'n'+next.p.id; view = [t('tagNext'), next.p.detail.thumb, placeName(next.p), next.p.detail.extract]; }
+    else if(next){ cardPlaceId = next.p.id; key = 'n'+next.p.id; view = [t('tagNext'), next.p.detail.thumb, placeName(next.p), story(next.p.detail.extract)]; }
     else { cardPlaceId = null; key = 'none'; view = [null,null,null,null]; }
     if(key !== lastCardKey){ lastCardKey = key; renderCard(null, view[0], view[1], view[2], view[3], cardPlaceId); }
   }
@@ -1029,14 +1167,14 @@
 
   function applyLanguage(){
     document.documentElement.lang = state.lang;
-    $('start-title').innerHTML = t('startTitle'); $('start-sub').textContent = t('startSub');
+    $('start-title').innerHTML = t('startTitle'); $('start-sub').textContent = t('startSub'); $('start-sub').style.display = t('startSub') ? '' : 'none';
     $('btn-start').textContent = t('startBtn'); $('btn-demo').textContent = t('demoBtn');
-    $('btn-log').textContent = t('log'); $('btn-back').textContent = t('back');
+    $('btn-log').setAttribute('aria-label', t('log').replace(/\s*→/,'')); setBack('btn-back'); setBack('btn-favs-back');
     setBtn($('btn-replay'), 'replay', t('replay')); setBtn($('btn-skip'), 'skip', t('skip'));
     $('slide-label').textContent = t('end'); $('slide').setAttribute('aria-label', t('end')); updateMuteBtn();
-    $('settings-title').textContent = t('settingsTitle'); $('lbl-language').textContent = t('langLabel'); $('lbl-size').textContent = t('sizeLabel'); $('favs-title').textContent = t('favs'); $('btn-favs-start').textContent = t('favsBtn'); renderFavs(); lastCardKey='';  $('size-std').textContent = t('sizeStd'); $('lbl-btnstyle').textContent = t('styleLabel'); $('btn-glass').textContent = t('styleGlass'); $('btn-flat').textContent = t('styleFlat'); $('voice-heading').textContent = t('voiceHeading'); $('btn-settings-start').textContent = t('settingsBtn'); $('btn-settings-back').textContent = t('back'); $('lbl-voice-body').textContent = t('voiceNarration');
+    $('settings-title').textContent = t('settingsTitle'); $('lbl-language').textContent = t('langLabel'); $('lbl-size').textContent = t('sizeLabel'); $('favs-title').textContent = t('favs'); $('btn-favs-start').setAttribute('aria-label', t('favs')); $('btn-favs-trip').setAttribute('aria-label', t('favs')); renderFavs(); lastCardKey='';  $('size-std').textContent = t('sizeStd'); $('lbl-btnstyle').textContent = t('styleLabel'); $('btn-glass').textContent = t('styleGlass'); $('btn-flat').textContent = t('styleFlat'); $('voice-heading').textContent = t('voiceHeading'); ['btn-settings-start','btn-settings-trip','btn-settings-style'].forEach(i=>$(i).setAttribute('aria-label', t('settingsTitle'))); ['min','std','cas'].forEach(k=>{ const K = {min:'stMin',std:'stStd',cas:'stCas'}[k]; $('sty-'+k).textContent = t(K); $('pk-n-'+k).textContent = t(K); $('pk-d-'+k).textContent = t(K+'D'); $('pk-s-'+k).textContent = t(K+'S'); }); $('lbl-feel').textContent = t('feelLabel'); $('sty-desc').textContent = t({min:'stMinD', std:'stStdD', cas:'stCasD'}[curStyle] || 'stStdD'); $('pk-title').textContent = t('pickTitle'); $('pk-sub').textContent = t('pickSub'); $('btn-pick').textContent = t('pickBtn'); setBack('btn-settings-back'); $('lbl-voice-body').textContent = t('voiceNarration');
     $('lbl-voice-name').textContent = t('voicePlace'); $('btn-test-voice').textContent = t('voiceTest');
-    updatePauseBtn(); renderLog(); renderVoiceOptions();
+    updatePauseBtn(); renderLog(); renderVoiceOptions(); try{ renderSwatches(); }catch(e){}
   }
 
   /* =========================================================
@@ -1237,21 +1375,73 @@
       setTimeout(finish, TOTAL + 450);
     }catch(e){ finish(); }
   }
-  try{
-    const go = ()=>playIntro();
-    // wait until Michroma is really loaded, so the logo does not change size mid-animation
-    if(document.fonts && document.fonts.load){ Promise.race([document.fonts.load('34px Michroma'), new Promise(r=>setTimeout(r,2500))]).then(go, go); } else go();
-  }catch(e){ try{ document.getElementById('logo').classList.remove('intro'); document.getElementById('screen-start').classList.remove('introing'); }catch(_){} }
+
+  /* ---------- style: Minimal / Standard / Casual ---------- */
+
+  /* ---------- Casual colour scheme: blue plus nine flashy colours ---------- */
+  const ACCENTS = ['#006DBF','#F0384A','#F26A00','#E08A00','#1FA84F','#00A88F','#00A3C4','#7B4DFF','#C026D3','#FF2E93'];
+  function mixRgb(hex, to, k){ const n = parseInt(hex.slice(1),16), c=[(n>>16)&255,(n>>8)&255,n&255]; return c.map((v,i)=>Math.round(v+(to[i]-v)*k)); }
+  function setAccent(hex){
+    if(ACCENTS.indexOf(hex) < 0) hex = ACCENTS[0];
+    const st = document.documentElement.style, base = mixRgb(hex,[0,0,0],0);
+    st.setProperty('--acc', hex); st.setProperty('--acc-rgb', base.join(','));
+    st.setProperty('--acc-hi-rgb', mixRgb(hex,[255,255,255],.28).join(','));
+    st.setProperty('--acc-pale-rgb', mixRgb(hex,[255,255,255],.65).join(','));
+    st.setProperty('--acc-lo-rgb', mixRgb(hex,[0,0,0],.78).join(','));
+    st.setProperty('--acc-light', 'rgb('+mixRgb(hex,[255,255,255],.35).join(',')+')');
+  }
+  function buildSwatches(box){
+    box.innerHTML = '<div class="sw-lbl"></div>' + ACCENTS.map((c,i)=>`<button class="sw" data-c="${c}" style="background:${c}" aria-label="${c}"></button>`).join('');
+    box.querySelectorAll('.sw').forEach(b=>b.addEventListener('click', ()=>{ prefs.acc = b.getAttribute('data-c'); savePrefs(); if(curStyle==='cas') applyStyle(); else renderPicker(); }));
+  }
+  function renderSwatches(){
+    const cur = ACCENTS.indexOf(prefs.acc) >= 0 ? prefs.acc : ACCENTS[0];
+    document.querySelectorAll('.sw').forEach(b=>b.classList.toggle('sel', b.getAttribute('data-c')===cur));
+    document.querySelectorAll('.sw-lbl').forEach(l=>l.textContent = t('accLabel'));
+    $('sw-pick').classList.toggle('show', pendingStyle==='cas');
+  }
+  let pendingStyle = 'std';
+  function renderPicker(){ document.querySelectorAll('.pk-card').forEach(c=>c.classList.toggle('sel', c.getAttribute('data-style')===pendingStyle)); setAccent(pendingStyle==='cas' ? prefs.acc : ACCENTS[0]); renderSwatches(); }
+  function applyStyle(){
+    if(['min','std','cas'].indexOf(prefs.style) < 0) prefs.style = 'std';
+    curStyle = prefs.style;
+    const h = document.documentElement.classList;
+    ['min','std','cas'].forEach(k=>h.toggle('st-'+k, k===curStyle));
+    const ring = document.getElementById('lo-ring');
+    if(ring){ ring.setAttribute('r', curStyle==='cas' ? '14' : '14.5'); ring.setAttribute('stroke-width', curStyle==='cas' ? '5' : '4'); }
+    document.querySelectorAll('.sty-pill').forEach(b=>b.classList.toggle('active', b.getAttribute('data-style')===curStyle));
+    setAccent(curStyle==='cas' ? prefs.acc : ACCENTS[0]);
+    pendingStyle = curStyle; renderPicker();
+    lastCardKey = '';
+    try{ applyLanguage(); }catch(e){}
+  }
+  document.querySelectorAll('.sty-pill').forEach(b=>b.addEventListener('click', ()=>{ prefs.style = b.getAttribute('data-style'); prefs.styleSet = true; savePrefs(); applyStyle(); }));
+  document.querySelectorAll('.pk-card').forEach(b=>b.addEventListener('click', ()=>{ pendingStyle = b.getAttribute('data-style'); renderPicker(); }));
+  $('btn-settings-style').addEventListener('click', openSettings);
+  $('btn-pick').addEventListener('click', ()=>{ prefs.style = pendingStyle; prefs.styleSet = true; savePrefs(); applyStyle(); if(state.started){ show('trip'); } else { show('start'); runIntro(); } });
+  function runIntro(){
+    try{
+      const go = ()=>playIntro();
+      // wait until the logo font is really loaded, so the logo does not change size mid-animation
+      const fam = curStyle==='cas' ? 'Bruno Ace' : 'Michroma';
+      if(document.fonts && document.fonts.load){ Promise.race([document.fonts.load('34px "'+fam+'"'), new Promise(r=>setTimeout(r,2500))]).then(go, go); } else go();
+    }catch(e){ try{ document.getElementById('logo').classList.remove('intro'); document.getElementById('screen-start').classList.remove('introing'); }catch(_){} }
+  }
   if(prefs.lang && STR[prefs.lang]) state.lang = prefs.lang;
+  else { const nav = ((navigator.language||'en')+'').slice(0,2).toLowerCase(); if(STR[nav]) state.lang = nav; }
   document.querySelectorAll('.lang-pill').forEach(x=>x.classList.toggle('active', x.getAttribute('data-lang')===state.lang));
 
-  applyLanguage();
+  buildSwatches($('sw-pick')); buildSwatches($('sw-set'));
+  applyStyle();
+  // For now the style page opens on every launch (set to false to show it only the first time)
+  const ALWAYS_PICK = true;
+  if(prefs.styleSet && !ALWAYS_PICK){ runIntro(); } else { show('style'); }
   // iPhone Safari often reports its voice list a moment late
   setTimeout(()=>{ loadVoices(); renderVoiceOptions(); }, 600);
   setTimeout(()=>{ loadVoices(); renderVoiceOptions(); }, 1800);
 
   // exposed for automated testing only
-  window.__OT = {placeName, nameLangOf, demoPath, voiceFor, voicesFor, prefs, state, CFG, onPosition, parseDetails, cleanExtract, haversineM, bearing, relAngle, eligible, candidates, announceRange, refreshNearby, beginTrip};
+  window.__OT = {placeName, nameLangOf, demoPath, voiceFor, voicesFor, prefs, state, CFG, onPosition, parseDetails, cleanExtract, haversineM, bearing, relAngle, eligible, candidates, announceRange, refreshNearby, beginTrip, applyStyle, story, introsFor, show, t};
 })();
 </script>
 </body>
