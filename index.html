@@ -240,7 +240,7 @@
       sideRightS:"right", sideLeftS:"left", sideAheadS:"ahead", sideNearS:"nearby",
       km:(v)=>`${v} kilometers`, m:(v)=>`${v} meters`, kmS:(v)=>`${v} km`, mS:(v)=>`${v} m`,
       intros:[
-        (d,s)=>`In about ${d}, ${s}, there's something worth a look.`,
+        (d,s)=>`In about ${d}, ${s}.`,
         (d,s)=>`Coming up ${s}, in around ${d}.`,
         (d,s)=>`About ${d} from here, ${s}, keep an eye out.`,
         (d,s)=>`Just ahead, ${s}, roughly ${d} away.`,
@@ -256,7 +256,7 @@
       voiceSettings:"Voice settings", voiceNarration:"Narration voice", voicePlace:"Place-name voice (Dutch)",
       voiceAuto:"Automatic (best available)", voiceTest:"▶ Test voice", voiceNone:"none found",
       voiceUsing:(n,c)=>`Using: ${n} · ${c} voices found`,
-      voiceSample:"In about two kilometers, on your right, there's something worth a look."
+      voiceSample:"In about two kilometers, on your right, you'll pass the Evoluon."
     },
     nl:{
       tagNext:"Komt eraan", tagNow:"Nu aan het vertellen", live:"LIVE", offline:"GEEN SIGNAAL",
@@ -274,7 +274,7 @@
       sideRightS:"rechts", sideLeftS:"links", sideAheadS:"vooruit", sideNearS:"vlakbij",
       km:(v)=>`${v} kilometer`, m:(v)=>`${v} meter`, kmS:(v)=>`${v} km`, mS:(v)=>`${v} m`,
       intros:[
-        (d,s)=>`Over ongeveer ${d} ligt er ${s} iets de moeite waard.`,
+        (d,s)=>`Over ongeveer ${d}, ${s}.`,
         (d,s)=>`Zo dadelijk, over zo'n ${d}, ${s}.`,
         (d,s)=>`Nog even, over ${d}, ${s}.`,
         (d,s)=>`Kijk maar uit, ${s}, over ${d}.`,
@@ -290,7 +290,7 @@
       voiceSettings:"Steminstellingen", voiceNarration:"Verteller-stem", voicePlace:"Stem voor plaatsnamen (Nederlands)",
       voiceAuto:"Automatisch (beste beschikbare)", voiceTest:"▶ Test stem", voiceNone:"geen gevonden",
       voiceUsing:(n,c)=>`In gebruik: ${n} · ${c} stemmen gevonden`,
-      voiceSample:"Over ongeveer twee kilometer ligt er rechts iets de moeite waard."
+      voiceSample:"Over ongeveer twee kilometer, aan uw rechterkant, ligt het Evoluon."
     }
   };
   // "side" phrases in Dutch need a slightly different shape inside intros
