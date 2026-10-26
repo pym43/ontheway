@@ -34,7 +34,7 @@
   button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit;}
   button:focus-visible{outline:2px solid var(--amber); outline-offset:3px; border-radius:6px;}
 
-  .screen{display:none; flex-direction:column; min-height:100vh; width:100%; animation:fadeIn .5s ease both;}
+  .screen{display:none; flex-direction:column; min-height:100vh; width:100%; animation:fadeIn .5s ease backwards;}
   .screen.active{display:flex;}
   @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
 
@@ -122,6 +122,8 @@
   .captions p{margin:0; font-size:calc(13px * var(--fs)); color:var(--text-dim); font-style:italic; line-height:1.5;}
 
   .control-bar{position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:480px; padding:14px 18px calc(14px + env(safe-area-inset-bottom)); background:linear-gradient(180deg, transparent, var(--bg-0) 24%); display:flex; flex-direction:column; gap:8px;}
+  .control-bar{display:none;}
+  #app.on-trip .control-bar{display:flex;}
   .row{display:flex; gap:8px; flex-wrap:wrap;}
   .cbtn{flex:1 1 auto; padding:14px 8px; background:var(--surface-2); border:1px solid var(--hairline); border-radius:100px; font-family:Arial, Helvetica, sans-serif; font-size:calc(12.5px * var(--fs)); color:var(--text); text-align:center;}
   .cbtn:active{transform:scale(.96);}
@@ -215,7 +217,7 @@
     <button class="gear-start" id="btn-settings-start">⚙ Settings</button>
     <div class="logo intro" id="logo" role="img" aria-label="OnTheWay"><span class="lo-wrap"><svg class="lo" viewBox="0 0 33 33" aria-hidden="true"><circle cx="16.5" cy="16.5" r="14.5" fill="none" stroke="#EDE6D6" stroke-width="4"/><circle class="lo-ping" cx="16.5" cy="16.5" r="5.1"/><circle class="lo-ping p2" cx="16.5" cy="16.5" r="5.1"/></svg><span class="lo-core" id="lo-core"></span></span><span class="lt">N</span><span class="ld d1"></span><span class="lt">THE</span><span class="ld d2"></span><span class="lt">WAY</span><span class="ld d3"></span></div>
     <h1 class="start-title" id="start-title">Every way<br>has a voice.</h1>
-    <p class="start-sub" id="start-sub">OnTheWay finds interesting places along your way on its own and tells you about them, aloud.</p>
+    <p class="start-sub" id="start-sub">Hear the stories of what’s coming up your way.</p>
     <button class="btn-primary" id="btn-start">Start listening</button>
     <button class="btn-ghost" id="btn-demo">Try a simulated drive →</button>
     <div class="status-box" id="start-status"></div>
@@ -249,19 +251,6 @@
       <p id="captions-text">—</p>
     </div>
 
-    <div class="control-bar">
-      <div class="row">
-        <button class="cbtn" id="btn-replay">⟲ Replay</button>
-        <button class="cbtn" id="btn-pause">⏸ Pause</button>
-        <button class="cbtn" id="btn-skip">⚑ Skip</button>
-        <button class="cbtn on" id="btn-mute">🔊 Audio</button>
-      </div>
-      <div class="slide" id="slide" role="button" tabindex="0" aria-label="Slide to end journey">
-        <div class="slide-fill" id="slide-fill"></div>
-        <span class="slide-label" id="slide-label">Slide to end journey</span>
-        <div class="slide-thumb" id="slide-thumb">→</div>
-      </div>
-    </div>
   </section>
 
   <!-- FAVORITES -->
@@ -312,6 +301,19 @@
     <div class="log-head"><h2 id="log-title">Your journey</h2><button id="btn-back">← Back</button></div>
     <div id="log-body"></div>
   </section>
+  <div class="control-bar" id="control-bar">
+      <div class="row">
+        <button class="cbtn" id="btn-replay">⟲ Replay</button>
+        <button class="cbtn" id="btn-pause">⏸ Pause</button>
+        <button class="cbtn" id="btn-skip">⚑ Skip</button>
+        <button class="cbtn on" id="btn-mute">🔊 Audio</button>
+      </div>
+      <div class="slide" id="slide" role="button" tabindex="0" aria-label="Slide to end journey">
+        <div class="slide-fill" id="slide-fill"></div>
+        <span class="slide-label" id="slide-label">Slide to end journey</span>
+        <div class="slide-thumb" id="slide-thumb">→</div>
+      </div>
+    </div>
 <div class="toast" id="toast" role="status"></div>
 </div>
 
@@ -353,7 +355,7 @@
       savedOn:"Saved", moreInfo:"More about this place", addFav:"Save to favorites", noMore:"No more details available for this place.", moreFail:"Couldn't load more details.",
       flagged:"Marked as skipped / wrong",
       startTitle:"Every way<br>has a voice.",
-      startSub:"OnTheWay finds interesting places along your way on its own and tells you about them, aloud.",
+      startSub:"Hear the stories of what’s coming up your way.",
       startBtn:"Start listening", demoBtn:"Try a simulated drive →",
       source:"Source: Wikipedia",
       sideRight:"on your right", sideLeft:"on your left", sideAhead:"straight ahead", sideNear:"close by",
@@ -391,7 +393,7 @@
       savedOn:"Bewaard", moreInfo:"Meer over deze plek", addFav:"Bewaar in favorieten", noMore:"Geen verdere details beschikbaar.", moreFail:"Kon geen extra details laden.",
       flagged:"Overgeslagen / onjuist gemarkeerd",
       startTitle:"Elke weg<br>heeft een stem.",
-      startSub:"OnTheWay vindt zelf interessante plekken langs uw route en vertelt erover, hardop.",
+      startSub:"Hoor de verhalen over wat er op uw weg komt.",
       startBtn:"Start met luisteren", demoBtn:"Probeer een proefrit →",
       source:"Bron: Wikipedia",
       sideRight:"aan uw rechterkant", sideLeft:"aan uw linkerkant", sideAhead:"recht vooruit", sideNear:"vlakbij",
@@ -429,7 +431,7 @@
       savedOn:"Enregistré le", moreInfo:"En savoir plus sur ce lieu", addFav:"Ajouter aux favoris", noMore:"Pas d'autres détails pour ce lieu.", moreFail:"Impossible de charger plus de détails.",
       flagged:"Marqué comme passé / erroné",
       startTitle:"Chaque voie<br>a sa voix.",
-      startSub:"OnTheWay trouve tout seul les lieux intéressants le long de votre route et vous en parle, à voix haute.",
+      startSub:"Écoutez les histoires de ce qui vous attend sur votre route.",
       startBtn:"Commencer l'écoute", demoBtn:"Essayer un trajet simulé →",
       source:"Source : Wikipédia",
       sideRight:"sur votre droite", sideLeft:"sur votre gauche", sideAhead:"droit devant", sideNear:"tout près",
@@ -809,7 +811,7 @@
   const RING = 2*Math.PI*86;
   const clock = d => String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
   const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  function show(name){ [el.start, el.trip, el.log, el.settings, el.favs].forEach(s=>s.classList.remove('active')); ({start:el.start, trip:el.trip, log:el.log, settings:el.settings, favs:el.favs})[name].classList.add('active'); }
+  function show(name){ $('app').classList.toggle('on-trip', name==='trip');  [el.start, el.trip, el.log, el.settings, el.favs].forEach(s=>s.classList.remove('active')); ({start:el.start, trip:el.trip, log:el.log, settings:el.settings, favs:el.favs})[name].classList.add('active'); }
   let screenBefore = 'start';
   function openSettings(){
     screenBefore = el.trip.classList.contains('active') ? 'trip' : (el.log.classList.contains('active') ? 'log' : 'start');
