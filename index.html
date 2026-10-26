@@ -10,27 +10,27 @@
 <meta name="theme-color" content="#0B1018">
 <title>OnTheWay</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Michroma&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Serif+4:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Michroma&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg-0:#0B1018; --bg-1:#0F1626; --bg-2:#1B2740;
     --surface:#141C2C; --surface-2:#1D2A40; --hairline:#2A3852;
     --text:#EDE6D6; --text-dim:#93A0B4; --text-faint:#6A7A92;
     --amber:#E8A23D; --amber-dim:rgba(232,162,61,0.28); --amber-glow:rgba(232,162,61,0.55);
-    --teal:#4FA88A; --red:#D9715E;
+    --teal:#4FA88A; --red:#D9715E; --fs:1;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{height:100%;}
   body{
     margin:0; min-height:100vh; color:var(--text);
     background:radial-gradient(ellipse 120% 80% at 50% -10%, var(--bg-2) 0%, var(--bg-1) 45%, var(--bg-0) 100%);
-    font-family:'Source Serif 4', Georgia, serif;
+    font-family:Arial, Helvetica, sans-serif;
     display:flex; justify-content:center; overflow-x:hidden;
   }
   @media (prefers-reduced-motion: reduce){ *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;} }
   #app{width:100%; max-width:480px; min-height:100vh; display:flex; flex-direction:column;}
-  h1,h2,h3{font-family:'Fraunces', serif; margin:0; font-weight:600;}
-  .mono{font-family:'JetBrains Mono', monospace;}
+  h1,h2,h3{font-family:Arial, Helvetica, sans-serif; margin:0; font-weight:600;}
+  .mono{font-family:Arial, Helvetica, sans-serif;}
   button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit;}
   button:focus-visible{outline:2px solid var(--amber); outline-offset:3px; border-radius:6px;}
 
@@ -40,74 +40,77 @@
 
   /* ---------- start ---------- */
   #screen-start{justify-content:center; align-items:center; text-align:center; padding:32px 28px 48px;}
-  .eyebrow{font-family:'JetBrains Mono', monospace; text-transform:uppercase; letter-spacing:.16em; font-size:11px; color:var(--text-faint);}
+  .eyebrow{font-family:Arial, Helvetica, sans-serif; text-transform:uppercase; letter-spacing:.16em; font-size:calc(11px * var(--fs)); color:var(--text-faint);}
   /* ---------- logo (wordmark with animated O) ---------- */
   .logo{font-family:'Michroma', 'Source Serif 4', sans-serif; font-weight:400; font-size:clamp(22px, 8vw, 34px); letter-spacing:.1em; line-height:1; color:var(--text); white-space:nowrap; margin:0 0 40px;}
-  .logo .lo{display:inline-block; width:.76em; height:.76em; width:calc(1.03cap); height:calc(1.03cap); vertical-align:-.015cap; margin-right:.1em; overflow:visible;}
-  .logo .lo-core{fill:var(--amber); transform-box:fill-box; transform-origin:center; animation:coreBeat 3.6s ease-in-out infinite; filter:drop-shadow(0 0 3px var(--amber-glow));}
+  .logo .lo-wrap{display:inline-block; position:relative; width:.76em; height:.76em; width:calc(1.03cap); height:calc(1.03cap); vertical-align:-.015cap; margin-right:.1em;}
+  .logo .lo{display:block; width:100%; height:100%; overflow:visible;}
+  .logo .lo-core{position:absolute; inset:0; margin:auto; width:.24em; height:.24em; width:.32cap; height:.32cap; border-radius:50%; background:var(--amber); box-shadow:0 0 5px 1px var(--amber-glow); animation:coreBeat 3.6s ease-in-out infinite;}
   .logo .lo-ping{fill:none; stroke:var(--amber); stroke-width:1.1; transform-box:fill-box; transform-origin:center; opacity:0; animation:ping 3.6s ease-out infinite;}
   .logo .lo-ping.p2{animation-delay:.45s;}
   .logo .ld{display:inline-block; border-radius:50%; background:var(--amber); width:.092em; height:.092em; vertical-align:.314em; vertical-align:calc(.5cap - .046em); margin:0 .2em 0 .1em; animation:wayDot 3.6s ease-in-out infinite;}
   .logo .ld.d1{animation-delay:.9s;} .logo .ld.d2{animation-delay:1.4s;} .logo .ld.d3{animation-delay:1.9s; margin:0 0 0 .2em;}
+  .logo.intro .lt, .logo.intro .lo, .logo.intro .ld, .logo.intro .lo-core{opacity:0; animation:none;}
+  #screen-start.introing .start-title, #screen-start.introing .start-sub, #screen-start.introing .btn-primary, #screen-start.introing .btn-ghost{opacity:0;}
   @keyframes coreBeat{0%,100%{transform:scale(1);} 8%{transform:scale(1.35);} 22%{transform:scale(.95);} 34%{transform:scale(1);}}
   @keyframes ping{0%{transform:scale(1); opacity:.9;} 55%{opacity:0;} 100%{transform:scale(2.3); opacity:0;}}
   @keyframes wayDot{0%,40%,100%{opacity:.5; transform:scale(.85); box-shadow:0 0 0 0 rgba(232,162,61,0);} 10%{opacity:1; transform:scale(1.9); box-shadow:0 0 10px 3px var(--amber-glow);} 24%{opacity:.8; transform:scale(1);}}
-  .start-title{font-size:32px; margin-bottom:8px; line-height:1.15;}
-  .start-sub{color:var(--text-dim); font-size:15px; max-width:300px; line-height:1.5; margin:0 0 26px;}
+  .start-title{font-size:calc(22px * var(--fs)); margin-bottom:8px; line-height:1.15;}
+  .start-sub{color:var(--text-dim); font-size:calc(15px * var(--fs)); max-width:300px; line-height:1.5; margin:0 0 26px;}
   .lang-pills{display:flex; gap:6px; padding:4px; background:var(--surface); border:1px solid var(--hairline); border-radius:100px; margin-bottom:22px;}
-  .lang-pill{padding:8px 16px; border-radius:100px; font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--text-dim);}
-  .lang-pill.active{background:var(--amber); color:#1A1206; font-weight:600;}
-  .btn-primary{width:100%; max-width:300px; padding:16px 20px; background:var(--amber); color:#1A1206; border-radius:100px; font-family:'JetBrains Mono', monospace; font-weight:600; font-size:14px; letter-spacing:.03em; text-transform:uppercase; box-shadow:0 8px 24px -8px var(--amber-glow);}
+  .lang-pill,.size-pill{padding:8px 16px; border-radius:100px; font-family:Arial, Helvetica, sans-serif; font-size:calc(12.5px * var(--fs)); color:var(--text-dim);}
+  .lang-pill.active,.size-pill.active{background:var(--amber); color:#1A1206; font-weight:600;}
+  .btn-primary{width:100%; max-width:300px; padding:16px 20px; background:var(--amber); color:#1A1206; border-radius:100px; font-family:Arial, Helvetica, sans-serif; font-weight:600; font-size:calc(14px * var(--fs)); letter-spacing:.03em; text-transform:uppercase; box-shadow:0 8px 24px -8px var(--amber-glow);}
   .btn-primary:active{transform:scale(.97);}
-  .btn-ghost{margin-top:14px; padding:12px 20px; color:var(--text-dim); font-family:'JetBrains Mono', monospace; font-size:12.5px; border-bottom:1px solid var(--hairline);}
-  .status-box{margin-top:22px; max-width:320px; font-family:'JetBrains Mono', monospace; font-size:12px; line-height:1.6; color:var(--text-faint); min-height:18px; white-space:pre-line;}
+  .btn-ghost{margin-top:14px; padding:12px 20px; color:var(--text-dim); font-family:Arial, Helvetica, sans-serif; font-size:calc(12.5px * var(--fs)); border-bottom:1px solid var(--hairline);}
+  .status-box{margin-top:22px; max-width:320px; font-family:Arial, Helvetica, sans-serif; font-size:calc(12px * var(--fs)); line-height:1.6; color:var(--text-faint); min-height:18px; white-space:pre-line;}
   .status-box.error{color:var(--red);}
 
   .voice-box{width:100%; max-width:300px; margin:-8px 0 18px; text-align:left; border:1px solid var(--hairline); border-radius:14px; background:var(--surface); padding:2px 14px;}
-  .voice-box summary{cursor:pointer; padding:11px 0; font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--text-dim); list-style:none;}
+  .voice-box summary{cursor:pointer; padding:11px 0; font-family:Arial, Helvetica, sans-serif; font-size:calc(12px * var(--fs)); color:var(--text-dim); list-style:none;}
   .voice-box summary::-webkit-details-marker{display:none;}
-  .voice-box label{display:block; margin:6px 0 4px; font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-faint);}
-  .voice-box select{width:100%; padding:10px; border-radius:10px; border:1px solid var(--hairline); background:var(--bg-1); color:var(--text); font-size:14px; font-family:inherit;}
-  .voice-now{margin:10px 0 4px; font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--teal); line-height:1.5;}
-  .voice-test{margin:6px 0 12px; padding:9px 14px; border:1px solid var(--amber-dim); border-radius:100px; font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--amber);}
+  .voice-box label{display:block; margin:6px 0 4px; font-family:Arial, Helvetica, sans-serif; font-size:calc(10.5px * var(--fs)); letter-spacing:.08em; text-transform:uppercase; color:var(--text-faint);}
+  .voice-box select{width:100%; padding:10px; border-radius:10px; border:1px solid var(--hairline); background:var(--bg-1); color:var(--text); font-size:calc(14px * var(--fs)); font-family:inherit;}
+  .voice-now{margin:10px 0 4px; font-family:Arial, Helvetica, sans-serif; font-size:calc(11px * var(--fs)); color:var(--teal); line-height:1.5;}
+  .voice-test{margin:6px 0 12px; padding:9px 14px; border:1px solid var(--amber-dim); border-radius:100px; font-family:Arial, Helvetica, sans-serif; font-size:calc(12px * var(--fs)); color:var(--amber);}
 
   #screen-start{position:relative;}
-  .gear-start{position:absolute; top:calc(14px + env(safe-area-inset-top)); right:18px; padding:8px 12px; font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--text-dim); border:1px solid var(--hairline); border-radius:100px; background:var(--surface);}
+  .gear-start{position:absolute; top:calc(14px + env(safe-area-inset-top)); right:18px; padding:8px 12px; font-family:Arial, Helvetica, sans-serif; font-size:calc(12px * var(--fs)); color:var(--text-dim); border:1px solid var(--hairline); border-radius:100px; background:var(--surface);}
   .hud-right{display:flex; align-items:center; gap:16px;}
   .set-sec{padding:20px 22px; border-bottom:1px solid var(--hairline);}
-  .set-h{font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--amber); margin-bottom:12px;}
+  .set-h{font-family:Arial, Helvetica, sans-serif; font-size:calc(11px * var(--fs)); letter-spacing:.14em; text-transform:uppercase; color:var(--amber); margin-bottom:12px;}
   .set-sec .lang-pills{display:inline-flex; margin-bottom:0;}
-  .set-sec label{display:block; margin:12px 0 5px; font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-faint);}
-  .set-sec select{width:100%; padding:11px; border-radius:10px; border:1px solid var(--hairline); background:var(--bg-1); color:var(--text); font-size:15px; font-family:inherit;}
+  .set-sec label{display:block; margin:12px 0 5px; font-family:Arial, Helvetica, sans-serif; font-size:calc(10.5px * var(--fs)); letter-spacing:.08em; text-transform:uppercase; color:var(--text-faint);}
+  .set-sec select{width:100%; padding:11px; border-radius:10px; border:1px solid var(--hairline); background:var(--bg-1); color:var(--text); font-size:calc(15px * var(--fs)); font-family:inherit;}
 
   /* ---------- trip ---------- */
   #screen-trip{padding-bottom:178px;}
-  .hud-bar{display:flex; align-items:center; justify-content:space-between; padding:calc(14px + env(safe-area-inset-top)) 20px 14px; border-bottom:1px solid var(--hairline); font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--text-dim);}
+  .hud-bar{display:flex; align-items:center; justify-content:space-between; padding:calc(14px + env(safe-area-inset-top)) 20px 14px; border-bottom:1px solid var(--hairline); font-family:Arial, Helvetica, sans-serif; font-size:calc(12px * var(--fs)); color:var(--text-dim);}
   .live{display:flex; align-items:center; gap:8px;}
   .live .dot{width:7px; height:7px; border-radius:50%; background:var(--teal); box-shadow:0 0 8px var(--teal);}
   .live .dot.off{background:var(--red); box-shadow:0 0 8px var(--red);}
-  .hud-bar button{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--text-dim);}
+  .hud-bar button{font-family:Arial, Helvetica, sans-serif; font-size:calc(12px * var(--fs)); color:var(--text-dim);}
 
   .next-wrap{padding:26px 22px 4px; display:flex; flex-direction:column; align-items:center;}
   .ring-wrap{position:relative; width:190px; height:190px;}
   .ring-wrap svg{width:100%; height:100%; display:block;}
   #ring-fill{stroke-dasharray:540.35; stroke-dashoffset:540.35; transition:stroke-dashoffset .9s cubic-bezier(.4,0,.2,1), stroke .4s;}
   .ring-center{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;}
-  .ring-dist{font-family:'JetBrains Mono', monospace; font-size:30px; font-weight:600; color:var(--amber); line-height:1;}
+  .ring-dist{font-family:Arial, Helvetica, sans-serif; font-size:calc(30px * var(--fs)); font-weight:600; color:var(--amber); line-height:1;}
   .ring-dist.close{color:var(--teal);}
-  .ring-side{margin-top:8px; font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-dim); padding:0 18px;}
-  .scan-line{margin-top:14px; font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text-faint); text-align:center; min-height:16px;}
+  .ring-side{margin-top:8px; font-family:Arial, Helvetica, sans-serif; font-size:calc(11px * var(--fs)); letter-spacing:.08em; text-transform:uppercase; color:var(--text-dim); padding:0 18px;}
+  .scan-line{margin-top:14px; font-family:Arial, Helvetica, sans-serif; font-size:calc(11px * var(--fs)); color:var(--text-faint); text-align:center; min-height:16px;}
 
   .card{margin:18px 22px 0; background:linear-gradient(180deg, var(--surface-2), var(--surface)); border:1px solid var(--hairline); border-radius:22px; overflow:hidden; position:relative;}
   .card::before{content:""; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg, transparent, var(--amber), transparent); opacity:.6; z-index:2;}
   .card-img{display:none; width:100%; height:150px; object-fit:cover; background:var(--surface);}
   .card-img.visible{display:block;}
   .card-body{padding:18px 20px 20px;}
-  .tag{font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--amber); margin-bottom:8px;}
-  .card h3{font-size:22px; margin-bottom:8px;}
-  .card p{margin:0; font-size:15px; line-height:1.6; color:var(--text-dim);}
-  .src{margin-top:10px; font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--text-faint);}
-  .empty-card{margin:18px 22px 0; padding:22px; text-align:center; color:var(--text-faint); font-family:'JetBrains Mono', monospace; font-size:12.5px; line-height:1.7; border:1px dashed var(--hairline); border-radius:22px;}
+  .tag{font-family:Arial, Helvetica, sans-serif; font-size:calc(10.5px * var(--fs)); letter-spacing:.14em; text-transform:uppercase; color:var(--amber); margin-bottom:8px;}
+  .card h3{font-size:calc(22px * var(--fs)); margin-bottom:8px;}
+  .card p{margin:0; font-size:calc(15px * var(--fs)); line-height:1.6; color:var(--text-dim);}
+  .src{margin-top:10px; font-family:Arial, Helvetica, sans-serif; font-size:calc(10.5px * var(--fs)); color:var(--text-faint);}
+  .empty-card{margin:18px 22px 0; padding:22px; text-align:center; color:var(--text-faint); font-family:Arial, Helvetica, sans-serif; font-size:calc(12.5px * var(--fs)); line-height:1.7; border:1px dashed var(--hairline); border-radius:22px;}
 
   .captions{margin:16px 22px 0; padding:12px 16px; border-left:2px solid var(--amber-dim); display:none; align-items:center; gap:12px;}
   .captions.show{display:flex;}
@@ -116,35 +119,35 @@
   .eq span:nth-child(1){height:6px;} .eq span:nth-child(2){height:14px; animation-delay:.15s;} .eq span:nth-child(3){height:9px; animation-delay:.3s;}
   .eq.paused span{animation-play-state:paused;}
   @keyframes eq{0%,100%{transform:scaleY(.5);} 50%{transform:scaleY(1.3);}}
-  .captions p{margin:0; font-size:13px; color:var(--text-dim); font-style:italic; line-height:1.5;}
+  .captions p{margin:0; font-size:calc(13px * var(--fs)); color:var(--text-dim); font-style:italic; line-height:1.5;}
 
   .control-bar{position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:480px; padding:14px 18px calc(14px + env(safe-area-inset-bottom)); background:linear-gradient(180deg, transparent, var(--bg-0) 24%); display:flex; flex-direction:column; gap:8px;}
   .row{display:flex; gap:8px;}
-  .cbtn{flex:1; padding:14px 8px; background:var(--surface-2); border:1px solid var(--hairline); border-radius:100px; font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--text); text-align:center;}
+  .cbtn{flex:1; padding:14px 8px; background:var(--surface-2); border:1px solid var(--hairline); border-radius:100px; font-family:Arial, Helvetica, sans-serif; font-size:calc(12.5px * var(--fs)); color:var(--text); text-align:center;}
   .cbtn:active{transform:scale(.96);}
-  .row.small .cbtn{padding:9px 6px; font-size:11.5px; background:transparent; border-color:transparent; color:var(--text-faint);}
+  .row.small .cbtn{padding:9px 6px; font-size:calc(11.5px * var(--fs)); background:transparent; border-color:transparent; color:var(--text-faint);}
   .row.small .cbtn.on{color:var(--amber);}
 
   /* ---------- log ---------- */
   #screen-log{padding-bottom:40px;}
   .log-head{display:flex; align-items:center; justify-content:space-between; padding:calc(22px + env(safe-area-inset-top)) 22px 16px; border-bottom:1px solid var(--hairline);}
-  .log-head h2{font-size:26px;}
-  .log-head button{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--text-dim);}
-  .log-empty{padding:56px 30px; text-align:center; color:var(--text-faint); font-family:'JetBrains Mono', monospace; font-size:13px; line-height:1.7;}
+  .log-head h2{font-size:calc(26px * var(--fs));}
+  .log-head button{font-family:Arial, Helvetica, sans-serif; font-size:calc(12px * var(--fs)); color:var(--text-dim);}
+  .log-empty{padding:56px 30px; text-align:center; color:var(--text-faint); font-family:Arial, Helvetica, sans-serif; font-size:calc(13px * var(--fs)); line-height:1.7;}
   .log-entry{padding:18px 22px; border-bottom:1px solid var(--hairline);}
-  .log-entry .t{font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text-faint); margin-bottom:6px;}
-  .log-entry h3{font-size:18px; margin-bottom:6px;}
-  .log-entry p{margin:0; font-size:14.5px; line-height:1.6; color:var(--text-dim);}
-  .log-entry .flag{display:inline-block; margin-top:8px; font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--red);}
+  .log-entry .t{font-family:Arial, Helvetica, sans-serif; font-size:calc(11px * var(--fs)); color:var(--text-faint); margin-bottom:6px;}
+  .log-entry h3{font-size:calc(18px * var(--fs)); margin-bottom:6px;}
+  .log-entry p{margin:0; font-size:calc(14.5px * var(--fs)); line-height:1.6; color:var(--text-dim);}
+  .log-entry .flag{display:inline-block; margin-top:8px; font-family:Arial, Helvetica, sans-serif; font-size:calc(11px * var(--fs)); color:var(--red);}
 </style>
 </head>
 <body>
 <div id="app">
 
   <!-- START -->
-  <section class="screen active" id="screen-start">
+  <section class="screen active introing" id="screen-start">
     <button class="gear-start" id="btn-settings-start">⚙ Settings</button>
-    <div class="logo" role="img" aria-label="OnTheWay"><svg class="lo" viewBox="0 0 33 33" aria-hidden="true"><circle cx="16.5" cy="16.5" r="14.5" fill="none" stroke="#EDE6D6" stroke-width="4"/><circle class="lo-ping" cx="16.5" cy="16.5" r="5.1"/><circle class="lo-ping p2" cx="16.5" cy="16.5" r="5.1"/><circle class="lo-core" cx="16.5" cy="16.5" r="5.1"/></svg>N<span class="ld d1"></span>THE<span class="ld d2"></span>WAY<span class="ld d3"></span></div>
+    <div class="logo intro" id="logo" role="img" aria-label="OnTheWay"><span class="lo-wrap"><svg class="lo" viewBox="0 0 33 33" aria-hidden="true"><circle cx="16.5" cy="16.5" r="14.5" fill="none" stroke="#EDE6D6" stroke-width="4"/><circle class="lo-ping" cx="16.5" cy="16.5" r="5.1"/><circle class="lo-ping p2" cx="16.5" cy="16.5" r="5.1"/></svg><span class="lo-core" id="lo-core"></span></span><span class="lt">N</span><span class="ld d1"></span><span class="lt">THE</span><span class="ld d2"></span><span class="lt">WAY</span><span class="ld d3"></span></div>
     <h1 class="start-title" id="start-title">Every way<br>has a voice.</h1>
     <p class="start-sub" id="start-sub">OnTheWay finds interesting places along your way on its own and tells you about them, aloud.</p>
     <button class="btn-primary" id="btn-start">Start listening</button>
@@ -202,6 +205,14 @@
       <div class="lang-pills">
         <button class="lang-pill active" data-lang="en">English</button>
         <button class="lang-pill" data-lang="nl">Nederlands</button>
+      </div>
+    </div>
+    <div class="set-sec">
+      <div class="set-h" id="lbl-size">Text size</div>
+      <div class="lang-pills">
+        <button class="size-pill active" data-size="std" id="size-std">Standard</button>
+        <button class="size-pill" data-size="l">L</button>
+        <button class="size-pill" data-size="xl">XL</button>
       </div>
     </div>
     <div class="set-sec">
@@ -276,7 +287,7 @@
       gpsTimeout:"Finding your position is taking long. Still trying…",
       demoDone:"That was the end of the demo drive.",
       wakeOn:"Screen stays on", wakeOff:"Keep the screen on and the phone plugged in while driving.",
-      settingsBtn:"⚙ Settings", settingsTitle:"Settings", langLabel:"Language", voiceHeading:"Voice", voiceNarration:"Narration voice", voicePlace:"Place-name voice (Dutch)",
+      settingsBtn:"⚙ Settings", settingsTitle:"Settings", langLabel:"Language", sizeLabel:"Text size", sizeStd:"Standard", voiceHeading:"Voice", voiceNarration:"Narration voice", voicePlace:"Place-name voice (Dutch)",
       voiceAuto:"Automatic (best available)", voiceTest:"▶ Test voice", voiceNone:"none found",
       voiceUsing:(n,c)=>`Using: ${n} · ${c} voices found`,
       voiceSample:"In about two kilometers, on your right, you'll pass the Evoluon."
@@ -310,7 +321,7 @@
       gpsTimeout:"Positie bepalen duurt lang. Nog bezig…",
       demoDone:"Dit was het einde van de proefrit.",
       wakeOn:"Scherm blijft aan", wakeOff:"Houd het scherm aan en de telefoon aan de lader tijdens het rijden.",
-      settingsBtn:"⚙ Instellingen", settingsTitle:"Instellingen", langLabel:"Taal", voiceHeading:"Stem", voiceNarration:"Verteller-stem", voicePlace:"Stem voor plaatsnamen (Nederlands)",
+      settingsBtn:"⚙ Instellingen", settingsTitle:"Instellingen", langLabel:"Taal", sizeLabel:"Tekstgrootte", sizeStd:"Standaard", voiceHeading:"Stem", voiceNarration:"Verteller-stem", voicePlace:"Stem voor plaatsnamen (Nederlands)",
       voiceAuto:"Automatisch (beste beschikbare)", voiceTest:"▶ Test stem", voiceNone:"geen gevonden",
       voiceUsing:(n,c)=>`In gebruik: ${n} · ${c} stemmen gevonden`,
       voiceSample:"Over ongeveer twee kilometer, aan uw rechterkant, ligt het Evoluon."
@@ -758,7 +769,7 @@
     $('btn-log').textContent = t('log'); $('btn-back').textContent = t('back');
     $('btn-replay').textContent = t('replay'); $('btn-skip').textContent = t('skip');
     $('btn-end').textContent = t('end'); el.mute.textContent = state.muted ? t('audioOff') : t('audioOn');
-    $('settings-title').textContent = t('settingsTitle'); $('lbl-language').textContent = t('langLabel'); $('voice-heading').textContent = t('voiceHeading'); $('btn-settings-start').textContent = t('settingsBtn'); $('btn-settings-back').textContent = t('back'); $('lbl-voice-body').textContent = t('voiceNarration');
+    $('settings-title').textContent = t('settingsTitle'); $('lbl-language').textContent = t('langLabel'); $('lbl-size').textContent = t('sizeLabel'); $('size-std').textContent = t('sizeStd'); $('voice-heading').textContent = t('voiceHeading'); $('btn-settings-start').textContent = t('settingsBtn'); $('btn-settings-back').textContent = t('back'); $('lbl-voice-body').textContent = t('voiceNarration');
     $('lbl-voice-name').textContent = t('voicePlace'); $('btn-test-voice').textContent = t('voiceTest');
     updatePauseBtn(); renderLog(); renderVoiceOptions();
   }
@@ -874,6 +885,62 @@
   $('btn-settings-trip').addEventListener('click', openSettings);
   $('btn-settings-back').addEventListener('click', ()=>show(screenBefore));
   // English is the default; a language chosen earlier in Settings is remembered
+  const FS_MAP = {std:1, l:1.15, xl:1.3};
+  function applySize(){
+    const k = FS_MAP[prefs.fs] ? prefs.fs : 'std';
+    document.documentElement.style.setProperty('--fs', FS_MAP[k]);
+    document.querySelectorAll('.size-pill').forEach(x=>x.classList.toggle('active', x.getAttribute('data-size')===k));
+  }
+  document.querySelectorAll('.size-pill').forEach(b=>b.addEventListener('click', ()=>{ prefs.fs = b.getAttribute('data-size'); savePrefs(); applySize(); }));
+  applySize();
+  /* ---------- intro: four dots extend into the wordmark ---------- */
+  function playIntro(){
+    const logo = document.getElementById('logo'), scr = document.getElementById('screen-start');
+    const anims = [];
+    let finished = false;
+    function finish(){
+      if(finished) return; finished = true;
+      try{ logo.classList.remove('intro'); scr.classList.remove('introing'); }catch(e){}
+      anims.forEach(a=>{ try{ a.cancel(); }catch(e){} });
+    }
+    setTimeout(finish, 7000);
+    try{
+      if(!logo || typeof logo.animate !== 'function') return finish();
+      if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return finish();
+      const core = document.getElementById('lo-core');
+      const ds = [...logo.querySelectorAll('.ld')], lts = [...logo.querySelectorAll('.lt')], ring = logo.querySelector('.lo');
+      const R = e=>e.getBoundingClientRect(), CX = e=>{ const b=R(e); return b.left+b.width/2; };
+      if(!R(logo).width) return finish();
+      const f0 = CX(core), fx = ds.map(CX);
+      const fsz = parseFloat(getComputedStyle(logo).fontSize) || 30;
+      const gap = fsz*0.8, C = R(logo).left + R(logo).width/2;
+      const shift = (C - 1.5*gap) - f0;
+      const TOTAL = 2800, EXP0 = 1100, S = 3;
+      const t = ms => ms/TOTAL;
+      const add = (el, frames, o)=>{ const a = el.animate(frames, Object.assign({duration:TOTAL, fill:'both'}, o||{})); anims.push(a); return a; };
+      add(logo, [{offset:0, transform:`translateX(${shift}px)`},{offset:t(EXP0), transform:`translateX(${shift}px)`, easing:'cubic-bezier(.65,0,.25,1)'},{offset:t(EXP0+1100), transform:'translateX(0px)'},{offset:1, transform:'translateX(0px)'}]);
+      const dotFrames = (dx, t0)=>[
+        {offset:0, opacity:0, transform:`translateX(${dx}px) scale(0)`},
+        {offset:t(t0), opacity:0, transform:`translateX(${dx}px) scale(0)`, easing:'ease-out'},
+        {offset:t(t0+280), opacity:1, transform:`translateX(${dx}px) scale(${S*1.15})`},
+        {offset:t(t0+420), opacity:1, transform:`translateX(${dx}px) scale(${S})`},
+        {offset:t(EXP0), opacity:1, transform:`translateX(${dx}px) scale(${S})`, easing:'cubic-bezier(.65,0,.25,1)'},
+        {offset:t(EXP0+1100), opacity:1, transform:'translateX(0px) scale(1)'},
+        {offset:1, opacity:1, transform:'translateX(0px) scale(1)'}];
+      add(core, dotFrames(0, 150));
+      ds.forEach((d,i)=> add(d, dotFrames((f0 + (i+1)*gap) - fx[i], 150 + (i+1)*140)));
+      const rs = [1500, 1750, 2000];
+      lts.forEach((l,i)=> add(l, [{offset:0, opacity:0, transform:'translateX(-10px)'},{offset:t(rs[i]), opacity:0, transform:'translateX(-10px)'},{offset:t(rs[i]+500), opacity:1, transform:'translateX(0)'},{offset:1, opacity:1, transform:'translateX(0)'}]));
+      add(ring, [{offset:0, opacity:0, transform:'scale(.8)'},{offset:t(1300), opacity:0, transform:'scale(.8)'},{offset:t(1900), opacity:1, transform:'scale(1)'},{offset:1, opacity:1, transform:'scale(1)'}]);
+      const rest = [...scr.querySelectorAll('.start-title, .start-sub, .btn-primary, .btn-ghost')];
+      rest.forEach((e,i)=> add(e, [{opacity:0, transform:'translateY(8px)'},{opacity:1, transform:'translateY(0)'}], {duration:600, delay:2100 + i*90}));
+      setTimeout(finish, TOTAL + 450);
+    }catch(e){ finish(); }
+  }
+  try{
+    const go = ()=>playIntro();
+    if(document.fonts && document.fonts.ready){ Promise.race([document.fonts.ready, new Promise(r=>setTimeout(r,1500))]).then(go, go); } else go();
+  }catch(e){ try{ document.getElementById('logo').classList.remove('intro'); document.getElementById('screen-start').classList.remove('introing'); }catch(_){} }
   if(prefs.lang && STR[prefs.lang]) state.lang = prefs.lang;
   document.querySelectorAll('.lang-pill').forEach(x=>x.classList.toggle('active', x.getAttribute('data-lang')===state.lang));
 
