@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#0B1018">
 <title>OnTheWay</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Serif+4:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Michroma&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Serif+4:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg-0:#0B1018; --bg-1:#0F1626; --bg-2:#1B2740;
@@ -41,11 +41,17 @@
   /* ---------- start ---------- */
   #screen-start{justify-content:center; align-items:center; text-align:center; padding:32px 28px 48px;}
   .eyebrow{font-family:'JetBrains Mono', monospace; text-transform:uppercase; letter-spacing:.16em; font-size:11px; color:var(--text-faint);}
-  .pulse-wrap{position:relative; width:180px; height:180px; display:flex; align-items:center; justify-content:center; margin:18px 0 30px;}
-  .pulse-ring{position:absolute; border-radius:50%; border:1px solid var(--amber-dim); animation:breathe 3.6s ease-in-out infinite;}
-  .pulse-ring.r1{width:100%; height:100%;} .pulse-ring.r2{width:72%; height:72%; animation-delay:.6s;} .pulse-ring.r3{width:46%; height:46%; animation-delay:1.2s;}
-  @keyframes breathe{0%,100%{transform:scale(1); opacity:.35;} 50%{transform:scale(1.06); opacity:.9;}}
-  .pulse-core{width:30%; height:30%; border-radius:50%; background:radial-gradient(circle at 35% 30%, var(--amber-glow), var(--amber) 70%); box-shadow:0 0 40px 6px var(--amber-dim);}
+  /* ---------- logo (wordmark with animated O) ---------- */
+  .logo{font-family:'Michroma', 'Source Serif 4', sans-serif; font-weight:400; font-size:clamp(22px, 8vw, 34px); letter-spacing:.1em; line-height:1; color:var(--text); white-space:nowrap; margin:0 0 40px;}
+  .logo .lo{display:inline-block; width:.76em; height:.76em; width:calc(1.03cap); height:calc(1.03cap); vertical-align:-.015cap; margin-right:.1em; overflow:visible;}
+  .logo .lo-core{fill:var(--amber); transform-box:fill-box; transform-origin:center; animation:coreBeat 3.6s ease-in-out infinite; filter:drop-shadow(0 0 3px var(--amber-glow));}
+  .logo .lo-ping{fill:none; stroke:var(--amber); stroke-width:1.1; transform-box:fill-box; transform-origin:center; opacity:0; animation:ping 3.6s ease-out infinite;}
+  .logo .lo-ping.p2{animation-delay:.45s;}
+  .logo .ld{display:inline-block; border-radius:50%; background:var(--amber); width:.15em; height:.15em; width:.2cap; height:.2cap; vertical-align:.3em; vertical-align:.4cap; margin:0 .2em 0 .1em; animation:wayDot 3.6s ease-in-out infinite;}
+  .logo .ld.d1{animation-delay:.9s;} .logo .ld.d2{animation-delay:1.4s;}
+  @keyframes coreBeat{0%,100%{transform:scale(1);} 8%{transform:scale(1.35);} 22%{transform:scale(.95);} 34%{transform:scale(1);}}
+  @keyframes ping{0%{transform:scale(1); opacity:.9;} 55%{opacity:0;} 100%{transform:scale(2.3); opacity:0;}}
+  @keyframes wayDot{0%,40%,100%{opacity:.5; transform:scale(.85); box-shadow:0 0 0 0 rgba(232,162,61,0);} 10%{opacity:1; transform:scale(1.35); box-shadow:0 0 10px 2px var(--amber-glow);} 24%{opacity:.8; transform:scale(1);}}
   .start-title{font-size:32px; margin-bottom:8px; line-height:1.15;}
   .start-sub{color:var(--text-dim); font-size:15px; max-width:300px; line-height:1.5; margin:0 0 26px;}
   .lang-pills{display:flex; gap:6px; padding:4px; background:var(--surface); border:1px solid var(--hairline); border-radius:100px; margin-bottom:22px;}
@@ -64,6 +70,15 @@
   .voice-box select{width:100%; padding:10px; border-radius:10px; border:1px solid var(--hairline); background:var(--bg-1); color:var(--text); font-size:14px; font-family:inherit;}
   .voice-now{margin:10px 0 4px; font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--teal); line-height:1.5;}
   .voice-test{margin:6px 0 12px; padding:9px 14px; border:1px solid var(--amber-dim); border-radius:100px; font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--amber);}
+
+  #screen-start{position:relative;}
+  .gear-start{position:absolute; top:calc(14px + env(safe-area-inset-top)); right:18px; padding:8px 12px; font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--text-dim); border:1px solid var(--hairline); border-radius:100px; background:var(--surface);}
+  .hud-right{display:flex; align-items:center; gap:16px;}
+  .set-sec{padding:20px 22px; border-bottom:1px solid var(--hairline);}
+  .set-h{font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--amber); margin-bottom:12px;}
+  .set-sec .lang-pills{display:inline-flex; margin-bottom:0;}
+  .set-sec label{display:block; margin:12px 0 5px; font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-faint);}
+  .set-sec select{width:100%; padding:11px; border-radius:10px; border:1px solid var(--hairline); background:var(--bg-1); color:var(--text); font-size:15px; font-family:inherit;}
 
   /* ---------- trip ---------- */
   #screen-trip{padding-bottom:178px;}
@@ -128,23 +143,10 @@
 
   <!-- START -->
   <section class="screen active" id="screen-start">
-    <div class="eyebrow">OnTheWay</div>
-    <div class="pulse-wrap"><div class="pulse-ring r1"></div><div class="pulse-ring r2"></div><div class="pulse-ring r3"></div><div class="pulse-core"></div></div>
+    <button class="gear-start" id="btn-settings-start">⚙ Settings</button>
+    <div class="logo" role="img" aria-label="OnTheWay"><svg class="lo" viewBox="0 0 33 33" aria-hidden="true"><circle cx="16.5" cy="16.5" r="14.5" fill="none" stroke="#EDE6D6" stroke-width="4"/><circle class="lo-ping" cx="16.5" cy="16.5" r="5.1"/><circle class="lo-ping p2" cx="16.5" cy="16.5" r="5.1"/><circle class="lo-core" cx="16.5" cy="16.5" r="5.1"/></svg>N<span class="ld d1"></span>THE<span class="ld d2"></span>WAY</div>
     <h1 class="start-title" id="start-title">Every road<br>has a voice.</h1>
     <p class="start-sub" id="start-sub">OnTheWay finds interesting places along your way on its own and tells you about them, aloud.</p>
-    <div class="lang-pills">
-      <button class="lang-pill active" data-lang="en">English</button>
-      <button class="lang-pill" data-lang="nl">Nederlands</button>
-    </div>
-    <details class="voice-box">
-      <summary id="voice-summary">Voice settings</summary>
-      <label for="sel-voice-body" id="lbl-voice-body">Narration voice</label>
-      <select id="sel-voice-body"></select>
-      <label for="sel-voice-name" id="lbl-voice-name">Place-name voice (Dutch)</label>
-      <select id="sel-voice-name"></select>
-      <div class="voice-now" id="voice-now"></div>
-      <button class="voice-test" id="btn-test-voice">▶ Test voice</button>
-    </details>
     <button class="btn-primary" id="btn-start">Start listening</button>
     <button class="btn-ghost" id="btn-demo">Try a simulated drive →</button>
     <div class="status-box" id="start-status"></div>
@@ -155,7 +157,7 @@
     <div class="hud-bar">
       <div class="live"><span class="dot" id="live-dot"></span><span id="live-label">LIVE</span></div>
       <span id="clock">00:00</span>
-      <button id="btn-log">Journey log →</button>
+      <div class="hud-right"><button id="btn-settings-trip" aria-label="Settings">⚙</button><button id="btn-log">Journey log →</button></div>
     </div>
 
     <div class="next-wrap">
@@ -189,6 +191,27 @@
         <button class="cbtn on" id="btn-mute">🔊 Audio on</button>
         <button class="cbtn" id="btn-end">End journey</button>
       </div>
+    </div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section class="screen" id="screen-settings">
+    <div class="log-head"><h2 id="settings-title">Settings</h2><button id="btn-settings-back">← Back</button></div>
+    <div class="set-sec">
+      <div class="set-h" id="lbl-language">Language</div>
+      <div class="lang-pills">
+        <button class="lang-pill active" data-lang="en">English</button>
+        <button class="lang-pill" data-lang="nl">Nederlands</button>
+      </div>
+    </div>
+    <div class="set-sec">
+      <div class="set-h" id="voice-heading">Voice</div>
+      <label for="sel-voice-body" id="lbl-voice-body">Narration voice</label>
+      <select id="sel-voice-body"></select>
+      <label for="sel-voice-name" id="lbl-voice-name">Place-name voice (Dutch)</label>
+      <select id="sel-voice-name"></select>
+      <div class="voice-now" id="voice-now"></div>
+      <button class="voice-test" id="btn-test-voice">▶ Test voice</button>
     </div>
   </section>
 
@@ -253,7 +276,7 @@
       gpsTimeout:"Finding your position is taking long. Still trying…",
       demoDone:"That was the end of the demo drive.",
       wakeOn:"Screen stays on", wakeOff:"Keep the screen on and the phone plugged in while driving.",
-      voiceSettings:"Voice settings", voiceNarration:"Narration voice", voicePlace:"Place-name voice (Dutch)",
+      settingsBtn:"⚙ Settings", settingsTitle:"Settings", langLabel:"Language", voiceHeading:"Voice", voiceNarration:"Narration voice", voicePlace:"Place-name voice (Dutch)",
       voiceAuto:"Automatic (best available)", voiceTest:"▶ Test voice", voiceNone:"none found",
       voiceUsing:(n,c)=>`Using: ${n} · ${c} voices found`,
       voiceSample:"In about two kilometers, on your right, you'll pass the Evoluon."
@@ -287,7 +310,7 @@
       gpsTimeout:"Positie bepalen duurt lang. Nog bezig…",
       demoDone:"Dit was het einde van de proefrit.",
       wakeOn:"Scherm blijft aan", wakeOff:"Houd het scherm aan en de telefoon aan de lader tijdens het rijden.",
-      voiceSettings:"Steminstellingen", voiceNarration:"Verteller-stem", voicePlace:"Stem voor plaatsnamen (Nederlands)",
+      settingsBtn:"⚙ Instellingen", settingsTitle:"Instellingen", langLabel:"Taal", voiceHeading:"Stem", voiceNarration:"Verteller-stem", voicePlace:"Stem voor plaatsnamen (Nederlands)",
       voiceAuto:"Automatisch (beste beschikbare)", voiceTest:"▶ Test stem", voiceNone:"geen gevonden",
       voiceUsing:(n,c)=>`In gebruik: ${n} · ${c} stemmen gevonden`,
       voiceSample:"Over ongeveer twee kilometer, aan uw rechterkant, ligt het Evoluon."
@@ -630,7 +653,7 @@
   ========================================================= */
   const $ = id => document.getElementById(id);
   const el = {
-    start:$('screen-start'), trip:$('screen-trip'), log:$('screen-log'),
+    start:$('screen-start'), trip:$('screen-trip'), log:$('screen-log'), settings:$('screen-settings'),
     status:$('start-status'), ringFill:$('ring-fill'), ringDist:$('ring-dist'), ringSide:$('ring-side'),
     scan:$('scan-line'), slot:$('card-slot'), cap:$('captions'), capText:$('captions-text'),
     pause:$('btn-pause'), mute:$('btn-mute'), liveDot:$('live-dot'), liveLabel:$('live-label'), clock:$('clock')
@@ -638,7 +661,12 @@
   const RING = 2*Math.PI*86;
   const clock = d => String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
   const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  function show(name){ [el.start, el.trip, el.log].forEach(s=>s.classList.remove('active')); ({start:el.start, trip:el.trip, log:el.log})[name].classList.add('active'); }
+  function show(name){ [el.start, el.trip, el.log, el.settings].forEach(s=>s.classList.remove('active')); ({start:el.start, trip:el.trip, log:el.log, settings:el.settings})[name].classList.add('active'); }
+  let screenBefore = 'start';
+  function openSettings(){
+    screenBefore = el.trip.classList.contains('active') ? 'trip' : (el.log.classList.contains('active') ? 'log' : 'start');
+    renderVoiceOptions(); show('settings');
+  }
   function showCaption(text){ el.capText.textContent = text; el.cap.classList.add('show'); }
   function hideCaption(){ el.cap.classList.remove('show'); }
   function updatePauseBtn(){ el.pause.textContent = state.paused ? t('resume') : t('pause'); }
@@ -730,7 +758,7 @@
     $('btn-log').textContent = t('log'); $('btn-back').textContent = t('back');
     $('btn-replay').textContent = t('replay'); $('btn-skip').textContent = t('skip');
     $('btn-end').textContent = t('end'); el.mute.textContent = state.muted ? t('audioOff') : t('audioOn');
-    $('voice-summary').textContent = t('voiceSettings'); $('lbl-voice-body').textContent = t('voiceNarration');
+    $('settings-title').textContent = t('settingsTitle'); $('lbl-language').textContent = t('langLabel'); $('voice-heading').textContent = t('voiceHeading'); $('btn-settings-start').textContent = t('settingsBtn'); $('btn-settings-back').textContent = t('back'); $('lbl-voice-body').textContent = t('voiceNarration');
     $('lbl-voice-name').textContent = t('voicePlace'); $('btn-test-voice').textContent = t('voiceTest');
     updatePauseBtn(); renderLog(); renderVoiceOptions();
   }
@@ -832,7 +860,7 @@
     if(state.muted) stopSpeech();
   });
   document.querySelectorAll('.lang-pill').forEach(b=>b.addEventListener('click', ()=>{
-    state.lang = b.getAttribute('data-lang');
+    state.lang = b.getAttribute('data-lang'); prefs.lang = state.lang; savePrefs();
     document.querySelectorAll('.lang-pill').forEach(x=>x.classList.toggle('active', x===b));
     state.places.clear(); state.lastFetch = null; lastCardKey = '';   // places are fetched per language
     applyLanguage(); if(state.started){ refreshNearby(); updateUI(); }
@@ -841,6 +869,13 @@
   $('sel-voice-body').addEventListener('change', e=>{ prefs.body[state.lang] = e.target.value; savePrefs(); renderVoiceOptions(); });
   $('sel-voice-name').addEventListener('change', e=>{ prefs.name = e.target.value; savePrefs(); renderVoiceOptions(); });
   $('btn-test-voice').addEventListener('click', ()=>{ primeSpeech(); testVoice(); });
+
+  $('btn-settings-start').addEventListener('click', openSettings);
+  $('btn-settings-trip').addEventListener('click', openSettings);
+  $('btn-settings-back').addEventListener('click', ()=>show(screenBefore));
+  // English is the default; a language chosen earlier in Settings is remembered
+  if(prefs.lang && STR[prefs.lang]) state.lang = prefs.lang;
+  document.querySelectorAll('.lang-pill').forEach(x=>x.classList.toggle('active', x.getAttribute('data-lang')===state.lang));
 
   applyLanguage();
   // iPhone Safari often reports its voice list a moment late
